@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="500.0" minWidth="800.0" style="-fx-background-color: #FA8072;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.SearchViewController">
+   <children>
+      <TextField fx:id="searchField" layoutX="231.0" layoutY="39.0" prefHeight="42.0" prefWidth="388.0" promptText="What's in your master mind now?" AnchorPane.leftAnchor="231.0" AnchorPane.rightAnchor="194.0" AnchorPane.topAnchor="39.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <Text boundsType="LOGICAL_VERTICAL_CENTER" layoutX="26.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chelf's Only" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="37.0">
+         <font>
+            <Font name="Comic Sans MS Bold Italic" size="32.0" />
+         </font>
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" cycleMethod="REFLECT" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.9599999785423279" green="0.04800000041723251" blue="0.04800000041723251" opacity="0.9800000190734863" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.1473684161901474" green="0.0043664718978106976" blue="0.04011695832014084" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Text>
+      <Button fx:id="searchButton" layoutX="643.0" layoutY="39.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showSearchResult" onMouseClicked="#showSearchResult" prefHeight="42.0" prefWidth="100.0" text="Search" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="67.39999999999998" AnchorPane.topAnchor="39.0">
+         <font>
+            <Font name="Avenir Roman" size="20.0" />
+         </font>
+         <textFill>
+            <RadialGradient centerX="0.5" centerY="0.5" cycleMethod="REFLECT" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="1.0" green="0.025925925001502037" blue="0.025925925001502037" opacity="0.9800000190734863" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.007518796992481203">
+                     <color>
+                        <Color red="1.0" green="0.025925925001502037" blue="0.025925925001502037" opacity="0.9800000190734863" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.23157894611358643" green="0.001715399557724595" blue="0.05918128788471222" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Button>
+      <Button fx:id="backButton" layoutX="614.0" layoutY="443.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#backToMain" prefHeight="42.0" prefWidth="100.0" text="Back" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="100.39999999999998" AnchorPane.topAnchor="443.0">
+         <font>
+            <Font name="Avenir Roman" size="20.0" />
+         </font>
+         <textFill>
+            <RadialGradient centerX="0.5" centerY="0.5" cycleMethod="REFLECT" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="1.0" green="0.025925925001502037" blue="0.025925925001502037" opacity="0.9800000190734863" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.007518796992481203">
+                     <color>
+                        <Color red="1.0" green="0.025925925001502037" blue="0.025925925001502037" opacity="0.9800000190734863" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.23157894611358643" green="0.001715399557724595" blue="0.05918128788471222" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Button>
+      <TableView fx:id="recipeTable" layoutX="290.0" layoutY="145.0" onMouseClicked="#viewRecipeDetails" prefHeight="214.0" prefWidth="614.0" AnchorPane.bottomAnchor="66.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="145.0">
+        <columns>
+          <TableColumn fx:id="recipeNameCol" prefWidth="305.5999984741211" text="Recipe's name" />
+          <TableColumn fx:id="flavourNameCol" prefWidth="175.20004272460938" text="Flavour" />
+            <TableColumn fx:id="cookTimeCol" prefWidth="132.0" text="Cook Time" />
+        </columns>
+      </TableView>
+      <HBox fx:id="group" layoutX="231.0" layoutY="96.0" prefHeight="25.0" prefWidth="516.0">
+         <children>
+            <RadioButton fx:id="byFlavour" mnemonicParsing="false" onAction="#showSearchResult" prefHeight="23.0" prefWidth="128.0" text="Flavour filter">
+               <textFill>
+                  <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.6421052813529968" green="0.009512670338153839" blue="0.009512670338153839" />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.999999954108905">
+                           <color>
+                              <Color red="0.04210526496171951" green="3.1189084984362125E-4" blue="3.1189084984362125E-4" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.04210526496171951" green="3.1189084984362125E-4" blue="3.1189084984362125E-4" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </RadialGradient>
+               </textFill>
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font></RadioButton>
+            <ChoiceBox fx:id="flavourCB" prefHeight="23.0" prefWidth="80.0" />
+            <Pane prefHeight="24.0" prefWidth="17.0" />
+            <RadioButton fx:id="byTime" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#showSearchResult" prefHeight="26.0" prefWidth="288.0" text="Cook Time (no more than)">
+               <textFill>
+                  <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.6105263233184814" green="0.015828460454940796" blue="0.015828460454940796" />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.999999954108905">
+                           <color>
+                              <Color red="0.04210526496171951" green="3.1189084984362125E-4" blue="3.1189084984362125E-4" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.04210526496171951" green="3.1189084984362125E-4" blue="3.1189084984362125E-4" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </RadialGradient>
+               </textFill>
+               <graphic>
+                  <TextField fx:id="cookTimeText" prefHeight="23.0" prefWidth="27.0" />
+               </graphic>
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </RadioButton>
+         </children>
+      </HBox>
+      <Button fx:id="addButton" layoutX="472.0" layoutY="443.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#openAddView" prefHeight="42.0" prefWidth="100.0" text="Add" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Avenir Roman" size="20.0" />
+         </font>
+         <textFill>
+            <RadialGradient centerX="0.5" centerY="0.5" cycleMethod="REFLECT" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="1.0" green="0.025925925001502037" blue="0.025925925001502037" opacity="0.9800000190734863" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.007518796992481203">
+                     <color>
+                        <Color red="1.0" green="0.025925925001502037" blue="0.025925925001502037" opacity="0.9800000190734863" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.23157894611358643" green="0.001715399557724595" blue="0.05918128788471222" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Button>
+      <Text boundsType="LOGICAL_VERTICAL_CENTER" layoutX="114.0" layoutY="471.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Can't find the recipe you want? You can :" wrappingWidth="334.08123779296875">
+         <font>
+            <Font name="Comic Sans MS Bold Italic" size="16.0" />
+         </font>
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5954198473282443" cycleMethod="REFLECT" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.7052631378173828" green="0.020896686241030693" blue="0.020896686241030693" opacity="0.9800000190734863" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.007518796992481203">
+                     <color>
+                        <Color red="0.7052631378173828" green="0.020896686241030693" blue="0.020896686241030693" opacity="0.9800000190734863" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.06315789371728897" green="0.0016374269034713507" blue="0.01701754331588745" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Text>
+   </children>
+</AnchorPane>

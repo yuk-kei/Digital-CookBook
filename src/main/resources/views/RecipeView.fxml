@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<SplitPane dividerPositions="0.31212424849699394" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.RecipeViewController">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="498.0" prefWidth="239.0" style="-fx-background-color: #FF6347;">
+         <children>
+            <VBox prefHeight="498.0" prefWidth="231.0">
+               <children>
+                  <Pane fx:id="imagePane" prefHeight="280.0" prefWidth="230.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                     <children>
+                        <ImageView fx:id="imageView" fitHeight="221.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </Pane>
+                  <Region VBox.vgrow="ALWAYS" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Region prefHeight="41.0" prefWidth="42.0" />
+                        <Label fx:id="flavourText" alignment="BOTTOM_CENTER" prefHeight="31.0" prefWidth="143.0" text="Flavour">
+                           <font>
+                              <Font name="Comic Sans MS Bold Italic" size="18.0" />
+                           </font>
+                           <textFill>
+                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                                 <stops>
+                                    <Stop>
+                                       <color>
+                                          <Color red="0.6736842393875122" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="1.0">
+                                       <color>
+                                          <Color />
+                                       </color>
+                                    </Stop>
+                                 </stops>
+                              </RadialGradient>
+                           </textFill>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Label fx:id="warningText1" prefHeight="14.0" prefWidth="238.0" textFill="ALICEBLUE">
+                     <VBox.margin>
+                        <Insets left="8.0" top="-5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="145.0" text="  Serve Amount：">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="Comic Sans MS Bold Italic" size="15.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="serveAmountText" alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeServeNumber" onInputMethodTextChanged="#changeServeNumber" onKeyPressed="#changeServeNumber" onKeyReleased="#changeServeNumber" onKeyTyped="#changeServeNumber" prefHeight="26.0" prefWidth="39.0">
+                           <HBox.margin>
+                              <Insets left="55.0" right="20.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <Label fx:id="warningText2" prefHeight="17.0" prefWidth="225.0" textFill="#ee0707">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="8.0" top="-5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="106.0" text="Prep Time:  ">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="Comic Sans MS Bold Italic" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="prepTimeText" alignment="CENTER" prefHeight="29.0" prefWidth="64.0" text="label">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="min" textAlignment="RIGHT" wrappingWidth="45.84021186828613">
+                           <font>
+                              <Font name="Comic Sans MS Bold Italic" size="18.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <Label fx:id="warningText3" prefHeight="17.0" prefWidth="226.0" textFill="#e40a0a">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="8.0" top="-5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="119.0" text="Cook Time:    ">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="Comic Sans MS Bold Italic" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="cookTimeText" prefHeight="26.0" prefWidth="50.0" text="label">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="min" textAlignment="RIGHT" wrappingWidth="45.84021186828613">
+                           <font>
+                              <Font name="Comic Sans MS Bold Italic" size="18.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="modify" mnemonicParsing="false" onAction="#modify" prefHeight="23.0" prefWidth="61.0" text="Edit" />
+                        <Region prefHeight="41.0" prefWidth="26.0" />
+                        <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" prefHeight="23.0" prefWidth="61.0" text="Delete" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="back" mnemonicParsing="false" onAction="#back" prefHeight="23.0" prefWidth="68.0" text="Back" />
+                     </children></HBox>
+               </children>
+            </VBox>
+         </children></AnchorPane>
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <top>
+            <HBox fx:id="recipteNameArea" alignment="CENTER" prefHeight="75.0" prefWidth="403.0" style="-fx-background-color: #FF6347;" BorderPane.alignment="CENTER">
+               <children>
+                  <Region prefHeight="75.0" prefWidth="352.0" />
+                  <Label fx:id="nameLabel" prefHeight="75.0" prefWidth="762.0" text="Recipe's Name">
+                     <textFill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.6631578803062439" green="0.009824560955166817" blue="0.009824560955166817" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.09473684430122375" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </RadialGradient>
+                     </textFill>
+                     <font>
+                        <Font name="Comic Sans MS Bold Italic" size="24.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="73.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/images.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+         </top>
+         <center>
+            <VBox prefHeight="322.0" prefWidth="308.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="310.0" style="-fx-background-color: #FF8C00;" text="Preperation Steps">
+                     <font>
+                        <Font name="Comic Sans MS Bold Italic" size="18.0" />
+                     </font>
+                     <textFill>
+                        <RadialGradient centerX="0.5" centerY="0.5419847473843407" radius="0.5">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.9578947424888611" green="0.031929824501276016" blue="0.031929824501276016" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.0736842080950737" green="0.012280701659619808" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </RadialGradient>
+                     </textFill>
+                  </Label>
+                  <ScrollPane prefHeight="228.0" prefWidth="308.0">
+                     <content>
+                        <VBox prefHeight="600.0" prefWidth="1200.0">
+                           <children>
+                              <Label fx:id="preparationStepText" alignment="TOP_LEFT" prefHeight="600.0" prefWidth="1200.0" text="Label">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </children></VBox>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+         </center>
+         <left>
+            <VBox prefHeight="268.0" prefWidth="254.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="310.0" style="-fx-background-color: #FF8C00;" text="Ingrediants">
+                     <font>
+                        <Font name="Comic Sans MS Bold Italic" size="18.0" />
+                     </font>
+                     <textFill>
+                        <RadialGradient centerX="0.5" centerY="0.5419847473843407" radius="0.5">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.9578947424888611" green="0.031929824501276016" blue="0.031929824501276016" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.16842105984687805" green="1.8698493847377545E-17" blue="1.8698493847377545E-17" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </RadialGradient>
+                     </textFill>
+                  </Label>
+                  <ScrollPane prefHeight="228.0" prefWidth="267.0">
+                     <content>
+                        <VBox prefHeight="600.0" prefWidth="1000.0">
+                           <children>
+                              <Label fx:id="ingredientText" alignment="TOP_LEFT" prefHeight="600.0" prefWidth="800.0" text="Label">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </children></VBox>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+         </left>
+         <bottom>
+            <ImageView fitHeight="154.0" fitWidth="533.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@../images/tableView.jpg" />
+               </image>
+            </ImageView>
+         </bottom>
+      </BorderPane>
+  </items>
+</SplitPane>

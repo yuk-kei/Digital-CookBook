@@ -61,12 +61,12 @@
                         </Label>
                      </children>
                   </HBox>
-                  <Label fx:id="warningText1" prefHeight="14.0" prefWidth="238.0" textFill="ALICEBLUE">
+                  <Label fx:id="warningText" prefHeight="14.0" prefWidth="238.0" textFill="ALICEBLUE">
                      <VBox.margin>
                         <Insets left="8.0" top="-5.0" />
                      </VBox.margin>
                      <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
                   <HBox prefHeight="100.0" prefWidth="200.0">
@@ -89,14 +89,6 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <Label fx:id="warningText2" prefHeight="17.0" prefWidth="225.0" textFill="#ee0707">
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="8.0" top="-5.0" />
-                     </VBox.margin>
-                  </Label>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="106.0" text="Prep Time:  ">
@@ -122,14 +114,6 @@
                         </Text>
                      </children>
                   </HBox>
-                  <Label fx:id="warningText3" prefHeight="17.0" prefWidth="226.0" textFill="#e40a0a">
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="8.0" top="-5.0" />
-                     </VBox.margin>
-                  </Label>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="119.0" text="Cook Time:    ">

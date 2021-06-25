@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
- * The chelfOnly.controller for the home page.
+ * The controller for the home page.
  */
 public class HomeViewController implements Initializable {
     public static final int WIDTH = 600;

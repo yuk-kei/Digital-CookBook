@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
@@ -25,7 +26,9 @@ import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.security.Key;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -70,10 +73,14 @@ public class SearchViewController implements Initializable {
     @FXML
     private Button addButton;
 
-    Scene fxmlFile;
-    Parent root;
+    @FXML
+    private Label warningText;
 
-    Stage window;
+    private List<Recipe> recipes;
+
+    private Scene fxmlFile;
+    private Parent root;
+    private Stage window;
 
     @FXML
     void backToMain(MouseEvent event) throws IOException {
@@ -104,8 +111,59 @@ public class SearchViewController implements Initializable {
     }
 
     @FXML
-    void showSearchResult(ActionEvent event) {
+    void showSearchResult() {
+        String recipeName = "%" + searchField.getText() + "%";
+        recipes = RecipeDAO.findRecipe(recipeName);
+        if (byFlavour.isSelected()){
+            flavourFilter();
+        } if (byTime.isSelected()){
+            timeFilter();
+        }
+        showTable(recipes);
+    }
 
+    private void flavourFilter() {
+        try {
+            if (!flavourCB.getSelectionModel().getSelectedItem().isEmpty()) {
+                String flavour = flavourCB.getSelectionModel().getSelectedItem();
+                List<Recipe> newRecipes = new ArrayList<>();
+                for (Recipe recipe : recipes) {
+                    if (recipe.getFlavour().equals(flavour)) {
+                        newRecipes.add(recipe);
+                    }
+                }
+                recipes = newRecipes;
+            }
+        } catch (NullPointerException exception){
+            System.out.println("User didn't select any flavour!");
+        }
+    }
+
+    private void timeFilter() {
+        try {
+            String timeString = cookTimeText.getText();
+            int time;
+
+            try {
+                time = Integer.parseInt(timeString);
+            } catch (Exception e) {
+                time = 1;
+            }
+            String indexString = "[1-9][0-9]*";
+            if (timeString.matches(indexString)) {
+                List<Recipe> newRecipes = new ArrayList<>();
+                for (Recipe recipe: recipes){
+                    if (recipe.getCookTime() <= time){
+                        newRecipes.add(recipe);
+                    }
+                }
+                recipes = newRecipes;
+            } else {
+                warningText.setText("the cook time must be positive integer !!");
+            }
+        } catch (Exception ignored) {
+
+        }
     }
 
     @FXML
@@ -144,8 +202,8 @@ public class SearchViewController implements Initializable {
     }
 
 
-    public void showTable(){
-        ObservableList<Recipe> list = RecipeDAO.getRecipeList();
+    public void showTable(List<Recipe> recipes){
+        ObservableList<Recipe> list = FXCollections.observableArrayList(recipes);
         recipeNameCol.setCellValueFactory(new PropertyValueFactory<Recipe,Integer>("recipeName"));
         flavourNameCol.setCellValueFactory(new PropertyValueFactory<Recipe,Integer>("flavour"));
         cookTimeCol.setCellValueFactory(new PropertyValueFactory<Recipe,Integer>("cookTime"));
@@ -154,10 +212,10 @@ public class SearchViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        RecipeDAO.recipeList();
-        showTable();
+        RecipeDAO.getRecipeList();
+        recipes = RecipeDAO.recipeList();
+        showTable(recipes);
         setFlavour();
-
     }
 
     private void setFlavour() {

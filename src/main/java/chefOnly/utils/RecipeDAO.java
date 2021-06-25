@@ -9,6 +9,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Methods related to Data base layer.
+ * @author
+ */
 public class RecipeDAO {
 
     private Connection connection = null;
@@ -18,8 +22,8 @@ public class RecipeDAO {
     /**
      * Insert the recipe into the database
      *
-     * @param recipe
-     * @throws SQLException
+     * @param recipe the recipe
+     * @throws SQLException the sql exception
      */
     public static void addRecipe(Recipe recipe) throws SQLException {
 
@@ -59,11 +63,11 @@ public class RecipeDAO {
         addPrepStep(recipe);
     }
 
-    /*
-     * Insert the ingredients list to the INGREDIENT table
+    /**
+     * Inset ingredients to the database
      *
-     * @param r
-     * @throws SQLException
+     * @param recipe the recipe
+     * @throws SQLException the sql exception
      */
     private static void addIngredient(Recipe recipe) throws SQLException {
         String sql = "insert into ingredient values(?,?,?,?,?)";
@@ -94,6 +98,9 @@ public class RecipeDAO {
         }
     }
 
+    /*
+     * Insert the preparation steps to the INGREDIENT table
+     */
     private static void addPrepStep(Recipe recipe) throws SQLException {
 
         String sql = "insert into preparationstep values(?,?,?)";
@@ -123,6 +130,11 @@ public class RecipeDAO {
         }
     }
 
+    /**
+     * Delete recipe from the database.
+     *
+     * @param recipe_id the recipe id
+     */
     public static void deleteRecipe(Integer recipe_id) {
         try (Connection c = ConnectionUtil.getConnection();) {
             assert c != null;
@@ -145,6 +157,12 @@ public class RecipeDAO {
         }
     }
 
+    /**
+     * Update recipe.
+     *
+     * @param recipe the recipe
+     * @throws SQLException the sql exception
+     */
     public static void updateRecipe(Recipe recipe) throws SQLException {
 
         String sql = "update recipe set name = ?, serveamount = ? , preparationtime = ?, cookingTime = ?, imagpath = ?, flavour = ? where recipe_id = ?";
@@ -242,6 +260,11 @@ public class RecipeDAO {
         }
     }
 
+    /**
+     * Get all recipes from the database
+     *
+     * @return the list of all recipes
+     */
     public static List<Recipe> recipeList() {
         return recipeList(0, Short.MAX_VALUE);
     }
@@ -331,6 +354,11 @@ public class RecipeDAO {
         return ingres;
     }
 
+    /**
+     * Gets recipe list.
+     *
+     * @return the recipe list
+     */
     public static ObservableList<Recipe> getRecipeList() {
         ObservableList<Recipe> recipes = FXCollections.observableArrayList();
 
@@ -374,9 +402,15 @@ public class RecipeDAO {
         return recipes;
     }
 
-    public static ObservableList<Recipe> findRecipe(String type, String value) {
+    /**
+     * Find recipe observable list.
+     *
+     * @param value the value
+     * @return the observable list
+     */
+    public static ObservableList<Recipe> findRecipe(String value) {
         ObservableList<Recipe> recipes = FXCollections.observableArrayList();
-        String sql = searchSQL(type);
+        String sql = "select * from recipe where name like ?";
         String sql2 = "select * from ingredient where recipe_id = ?";
         String sql3 = "select * from preparationstep where recipe_id = ?";
 
@@ -421,17 +455,30 @@ public class RecipeDAO {
             case "Name": {
                 return "select * from recipe where name like ?";
             }
+            case "flavour": {
+                return "select * from recipe where name flavour like = ?";
+            }
             default:
                 return "select * from recipe order by recipe_id desc";
         }
     }
 
+    /**
+     * Connect.
+     *
+     * @throws Exception the exception
+     */
     public void connect() throws Exception {
         connection = ConnectionUtil.getConnection();
 
     }
 
 
+    /**
+     * Close.
+     *
+     * @throws Exception the exception
+     */
     public void close() throws Exception {
         ConnectionUtil.disconnect();
     }

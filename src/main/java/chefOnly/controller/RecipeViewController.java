@@ -3,7 +3,6 @@ package chefOnly.controller;
 import chefOnly.model.Recipe;
 import chefOnly.utils.RecipeDAO;
 import chefOnly.view.CloseAlert;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,17 +14,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.text.BreakIterator;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -38,19 +32,13 @@ public class RecipeViewController implements Initializable {
     private ImageView imageView;
 
     @FXML
-    private Label warningText1;
+    private Label warningText;
 
     @FXML
     private TextField serveAmountText;
 
     @FXML
-    private Label warningText2;
-
-    @FXML
     private Label prepTimeText;
-
-    @FXML
-    private Label warningText3;
 
     @FXML
     private Label cookTimeText;
@@ -100,7 +88,7 @@ public class RecipeViewController implements Initializable {
     }
 
     @FXML
-    void changeServeNumber(KeyEvent event) {
+    void changeServeNumber() {
         try {
             String numberContent = serveAmountText.getText();
             int changeNumber;
@@ -113,11 +101,11 @@ public class RecipeViewController implements Initializable {
             String indexString = "[1-9][0-9]*";
             if (numberContent.matches(indexString)) {
                 recipe.changeQuantity(changeNumber);
-                ingredientText.setText(recipe.toGetIngredients());
-                warningText1.setText("");
+                ingredientText.setText(recipe.getFormattedIngredients());
+                warningText.setText("");
 
             } else {
-                warningText1.setText("the serving number must be positive integer !!");
+                warningText.setText("Serving amount must be positive integer!!");
             }
         } catch (Exception ignored) {
 
@@ -177,20 +165,16 @@ public class RecipeViewController implements Initializable {
 
         nameLabel.setText(recipe.getRecipeName());
         flavourText.setText(recipe.getFlavour());
-        ingredientText.setText(recipe.toGetIngredients());
-        preparationStepText.setText(recipe.toGetPreparationStep());
+        ingredientText.setText(recipe.getFormattedIngredients());
+        preparationStepText.setText(recipe.getFormattedPreparationStep());
 
         serveAmountText.setText(String.valueOf(recipe.getServeNumber()));
         prepTimeText.setText(String.valueOf(recipe.getPrepTime()));
         cookTimeText.setText(String.valueOf(recipe.getCookTime()));
 
-
         imageView.fitWidthProperty().bind(imagePane.widthProperty());
         imageView.fitHeightProperty().bind(imagePane.heightProperty());
         imageView.setImage(new Image(recipe.getImagePath()));
-
     }
-
-
 
 }

@@ -3,8 +3,8 @@ package chefOnly.model;
 import java.text.DecimalFormat;
 
 /**
- *
- * The Ingredient class contains the data and content of ingredients
+ * The model of the MVC structure
+ * Storing the data of one single ingredient.
  * @author Yuqi Ho
  */
 public class Ingredient {
@@ -52,19 +52,22 @@ public class Ingredient {
         this.quantity = quantity;
     }
 
+    /**
+     * Override the toString method to format the Ingredient information
+     */
     @Override
     public String toString() {
-        // this string is collection of all ingredient
-        String totalInformation;
 
-        totalInformation = " " + this.ingredientName + ": " + this.quantity + " " + this.unit;
+        String formattedString;
+        formattedString = " " + this.ingredientName + ": " + this.quantity + " " + this.unit;
+
         if(!this.description.equals("None")){
-            totalInformation = totalInformation + "     Description: " + this.description + "\n";
+            formattedString = formattedString + "     Description: " + this.description + "\n";
         }else{
-            totalInformation = totalInformation + "\n";
+            formattedString = formattedString + "\n";
         }
 
-        return totalInformation;
+        return formattedString;
     }
 }
 

@@ -1,16 +1,15 @@
 package chefOnly.model;
 
 import javafx.scene.image.Image;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- *
+ * The model of the MVC structure
+ * The Recipe model, used as a mediate to communicate among database, controllers and view page
  * @author Yukkei Ho
  */
 
-public class Recipe implements Serializable {
+public class Recipe {
 
     private int recipeID;
     private String recipeName;
@@ -139,8 +138,8 @@ public class Recipe implements Serializable {
     }
 
     /**
-     * changing the quantities of the ingredients according to the serving number
-     * @param serveNum the serving number give by user or the software's default value
+     * calculate the quantities of the ingredients according to the serving amount
+     * @param serveNum the serving amount
      */
     public void changeQuantity(int serveNum) {
         int currentNum = getServeNumber();
@@ -151,10 +150,10 @@ public class Recipe implements Serializable {
     }
 
     /**
-     * getting the names of ingredients' names
-     * @return string of names of ingredients
+     *  Get the formatted ingredients' names
+     * @return formatted string of names of ingredients
      */
-    public String toGetIngredients() {
+    public String getFormattedIngredients() {
         StringBuffer toStringIngredients = new StringBuffer();
         for (Ingredient item : ingredients) {
             StringBuffer itemReal = new StringBuffer();
@@ -169,10 +168,10 @@ public class Recipe implements Serializable {
     }
 
     /**
-     * getting the preparation step
-     * @return string of the preparation steps
+     * Get the formatted preparation step.
+     * @return formatted string of the preparation steps
      */
-    public String toGetPreparationStep() {
+    public String getFormattedPreparationStep() {
         StringBuffer toStringPreparationStep = new StringBuffer();
         for (int i = 0; i < preparationStep.size(); i++) {
             String item = preparationStep.get(i);
@@ -184,43 +183,30 @@ public class Recipe implements Serializable {
     }
 
     /**
-     * Override the toString method to give the Recipe information
+     * Override the toString method to format the Recipe information
      */
     @Override
     public String toString() {
-        // To give the information of Name and Flavour
-        String strNameandFlavour = "Name: " + this.getRecipeName() + "\n" + "Flavour: " + this.getFlavour() + "\n";
 
-        // To give the ID of the Recipe
-        String strRecipeID = "Recipe ID: " + this.recipeID + "\n";
+        String formattedNameAndFlavour = "Name: " + this.getRecipeName() + "\n" + "Flavour: " + this.getFlavour() + "\n";
+        String formattedRecipeID = "Recipe ID: " + this.recipeID + "\n";
 
-        // This string is to give all steps of preparation
-        String strPreparationStep = "Preparation Steps: \n";
+        String formattedPreparationStep = "Preparation Steps: \n";
         for (int i = 0; i < preparationStep.size(); i++) {
             String str = preparationStep.get(i);
-            strPreparationStep = strPreparationStep + "Step " + (i + 1) + ": " + str + "\n";
+            formattedPreparationStep = formattedPreparationStep + "Step " + (i + 1) + ": " + str + "\n";
         }
 
-
-        // To give all the information of ingredients
-        String strIngredients = "Ingredients: \n";
-        for (Ingredient ingrePointer : ingredients) {
-            // Using the override toString() method to change Ingredient into String
-            strIngredients = strIngredients + ingrePointer;
-
+        String formattedIngredients = "Ingredients: \n";
+        for (Ingredient ingredient : ingredients) {
+            formattedIngredients = formattedIngredients + ingredient;
         }
 
-        // To give the preparation time of the recipe
-        String strPreparationTime = "Preparation Time: " + this.prepTime + " min" + "\n";
+        String formattedPreparationTime = "Preparation Time: " + this.prepTime + " min" + "\n";
+        String formattedCookingTime = "Cooking Time: " + this.prepTime + "\n";
+        String formattedServingPeople = "Serving People:" + this.serveNumber + "\n";
 
-        // To give the cooking time of the recipe
-        String strCookingTime = "Cooking Time: " + this.prepTime + "\n";
-
-        // To give the serving people of the recipe
-        String strServingPeople = "Serving People:" + this.serveNumber + "\n";
-
-        // Return all the recipe information
-        return strNameandFlavour + strRecipeID + strIngredients + strPreparationStep + strPreparationTime
-                + strCookingTime + strServingPeople ;
+        return formattedNameAndFlavour + formattedRecipeID + formattedIngredients + formattedPreparationStep + formattedPreparationTime
+                + formattedCookingTime + formattedServingPeople ;
     }
 }

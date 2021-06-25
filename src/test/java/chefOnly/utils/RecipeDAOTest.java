@@ -46,7 +46,7 @@ class RecipeDAOTest {
 
     @Test
     void testFindRecipe() {
-        ObservableList<Recipe> recipes = RecipeDAO.findRecipe("Name","Spi%");
+        ObservableList<Recipe> recipes = RecipeDAO.findRecipe("Spi%");
         for (Recipe recipe : recipes){
             System.out.println(recipe);
         }

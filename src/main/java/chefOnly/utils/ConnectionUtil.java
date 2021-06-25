@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 /**
- *
- * @author Yuqi He
+ * Figure out the connection of the database
+ * @author
  */
 public class ConnectionUtil {
 
@@ -28,8 +28,7 @@ public class ConnectionUtil {
 
     /**
      * Disconnect to the database
-     *
-     * @throws SQLException
+     * @throws SQLException the sql exception
      */
     public static void disconnect() throws SQLException {
         Objects.requireNonNull(getConnection()).close();

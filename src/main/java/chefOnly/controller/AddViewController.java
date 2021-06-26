@@ -236,7 +236,7 @@ public class AddViewController implements Initializable {
      *
      * @return the statues of the saving process
      * @throws IOException the io exception
-     * @param owner
+     * @param owner the current window
      */
     public boolean saveImage(Window owner) throws IOException {
         boolean saveState = true;
@@ -262,6 +262,8 @@ public class AddViewController implements Initializable {
 
     /**
      * write the image file to the project image archive.
+     *
+     * @throws IOException the IO exception
      */
     private void storeImage() throws IOException {
         BufferedImage bufferImage;
@@ -277,6 +279,7 @@ public class AddViewController implements Initializable {
 
     /**
      * Delete the duplicate image from the archive
+     * @param path the path of image which need to be deleted
      */
     private void deleteImage(String path) {
         file = new File(path);
@@ -411,7 +414,7 @@ public class AddViewController implements Initializable {
         String delete = preparationList.getSelectionModel().getSelectedItem();
 
         for (int i = 0; i < recipe.getPreparationStep().size(); i++){
-            if (delete == recipe.getPreparationStep().get(i)){
+            if (delete.equals(recipe.getPreparationStep().get(i))){
                 recipe.getPreparationStep().remove(i);
             }
         }
@@ -426,7 +429,7 @@ public class AddViewController implements Initializable {
      */
     @FXML
     void modifyPrepSteps(ActionEvent event) {
-        String modify = preparationList.getSelectionModel().getSelectedItem();;
+        String modify = preparationList.getSelectionModel().getSelectedItem();
 
         for (int i = 0; i < recipe.getPreparationStep().size() ;i++){
             if (modify.equals(recipe.getPreparationStep().get((i)))){
@@ -526,7 +529,7 @@ public class AddViewController implements Initializable {
      */
     @FXML
     void pressSave(ActionEvent event) throws IOException, SQLException {
-        Window owner = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Window owner = ((Node) event.getSource()).getScene().getWindow();
 
         if (checkRecipeBasic()){
             showAlert(Alert.AlertType.ERROR,owner,"Please fill up the recipe correctly.","Form Error!");
@@ -543,14 +546,14 @@ public class AddViewController implements Initializable {
                     RecipeDAO.addRecipe(recipe);
                     System.out.println(recipe);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setContentText("The recipe has been successful modified!！");
+                    alert.setContentText("The recipe has been successful modified!!");
                     alert.show();
                     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     back(event);
                 } else {
                     RecipeDAO.addRecipe(recipe);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setContentText("The recipe has been successful added!！");
+                    alert.setContentText("The recipe has been successful added!!");
                     alert.show();
 
                 }
@@ -576,6 +579,7 @@ public class AddViewController implements Initializable {
 
     /**
      * Check whether all basic textile has been filled.
+     * @return whether the form is filled correctly
      */
     private boolean checkRecipeBasic() {
         return (recipeNameText.getText().isEmpty() || flavourText.getText().isEmpty()||cookTime.getText().isEmpty()

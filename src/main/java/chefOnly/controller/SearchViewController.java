@@ -203,6 +203,9 @@ public class SearchViewController implements Initializable {
 
     /**
      * Open the recipe view page.
+     * @throws IOException the io exception
+     * @param recipe the recipe which need to be detailed
+     * @param event the mouse event
      */
     private void openViewPage(Recipe recipe, MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RecipeView.fxml"));
@@ -236,9 +239,9 @@ public class SearchViewController implements Initializable {
      */
     public void showTable(List<Recipe> recipes){
         ObservableList<Recipe> list = FXCollections.observableArrayList(recipes);
-        recipeNameCol.setCellValueFactory(new PropertyValueFactory<Recipe,Integer>("recipeName"));
-        flavourNameCol.setCellValueFactory(new PropertyValueFactory<Recipe,Integer>("flavour"));
-        cookTimeCol.setCellValueFactory(new PropertyValueFactory<Recipe,Integer>("cookTime"));
+        recipeNameCol.setCellValueFactory(new PropertyValueFactory<>("recipeName"));
+        flavourNameCol.setCellValueFactory(new PropertyValueFactory<>("flavour"));
+        cookTimeCol.setCellValueFactory(new PropertyValueFactory<>("cookTime"));
         recipeTable.setItems(list);
     }
 

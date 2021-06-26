@@ -1,4 +1,8 @@
-package chefOnly.model;
+package chefOnly;
+
+import chefOnly.model.Ingredient;
+import chefOnly.model.Recipe;
+
 /**
  * Loading all the recipes.
  *

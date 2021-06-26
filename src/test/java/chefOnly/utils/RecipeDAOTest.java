@@ -1,6 +1,6 @@
 package chefOnly.utils;
 
-import chefOnly.model.InitRecipes;
+import chefOnly.InitRecipes;
 import chefOnly.model.Recipe;
 import javafx.collections.ObservableList;
 import org.junit.jupiter.api.Test;

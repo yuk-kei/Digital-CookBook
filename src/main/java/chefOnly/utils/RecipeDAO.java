@@ -56,6 +56,9 @@ public class RecipeDAO {
 
     /**
      * Setting the preparedStatement for recipe.
+     * @param recipe the recipe
+     * @param ps the preparation steps
+     * @throws SQLException the sql exception
      */
     private static void setRecipePreparedStatement(Recipe recipe, PreparedStatement ps) throws SQLException {
         ps.setString(1, recipe.getRecipeName());

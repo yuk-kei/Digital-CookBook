@@ -22,6 +22,8 @@ public class CloseAlert {
 
 	/**
 	 * define the handle functions of the two buttons. Any subclass of this class can change the handle function by override this function
+     * @param event Window Event
+     * @param modifyStage the current Stage
 	 */
 	public void buttonReaction(Stage modifyStage, WindowEvent event) {
 		cancel.setOnAction(e -> {alertWin.close(); event.consume();});
@@ -33,6 +35,8 @@ public class CloseAlert {
 	 * Generate an alert window with handle functions of the buttons set automatically
 	 * @param title the title of the alert window
 	 * @param message the message that this alert window wants to present
+     * @param primaryStage the current Stage
+     * @param event Window event
 	 */
 	public void popUp(String title, String message, Stage primaryStage, WindowEvent event) {
 		alertWin = new Stage();

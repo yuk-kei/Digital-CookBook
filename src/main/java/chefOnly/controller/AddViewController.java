@@ -642,6 +642,9 @@ public class AddViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (!edit){
+            recipe = new Recipe();
+        }
     }
 
 }

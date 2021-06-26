@@ -1,12 +1,11 @@
 package chefOnly.model;
 
-import javafx.scene.image.Image;
 import java.util.ArrayList;
 
 /**
  * The model of the MVC structure
- * The Recipe model, used as a mediate to communicate among database, controllers and view page
- * @author Yukkei Ho
+ * The Recipe model, used as a mediate to communicate among database, controllers and view page.
+ *
  */
 
 public class Recipe {
@@ -18,15 +17,6 @@ public class Recipe {
     private int prepTime;
     private int cookTime;
     private String imagePath = "images/Slow cooked Beef.png";
-    private Image image;
-
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
-    }
 
     private ArrayList<Ingredient> ingredients = new ArrayList<>();
 
@@ -154,13 +144,12 @@ public class Recipe {
      * @return formatted string of names of ingredients
      */
     public String getFormattedIngredients() {
-        StringBuffer toStringIngredients = new StringBuffer();
+        StringBuilder toStringIngredients = new StringBuilder();
         for (Ingredient item : ingredients) {
-            StringBuffer itemReal = new StringBuffer();
-            itemReal.append(item.getIngredientName());
-            itemReal.append("   " + item.getQuantity());
-            itemReal.append(" " + item.getUnit());
-            itemReal.append("      " + item.getDescription());
+            String itemReal = item.getIngredientName() +
+                    "   " + item.getQuantity() +
+                    " " + item.getUnit() +
+                    "      " + item.getDescription();
             toStringIngredients.append(itemReal);
             toStringIngredients.append("\r\n");
         }
@@ -172,11 +161,11 @@ public class Recipe {
      * @return formatted string of the preparation steps
      */
     public String getFormattedPreparationStep() {
-        StringBuffer toStringPreparationStep = new StringBuffer();
+        StringBuilder toStringPreparationStep = new StringBuilder();
         for (int i = 0; i < preparationStep.size(); i++) {
             String item = preparationStep.get(i);
             int m = i + 1;
-            toStringPreparationStep.append(m+": " + item);
+            toStringPreparationStep.append(m).append(": ").append(item);
             toStringPreparationStep.append("\r\n");
         }
         return toStringPreparationStep.toString();
@@ -191,15 +180,15 @@ public class Recipe {
         String formattedNameAndFlavour = "Name: " + this.getRecipeName() + "\n" + "Flavour: " + this.getFlavour() + "\n";
         String formattedRecipeID = "Recipe ID: " + this.recipeID + "\n";
 
-        String formattedPreparationStep = "Preparation Steps: \n";
+        StringBuilder formattedPreparationStep = new StringBuilder("Preparation Steps: \n");
         for (int i = 0; i < preparationStep.size(); i++) {
             String str = preparationStep.get(i);
-            formattedPreparationStep = formattedPreparationStep + "Step " + (i + 1) + ": " + str + "\n";
+            formattedPreparationStep.append("Step ").append(i + 1).append(": ").append(str).append("\n");
         }
 
-        String formattedIngredients = "Ingredients: \n";
+        StringBuilder formattedIngredients = new StringBuilder("Ingredients: \n");
         for (Ingredient ingredient : ingredients) {
-            formattedIngredients = formattedIngredients + ingredient;
+            formattedIngredients.append(ingredient);
         }
 
         String formattedPreparationTime = "Preparation Time: " + this.prepTime + " min" + "\n";

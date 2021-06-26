@@ -5,31 +5,28 @@ import chefOnly.model.Recipe;
 import javafx.collections.ObservableList;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 class RecipeDAOTest {
-
+    List<Recipe>  recipeList;
+    Recipe recipe;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
-
+        recipeList = RecipeDAO.findRecipe("%Slow%");
+        recipe = recipeList.get(0);
+        System.out.println(recipe);
     }
 
     @Test
-    void addRecipe() throws SQLException, IOException {
+    void testAddRecipe() throws SQLException {
         RecipeDAO.addRecipe(InitRecipes.insertRecipe_01());
     }
 
     @Test
-    void deleteRecipe() {
+    void testDeleteRecipe() {
         RecipeDAO.deleteRecipe(9);
-    }
-
-    @Test
-    void updateRecipe() {
-
     }
 
     @Test
@@ -41,14 +38,15 @@ class RecipeDAOTest {
     }
 
     @Test
-    void findRecipe() {
-    }
-
-    @Test
     void testFindRecipe() {
         ObservableList<Recipe> recipes = RecipeDAO.findRecipe("Spi%");
         for (Recipe recipe : recipes){
             System.out.println(recipe);
         }
+    }
+
+    @Test
+    void testUpdateRecipe() throws SQLException {
+        RecipeDAO.updateRecipe(recipe);
     }
 }

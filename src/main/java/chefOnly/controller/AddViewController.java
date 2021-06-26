@@ -1,11 +1,10 @@
 package chefOnly.controller;
 
 import chefOnly.model.Ingredient;
-import chefOnly.model.PreparationStep;
 import chefOnly.model.Recipe;
+import chefOnly.utils.RecipeDAO;
 import chefOnly.view.CloseAlert;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -20,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -34,11 +34,15 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * The controller of the Add View Page.
+ * This controller allow this page to change between Add mode and Modify mode corresponding to the source.
+ *
+ */
 public class AddViewController implements Initializable {
 
     @FXML
@@ -78,10 +82,10 @@ public class AddViewController implements Initializable {
     private TextField recipeNameText;
 
     @FXML
-    private TextField IngredientNameArea;
+    private TextField ingredientNameArea;
 
     @FXML
-    private TextField amountArea;
+    private TextField quantityArea;
 
     @FXML
     private TextField unitArea;
@@ -90,7 +94,25 @@ public class AddViewController implements Initializable {
     private TextField descriptionArea;
 
     @FXML
+    private Button addIngredientButton;
+
+    @FXML
+    private Button deleteIngredientButton;
+
+    @FXML
+    private Button modifyIngredientButton;
+
+    @FXML
     private TextArea prepTextArea;
+
+    @FXML
+    private Button addPrepButton;
+
+    @FXML
+    private Button deletePrepButton;
+
+    @FXML
+    private Button modifyPrepStepsButton;
 
     @FXML
     private TextField flavourText;
@@ -102,15 +124,7 @@ public class AddViewController implements Initializable {
     private VBox ingredients;
 
     @FXML
-    private TableView<PreparationStep> prepStepTable;
-
-    @FXML
-    private TableColumn<PreparationStep, Integer> prepNumCol;
-
-    @FXML
-    private TableColumn<PreparationStep, String> prepStepCol;
-
-
+    private ListView<String> preparationList;
 
     @FXML
     private TableView<Ingredient> ingredientTable;
@@ -135,24 +149,66 @@ public class AddViewController implements Initializable {
     private String sourceTitle;
     private File file;
     private Image image;
-    private ObservableList<Ingredient> ingredientLists;
-    private ObservableList<PreparationStep> preparationStepLists;
+    private boolean edit;
+
     private final String imagePath =  System.getProperty("user.dir") + "\\src\\main\\resources\\images\\";
             //this.getClass().getClassLoader().getResource("images") + "/";
     private String path = "default";
 
-    @FXML
-    void addIngredient(ActionEvent event) {
+    /**
+     * Sets recipe.
+     *
+     * @param recipe the recipe
+     */
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
 
+        showIngredients();
+        showPreparations();
+        showRecipeBasic();
     }
 
-    @FXML
-    void addPreparation(ActionEvent event) {
-
+    /**
+     * Show ingredients.
+     */
+    public void showIngredients(){
+        ObservableList<Ingredient> ingredientLists = FXCollections.observableArrayList(recipe.getIngredients());
+        ingredientQuantityCol.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
+        ingredientNameCol.setCellValueFactory(new PropertyValueFactory<>("IngredientName"));
+        ingredientUnitCol.setCellValueFactory(new PropertyValueFactory<>("Unit"));
+        ingredientDesCol.setCellValueFactory(new PropertyValueFactory<>("Description"));
+        ingredientTable.setItems(ingredientLists);
     }
 
+    /**
+     * Show preparations.
+     */
+    public void showPreparations(){
+        ObservableList<String> preparations = FXCollections.observableArrayList(recipe.getPreparationStep());
+        preparationList.setItems(preparations);
+    }
+
+    /**
+     * Show the basic information of recipe .
+     */
+    public void showRecipeBasic(){
+        recipeNameText.setText(recipe.getRecipeName());
+        flavourText.setText(recipe.getFlavour());
+
+        serveNumber.setText(String.valueOf(recipe.getServeNumber()));
+        preparationTime.setText(String.valueOf(recipe.getPrepTime()));
+        cookTime.setText(String.valueOf(recipe.getCookTime()));
+
+        imageView.fitWidthProperty().bind(imagePane.widthProperty());
+        imageView.fitHeightProperty().bind(imagePane.heightProperty());
+        imageView.setImage(new Image(recipe.getImagePath()));
+    }
+
+    /**
+     * Open a file chooser to display the picture chosen by the user
+     */
     @FXML
-    void changePicture(ActionEvent event) {
+    void changePicture() {
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Select Picture");
@@ -176,36 +232,36 @@ public class AddViewController implements Initializable {
     }
 
     /**
-     * check and save the picture selected by the user
-     * @return the return value shows if saving is successful. ture: successful false: failed
+     * Check and save the picture selected by the user
+     *
+     * @return the statues of the saving process
+     * @throws IOException the io exception
+     * @param owner
      */
-    public boolean saveImage() throws IOException {
+    public boolean saveImage(Window owner) throws IOException {
         boolean saveState = true;
         if (!path.equals("default")) {
             if (!checkImageName(path)) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning");
-                alert.setHeaderText("The name of the image already exists!");
-                alert.setContentText("Please change the name and try again!");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.WARNING,owner,"Please change the name and try again!","The name of the image already exists!");
                 saveState = false;
-
             } else {
                 if (recipe.getImagePath().isEmpty()) {
                     recipe.setImagePath(path);
                 } else {
-                    deleteImage(path);
+                    deleteImage(recipe.getImagePath());
                     recipe.setImagePath(path);
                     storeImage();
                 }
                 saveState = true;
             }
+        } else if (!edit){
+            showAlert(Alert.AlertType.ERROR,owner,"Please select an image.","Form Error!");
         }
         return saveState;
     }
 
     /**
-     * write the image file to the given directory
+     * write the image file to the project image archive.
      */
     private void storeImage() throws IOException {
         BufferedImage bufferImage;
@@ -219,6 +275,9 @@ public class AddViewController implements Initializable {
         imageOut.close();
     }
 
+    /**
+     * Delete the duplicate image from the archive
+     */
     private void deleteImage(String path) {
         file = new File(path);
         Path deletePath = Paths.get(path);
@@ -237,53 +296,10 @@ public class AddViewController implements Initializable {
     }
 
     /**
-     * change the format of serving number
-     */
-    @FXML
-    void changeServeNumber(KeyEvent event) {
-        String textContent = serveNumber.getText();
-        String indexString = "[1-9][0-9]*";
-        if (textContent.matches(indexString)){
-            warningText1.setText("");
-        }
-        else {
-            warningText1.setText("must be positive integer !!");
-        }
-    }
-
-    /**
-     * check the format of cooking time
-     */
-    @FXML
-    void checkCTFormatted(KeyEvent event) {
-        String cookingTime = cookTime.getText();
-        String index="[1-9][0-9]*";
-        if(cookingTime.matches(index)){
-            warningText3.setText("");
-        }
-        else{
-            warningText3.setText("must be positive number !!");
-        }
-    }
-
-    /**
-     * check the format of preparation time
-     */
-    @FXML
-    void checkPTFormatted(KeyEvent event) {
-        String prepTime = preparationTime.getText();
-        String index="[1-9][0-9]*";
-        if(prepTime.matches(index)){
-            warningText3.setText("");
-        }
-        else{
-            warningText3.setText("must be positive number!!");
-        }
-    }
-
-    /**
      * Check if there is file with the same name in the file system
-     * @return true: no file with the same name; false: file with the same name already exists
+     *
+     * @param path the path
+     * @return true : no file with the same name; false: file with the same name already exists
      */
     public boolean checkImageName(String path){
         //create a file linked to the file chosen by user, if user doesn't choose a file, parameter path will be default value.
@@ -300,16 +316,193 @@ public class AddViewController implements Initializable {
         return true;
     }
 
+    /**
+     * Add ingredient.
+     *
+     * @param event the event
+     */
+    @FXML
+    void addIngredient(ActionEvent event) {
+        Ingredient add = new Ingredient(ingredientNameArea.getText(),Double.parseDouble(quantityArea.getText()),unitArea.getText(),descriptionArea.getText());
+
+        recipe.getIngredients().add(add);
+        showIngredients();
+        ingredientTextClear();
+    }
+
+    /**
+     * Delete ingredient.
+     *
+     * @param event the event
+     */
     @FXML
     void deleteIngredient(ActionEvent event) {
+        Ingredient delete = ingredientTable.getSelectionModel().getSelectedItem();
 
+        for (int i = 0; i < recipe.getIngredients().size(); i++) {
+            if (delete == recipe.getIngredients().get(i)) {
+                recipe.getIngredients().remove(i);
+            }
+        }
+        showIngredients();
+        ingredientTextClear();
     }
 
+    /**
+     * Modify ingredient.
+     *
+     * @param event the event
+     */
+    @FXML
+    void modifyIngredient(ActionEvent event) {
+        Ingredient modify = new Ingredient(ingredientNameArea.getText(),Double.parseDouble(quantityArea.getText()),unitArea.getText(),descriptionArea.getText());
+        Ingredient before = ingredientTable.getSelectionModel().getSelectedItem();
+        for (int i = 0; i < recipe.getIngredients().size(); i++){
+            if(before == recipe.getIngredients().get(i)){
+                recipe.getIngredients().set(i,modify);
+            }
+        }
+        showIngredients();
+        ingredientTextClear();
+    }
+
+    /**
+     * Display ingredient.
+     *
+     * @param event the event
+     */
+    @FXML
+    void displayIngredient(MouseEvent event) {
+        Ingredient ingredient = ingredientTable.getSelectionModel().getSelectedItem();
+        quantityArea.setText(String.valueOf(ingredient.getQuantity()));
+        unitArea.setText(ingredient.getUnit());
+        ingredientNameArea.setText(ingredient.getIngredientName());
+        descriptionArea.setText(ingredient.getDescription());
+    }
+
+    private void ingredientTextClear() {
+        quantityArea.clear();
+        unitArea.clear();
+        ingredientNameArea.clear();
+        descriptionArea.clear();
+    }
+
+    /**
+     * Add preparation.
+     *
+     * @param event the event
+     */
+    @FXML
+    void addPreparation(ActionEvent event) {
+        String add = prepTextArea.getText();
+
+        recipe.getPreparationStep().add(add);
+        showPreparations();
+        prepTextArea.clear();
+    }
+
+    /**
+     * Delete preparation.
+     *
+     * @param event the event
+     */
     @FXML
     void deletePreparation(ActionEvent event) {
+        String delete = preparationList.getSelectionModel().getSelectedItem();
 
+        for (int i = 0; i < recipe.getPreparationStep().size(); i++){
+            if (delete == recipe.getPreparationStep().get(i)){
+                recipe.getPreparationStep().remove(i);
+            }
+        }
+        showPreparations();
+        prepTextArea.clear();
     }
 
+    /**
+     * Modify preparation steps.
+     *
+     * @param event the event
+     */
+    @FXML
+    void modifyPrepSteps(ActionEvent event) {
+        String modify = preparationList.getSelectionModel().getSelectedItem();;
+
+        for (int i = 0; i < recipe.getPreparationStep().size() ;i++){
+            if (modify.equals(recipe.getPreparationStep().get((i)))){
+                recipe.getPreparationStep().set(i,prepTextArea.getText()) ;
+            }
+        }
+        showPreparations();
+        prepTextArea.clear();
+    }
+
+    /**
+     * Display the preparation steps.
+     */
+    @FXML
+    void displayPrepSteps() {
+        preparationList.getSelectionModel().getSelectedItem();
+        prepTextArea.setText(preparationList.getSelectionModel().getSelectedItem());
+    }
+
+    /**
+     * check the format of serving amount
+     *
+     * @param event the event
+     */
+    @FXML
+    void changeServeAmount(KeyEvent event) {
+        String textContent = serveNumber.getText();
+        String indexString = "[1-9][0-9]*";
+        if (textContent.matches(indexString)){
+            warningText1.setText("");
+        }
+        else {
+            warningText1.setText("must be positive integer !!");
+        }
+    }
+
+    /**
+     * check the format of cooking time
+     *
+     * @param event the event
+     */
+    @FXML
+    void checkCookTimeFormat(KeyEvent event) {
+        String cookingTime = cookTime.getText();
+        String index="[1-9][0-9]*";
+        if(cookingTime.matches(index)){
+            warningText2.setText("");
+        }
+        else{
+            warningText2.setText("must be positive number !!");
+        }
+    }
+
+    /**
+     * check the format of preparation time
+     *
+     * @param event the event
+     */
+    @FXML
+    void checkPrepareTimeFormat(KeyEvent event) {
+        String prepTime = preparationTime.getText();
+        String index="[1-9][0-9]*";
+        if(prepTime.matches(index)){
+            warningText3.setText("");
+        }
+        else{
+            warningText3.setText("must be positive number!!");
+        }
+    }
+
+    /**
+     * Press cancel to quit the Add view.
+     *
+     * @param event the event
+     * @throws IOException the io exception
+     */
     @FXML
     void pressCancel(ActionEvent event) throws IOException {
         Alert backAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -318,59 +511,82 @@ public class AddViewController implements Initializable {
         backAlert.setHeaderText("All change would be lost, are you sure to quit?");
         Optional<ButtonType> result = backAlert.showAndWait();
         if (result.get() == ButtonType.OK){
-            if(source == "view") {
-                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                Alert backAlert2 = new Alert(Alert.AlertType.CONFIRMATION);
-
-                backAlert2.setTitle("Exit");
-                backAlert2.setHeaderText("Quiting the Recipe View?");
-                Optional<ButtonType> result2 = backAlert2.showAndWait();
-                result.get();
-                window.close();
-
-            } else {
-                Parent layout = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(resource)));
-                Scene scene = new Scene(layout);
-
-                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                window.setTitle(sourceTitle);
-                CloseAlert closeAlert = new CloseAlert();
-                window.setOnCloseRequest(windowEvent -> closeAlert.popUp(title, message, window, windowEvent));
-                window.setScene(scene);
-            }
-
+            back(event);
         } else {
             event.consume();
         }
     }
 
+    /**
+     * Save the information of the recipe and return it to the database for editing and adding
+     *
+     * @param event the event
+     * @throws IOException  the io exception
+     * @throws SQLException the sql exception
+     */
     @FXML
-    void pressSave(ActionEvent event) {
-        recipe.setRecipeName(recipeNameText.getText());
-        recipe.setFlavour(flavourText.getText());
-        recipe.setCookTime(Integer.parseInt(cookTime.getText()));
-        recipe.setPrepTime(Integer.parseInt(preparationTime.getText()));
-        recipe.setImagePath(path);
+    void pressSave(ActionEvent event) throws IOException, SQLException {
         Window owner = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
         if (checkRecipeBasic()){
             showAlert(Alert.AlertType.ERROR,owner,"Please fill up the recipe correctly.","Form Error!");
         } else {
+            recipe.setRecipeName(recipeNameText.getText());
+            recipe.setFlavour(flavourText.getText());
+            recipe.setCookTime(Integer.parseInt(cookTime.getText()));
+            recipe.setPrepTime(Integer.parseInt(preparationTime.getText()));
+
             // Check if user selected a image
-            if(file == null){
-                showAlert(Alert.AlertType.ERROR,owner,"Please select an image.","Form Error!");
+            if(saveImage(owner)) {
+                if (edit) {
+                    RecipeDAO.deleteRecipe(recipe.getRecipeID());
+                    RecipeDAO.addRecipe(recipe);
+                    System.out.println(recipe);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("The recipe has been successful modified!！");
+                    alert.show();
+                    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    back(event);
+                } else {
+                    RecipeDAO.addRecipe(recipe);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("The recipe has been successful added!！");
+                    alert.show();
+
+                }
             }
         }
     }
 
+    private void back(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+        Parent root = loader.load();
+        if (source.equals("view")){
+            RecipeViewController controller = loader.getController();
+            controller.addRecipe(recipe);
+        }
+
+        Scene scene = new Scene(root);
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setTitle(sourceTitle);
+        CloseAlert closeAlert = new CloseAlert();
+        window.setOnCloseRequest(windowEvent -> closeAlert.popUp(title, message, window, windowEvent));
+        window.setScene(scene);
+    }
+
+    /**
+     * Check whether all basic textile has been filled.
+     */
     private boolean checkRecipeBasic() {
         return (recipeNameText.getText().isEmpty() || flavourText.getText().isEmpty()||cookTime.getText().isEmpty()
                 || preparationTime.getText().isEmpty() || path.isEmpty());
     }
 
-    public String getSource() {
-        return source;
-    }
-
+    /**
+     * Set the action source.
+     *
+     * @param source the source
+     */
     public void setActionSource(String source){
         this.source = source;
         switch (source){
@@ -379,6 +595,7 @@ public class AddViewController implements Initializable {
                 this.message = "Are you sure to quit the App? ";
                 this.title = "Close Home Page";
                 this.sourceTitle = "Chef's Only";
+                this.edit = false;
                 break;
             }
             case "view":{
@@ -386,6 +603,7 @@ public class AddViewController implements Initializable {
                 this.message = "This would also close the cookbook. Are you sure?";
                 this.title = "Close View Page";
                 this.sourceTitle = "Recipe View Page";
+                this.edit = true;
                 break;
             }
             case "search": {
@@ -393,58 +611,20 @@ public class AddViewController implements Initializable {
                 this.message = "This would also close the cookbook. Are you sure?";
                 this.title = "Close Search Page";
                 this.sourceTitle = "Chef's Only";
+                this.edit = false;
                 break;
             }
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-        ingredientLists = FXCollections.observableArrayList(recipe.getIngredients());
-        preparationStepLists = FXCollections.observableArrayList();
-        for (int i = 0; i < recipe.getPreparationStep() . size();i++){
-            preparationStepLists.add(new PreparationStep(i + 1,recipe.getPreparationStep().get(i)));
-        }
-
-        showIngredients();
-        showPreparations();
-        showRecipeBasic();
-    }
-
-    public void showIngredients(){
-
-        ingredientQuantityCol.setCellValueFactory(new PropertyValueFactory<Ingredient,Double>("Quantity"));
-        ingredientNameCol.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("IngredientName"));
-        ingredientUnitCol.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("Unit"));
-        ingredientDesCol.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("Description"));
-        ingredientTable.setItems(ingredientLists);
-    }
-
-    public void showPreparations(){
-        prepNumCol.setCellValueFactory(new PropertyValueFactory<>("StepNumber"));
-        prepStepCol.setCellValueFactory(new PropertyValueFactory<>("Content"));
-        prepStepTable.setItems(preparationStepLists);
-
-    }
-
-    public void showRecipeBasic(){
-        recipeNameText.setText(recipe.getRecipeName());
-        flavourText.setText(recipe.getFlavour());
-
-        serveNumber.setText(String.valueOf(recipe.getServeNumber()));
-        preparationTime.setText(String.valueOf(recipe.getPrepTime()));
-        cookTime.setText(String.valueOf(recipe.getCookTime()));
-        path = recipe.getImagePath();
-
-        imageView.fitWidthProperty().bind(imagePane.widthProperty());
-        imageView.fitHeightProperty().bind(imagePane.heightProperty());
-        imageView.setImage(new Image(path));
-    }
-
+    /**
+     * Show the alert information.
+     *
+     * @param alertType the alert type
+     * @param owner     the owner
+     * @param message   the message
+     * @param title     the title
+     */
     public static void showAlert(Alert.AlertType alertType, Window owner, String message, String title){
         Alert alert = new Alert(alertType);
         alert.setContentText(message);
@@ -455,6 +635,10 @@ public class AddViewController implements Initializable {
         alert.showAndWait();
     }
 
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+    }
 
 }
 

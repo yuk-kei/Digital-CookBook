@@ -11,8 +11,8 @@ public class Ingredient {
 
     private String ingredientName;
     private double quantity;
-    private String unit = "g";
-    private String description = "";
+    private String unit;
+    private String description ;
 
     public Ingredient(String ingredientName, double quantity, String unit, String description) {
         this.ingredientName = ingredientName;

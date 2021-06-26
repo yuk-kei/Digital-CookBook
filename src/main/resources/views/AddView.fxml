@@ -5,6 +5,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -82,7 +83,7 @@
                            </font>
                         </Label>
                         <Region prefHeight="41.0" prefWidth="24.0" />
-                        <TextField fx:id="serveNumber" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeServeNumber" onInputMethodTextChanged="#changeServeNumber" onKeyPressed="#changeServeNumber" onKeyReleased="#changeServeNumber" onKeyTyped="#changeServeNumber" prefHeight="17.0" prefWidth="36.0">
+                        <TextField fx:id="serveNumber" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeServeAmount" onInputMethodTextChanged="#changeServeAmount" onKeyPressed="#changeServeAmount" onKeyReleased="#changeServeAmount" onKeyTyped="#changeServeAmount" prefHeight="17.0" prefWidth="36.0">
                            <HBox.margin>
                               <Insets left="55.0" right="20.0" />
                            </HBox.margin>
@@ -113,7 +114,7 @@
                               <Font name="Comic Sans MS Bold Italic" size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="preparationTime" minHeight="-Infinity" minWidth="-Infinity" onInputMethodTextChanged="#checkPTFormatted" onKeyPressed="#checkPTFormatted" onKeyReleased="#checkPTFormatted" onKeyTyped="#checkPTFormatted" prefHeight="17.0" prefWidth="36.0">
+                        <TextField fx:id="preparationTime" minHeight="-Infinity" minWidth="-Infinity" onInputMethodTextChanged="#checkPrepareTimeFormat" onKeyPressed="#checkPrepareTimeFormat" onKeyReleased="#checkPrepareTimeFormat" onKeyTyped="#checkPrepareTimeFormat" prefHeight="17.0" prefWidth="36.0">
                            <HBox.margin>
                               <Insets left="50.0" right="20.0" />
                            </HBox.margin>
@@ -141,7 +142,7 @@
                               <Font name="Comic Sans MS Bold Italic" size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="cookTime" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" onInputMethodTextChanged="#checkCTFormatted" onKeyPressed="#checkCTFormatted" onKeyReleased="#checkCTFormatted" onKeyTyped="#checkCTFormatted" prefHeight="18.0" prefWidth="36.0">
+                        <TextField fx:id="cookTime" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" onInputMethodTextChanged="#checkCookTimeFormat" onKeyPressed="#checkCookTimeFormat" onKeyReleased="#checkCookTimeFormat" onKeyTyped="#checkCookTimeFormat" prefHeight="18.0" prefWidth="36.0">
                            <HBox.margin>
                               <Insets left="50.0" right="20.0" />
                            </HBox.margin>
@@ -191,12 +192,12 @@
                      <children>
                         <HBox prefHeight="6.0" prefWidth="240.0">
                            <children>
-                              <TextField fx:id="IngredientNameArea" prefHeight="13.0" prefWidth="240.0" promptText="Ingredinet Name" />
+                              <TextField fx:id="ingredientNameArea" prefHeight="13.0" prefWidth="240.0" promptText="Ingredinet Name" />
                            </children>
                         </HBox>
                         <HBox prefHeight="24.0" prefWidth="240.0">
                            <children>
-                              <TextField fx:id="amountArea" promptText="Amount" />
+                              <TextField fx:id="quantityArea" promptText="Quantity" />
                               <Region prefHeight="24.0" prefWidth="86.0" />
                               <TextField fx:id="unitArea" promptText="Unit" />
                            </children>
@@ -208,8 +209,9 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="25.0" prefWidth="240.0" spacing="50.0">
                            <children>
-                              <Button focusTraversable="false" mnemonicParsing="false" onAction="#addIngredient" styleClass="add-button" text="+" />
-                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#deleteIngredient" prefHeight="23.0" prefWidth="26.0" text="-" />
+                              <Button fx:id="addIngredientButton" focusTraversable="false" mnemonicParsing="false" onAction="#addIngredient" styleClass="add-button" text="+" />
+                              <Button fx:id="deleteIngredientButton" alignment="CENTER" mnemonicParsing="false" onAction="#deleteIngredient" prefHeight="23.0" prefWidth="26.0" text="-" />
+                              <Button fx:id="modifyIngredientButton" mnemonicParsing="false" onAction="#modifyIngredient" text="~" />
                            </children>
                         </HBox>
                      </children>
@@ -219,8 +221,9 @@
                         <TextArea fx:id="prepTextArea" prefHeight="68.0" prefWidth="242.0" promptText="Fill in a step for preperation and then hit the button below to add a step" styleClass="add-content" wrapText="true" VBox.vgrow="ALWAYS" />
                         <HBox alignment="CENTER" prefHeight="34.0" prefWidth="242.0" spacing="50.0">
                            <children>
-                              <Button focusTraversable="false" mnemonicParsing="false" onAction="#addPreparation" styleClass="add-button" text="+" />
-                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#deletePreparation" prefHeight="23.0" prefWidth="26.0" text="-" />
+                              <Button fx:id="addPrepButton" focusTraversable="false" mnemonicParsing="false" onAction="#addPreparation" styleClass="add-button" text="+" />
+                              <Button fx:id="deletePrepButton" alignment="CENTER" mnemonicParsing="false" onAction="#deletePreparation" prefHeight="23.0" prefWidth="26.0" text="-" />
+                              <Button fx:id="modifyPrepStepsButton" mnemonicParsing="false" onAction="#modifyPrepSteps" text="~" />
                            </children>
                         </HBox>
                      </children>
@@ -262,12 +265,7 @@
                      <content>
                         <VBox fx:id="prepSteps" prefHeight="600.0" prefWidth="1000.0">
                            <children>
-                              <TableView fx:id="prepStepTable" prefHeight="600.0" prefWidth="200.0">
-                                <columns>
-                                  <TableColumn fx:id="prepNumCol" prefWidth="32.79992789030075" text="NO." />
-                                  <TableColumn fx:id="prepStepCol" prefWidth="360.0" text="Preparation Steps" />
-                                </columns>
-                              </TableView>
+                              <ListView fx:id="preparationList" onMouseClicked="#displayPrepSteps" prefHeight="300.0" prefWidth="600.0" />
                            </children></VBox>
                      </content>
                   </ScrollPane>
@@ -302,7 +300,7 @@
                      <content>
                         <VBox fx:id="ingredients" prefHeight="800.0" prefWidth="1000.0">
                            <children>
-                              <TableView fx:id="ingredientTable" prefHeight="800.0" prefWidth="1000.0">
+                              <TableView fx:id="ingredientTable" onMouseClicked="#displayIngredient" prefHeight="800.0" prefWidth="1000.0">
                                 <columns>
                                     <TableColumn fx:id="ingredientNameCol" prefWidth="128.0" text="Name" />
                                   <TableColumn fx:id="ingredientQuantityCol" prefWidth="44.79998779296875" text="Qutity" />

@@ -30,7 +30,7 @@ public class CloseAlert {
 	}
 
 	/**
-	 * generate an alert window with handle functions of the buttons set automatically
+	 * Generate an alert window with handle functions of the buttons set automatically
 	 * @param title the title of the alert window
 	 * @param message the message that this alert window wants to present
 	 */

@@ -22,11 +22,19 @@ import java.util.ResourceBundle;
 
 /**
  * The controller for the home page.
+ *
  */
 public class HomeViewController implements Initializable {
+
     public static final int WIDTH = 600;
     public static final int HEIGHT = 400;
 
+    /**
+     * Open the Search page.
+     *
+     * @param event the event
+     * @throws IOException the io exception
+     */
     public void searchButtonClicked(ActionEvent event) throws IOException {
 
         Parent layout = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/SearchView.fxml")));
@@ -40,6 +48,12 @@ public class HomeViewController implements Initializable {
     }
 
 
+    /**
+     * Open the Add Recipe page.
+     *
+     * @param event the event
+     * @throws IOException the io exception
+     */
     public void addButtonClicked(ActionEvent event) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AddView.fxml"));
@@ -56,6 +70,11 @@ public class HomeViewController implements Initializable {
 
     }
 
+    /**
+     * Exit the application.
+     *
+     * @param event the event
+     */
     public void exitButtonClicked(ActionEvent event) {
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -75,14 +94,13 @@ public class HomeViewController implements Initializable {
     }
 
     /**
-     * This is just a pure static window so no need to mess around
-     * with controllers.
+     * This is just a pure static window, no need to mess around with controllers.
+     *
+     * @throws Exception the exception
      */
     public void helpButtonClicked() throws Exception{
         Main.changeScreen("help");
     }
-
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

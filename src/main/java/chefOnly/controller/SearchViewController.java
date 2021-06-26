@@ -1,13 +1,10 @@
 package chefOnly.controller;
 
-import chefOnly.Main;
 import chefOnly.model.Recipe;
 import chefOnly.utils.RecipeDAO;
 import chefOnly.view.CloseAlert;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,22 +13,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * The controller for the Search page.
+ *
+ */
 public class SearchViewController implements Initializable {
 
     @FXML
@@ -78,50 +74,26 @@ public class SearchViewController implements Initializable {
 
     private List<Recipe> recipes;
 
-    private Scene fxmlFile;
-    private Parent root;
-    private Stage window;
-
-    @FXML
-    void backToMain(MouseEvent event) throws IOException {
-        Parent layout = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/HomeView.fxml")));
-        Scene scene = new Scene(layout);
-
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        CloseAlert closeAlert = new CloseAlert();
-        window.setOnCloseRequest(windowEvent -> closeAlert.popUp("Close Home Page", "Are you sure to quit the App? ", window, windowEvent));
-        window.setScene(scene);
-    }
-
-    @FXML
-    void openAddView(MouseEvent event) throws IOException {
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AddView.fxml"));
-        Parent layout = loader.load();
-        AddViewController controller = loader.getController();
-        controller.setActionSource("search");
-
-        Scene scene = new Scene(layout);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("Recipe Add Page");
-        CloseAlert closeAlert = new CloseAlert();
-        window.setOnCloseRequest(windowEvent -> closeAlert.popUp("Close the Search Page", "All changes would be lost, are you sure to continue?", window, windowEvent));
-        window.setScene(scene);
-
-    }
-
+    /**
+     * Show the search result.
+     *
+     */
     @FXML
     void showSearchResult() {
         String recipeName = "%" + searchField.getText() + "%";
         recipes = RecipeDAO.findRecipe(recipeName);
         if (byFlavour.isSelected()){
             flavourFilter();
-        } if (byTime.isSelected()){
+        }
+        if (byTime.isSelected()){
             timeFilter();
         }
         showTable(recipes);
     }
 
+    /**
+     * Select the recipes by its flavour.
+     */
     private void flavourFilter() {
         try {
             if (!flavourCB.getSelectionModel().getSelectedItem().isEmpty()) {
@@ -139,6 +111,9 @@ public class SearchViewController implements Initializable {
         }
     }
 
+    /**
+     * Select the recipes by time.
+     */
     private void timeFilter() {
         try {
             String timeString = cookTimeText.getText();
@@ -166,13 +141,58 @@ public class SearchViewController implements Initializable {
         }
     }
 
+    /**
+     * Back to the home page.
+     *
+     * @param event the event
+     * @throws IOException the io exception
+     */
+    @FXML
+    void backToMain(MouseEvent event) throws IOException {
+        Parent layout = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/HomeView.fxml")));
+        Scene scene = new Scene(layout);
+
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        CloseAlert closeAlert = new CloseAlert();
+        window.setOnCloseRequest(windowEvent -> closeAlert.popUp("Close Home Page", "Are you sure to quit the App? ", window, windowEvent));
+        window.setScene(scene);
+    }
+
+    /**
+     * Open add Recipe Page.
+     *
+     * @param event the event
+     * @throws IOException the io exception
+     */
+    @FXML
+    void openAddView(MouseEvent event) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AddView.fxml"));
+        Parent layout = loader.load();
+        AddViewController controller = loader.getController();
+        controller.setActionSource("search");
+
+        Scene scene = new Scene(layout);
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setTitle("Recipe Add Page");
+        CloseAlert closeAlert = new CloseAlert();
+        window.setOnCloseRequest(windowEvent -> closeAlert.popUp("Close the Search Page", "All changes would be lost, are you sure to continue?", window, windowEvent));
+        window.setScene(scene);
+
+    }
+
+    /**
+     * Open the View recipe page by double click the selected recipe.
+     *
+     * @param event the event
+     */
     @FXML
     void viewRecipeDetails(MouseEvent event) {
         if (recipeTable.getSelectionModel().selectedItemProperty() != null){
             if (event.getClickCount() == 2) {
                 Recipe clickedRecipe = recipeTable.getSelectionModel().getSelectedItem();
                 try {
-                    openModelWindow("/views/RecipeView.fxml","Recipe View Page",clickedRecipe);
+                    openViewPage(clickedRecipe,event);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -181,27 +201,39 @@ public class SearchViewController implements Initializable {
 
     }
 
-    private void openModelWindow(String resource, String title, Recipe recipe) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
-        root = loader.load();
-
+    /**
+     * Open the recipe view page.
+     */
+    private void openViewPage(Recipe recipe, MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RecipeView.fxml"));
+        Parent root = loader.load();
         RecipeViewController controller = loader.getController();
         controller.addRecipe(recipe);
-        fxmlFile = new Scene(root);
-        window = new Stage();
-        window.setScene(fxmlFile);
-        window.initModality(Modality.APPLICATION_MODAL);
 
-        //window.setAlwaysOnTop(true);
-        window.setIconified(false);
-        // window.initStyle(StageStyle.UNDECORATED);
-        window.setTitle(title);
+        Scene scene = new Scene(root);
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setTitle("Recipe View Page");
         CloseAlert closeAlert = new CloseAlert();
         window.setOnCloseRequest(windowEvent -> closeAlert.popUp("Close View Page", "This would also close the cookbook. Are you sure?", window, windowEvent));
-        window.showAndWait();
+        window.setScene(scene);
     }
 
+    /**
+     * Initialize the search page by storing all recipes in the list.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
+        recipes = RecipeDAO.recipeList();
+        showTable(recipes);
+        setFlavour();
+    }
+
+    /**
+     * Show the recipes on result table.
+     *
+     * @param recipes the recipes
+     */
     public void showTable(List<Recipe> recipes){
         ObservableList<Recipe> list = FXCollections.observableArrayList(recipes);
         recipeNameCol.setCellValueFactory(new PropertyValueFactory<Recipe,Integer>("recipeName"));
@@ -210,14 +242,9 @@ public class SearchViewController implements Initializable {
         recipeTable.setItems(list);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        RecipeDAO.getRecipeList();
-        recipes = RecipeDAO.recipeList();
-        showTable(recipes);
-        setFlavour();
-    }
-
+    /**
+     * Initiate teh flavour choice box.
+     */
     private void setFlavour() {
         ObservableList<String> flavourLists = FXCollections.observableArrayList();
         flavourLists.add("sweet");

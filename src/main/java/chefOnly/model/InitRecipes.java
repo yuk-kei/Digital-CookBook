@@ -1,10 +1,8 @@
 package chefOnly.model;
-
-import javafx.scene.image.Image;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
+/**
+ * Loading all the recipes.
+ *
+ */
 public class InitRecipes {
     public static Recipe insertRecipe_01()  {
         Recipe recipe = new Recipe("Slow cooked Beef Short Ribs", "salty",2, 5, 180);

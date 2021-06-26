@@ -93,9 +93,9 @@
                <children>
                   <VBox minHeight="56.0" prefHeight="69.0" prefWidth="464.0">
                      <children>
-                        <Label styleClass="question-header" text="Why I should use this app?" wrapText="true">
+                        <Label styleClass="question-header" text="What is Chef's Only ?" wrapText="true">
                            <font>
-                              <Font size="12.0" />
+                              <Font name="System Bold Italic" size="12.0" />
                            </font>
                         </Label>
                         <Label>
@@ -103,7 +103,7 @@
                               <Font size="4.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="47.0" prefWidth="464.0" styleClass="question-answer" text="You can use this app as a better way to use recipes while cooking or just as a better recipe book than other methods!" wrapText="true">
+                        <Label prefHeight="35.0" prefWidth="471.0" styleClass="question-answer" text="Have you ever wonder what  to cook each day? Then you should try our Chef's Only! It is a digital cook book which helps you to manage the recipe easily. " wrapText="true">
                            <font>
                               <Font size="12.0" />
                            </font>
@@ -118,9 +118,9 @@
                         <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                      </VBox.margin>
                      <children>
-                        <Label styleClass="question-header" text="How do I write down recipes?" wrapText="true">
+                        <Label styleClass="question-header" text="How can I search the recipes?" wrapText="true">
                            <font>
-                              <Font size="12.0" />
+                              <Font name="System Bold Italic" size="12.0" />
                            </font>
                         </Label>
                         <Label>
@@ -128,7 +128,7 @@
                               <Font size="4.0" />
                            </font>
                         </Label>
-                        <Label styleClass="question-answer" text="Click on the &quot;Create a Recipe&quot; button in the home window to open the window to create recipes. Add steps and ingredients by adding them to the empty boxes and pushing the buttons below to add them to your recipe. You can name your recipe when you save or try to leave the window without saving beforehand. " wrapText="true">
+                        <Label prefHeight="74.0" prefWidth="464.0" styleClass="question-answer" text="You can click on the &quot;Search Recipe&quot; button at the home window to open the search window. Fill in the key words in searh bar and press the search buttin. You can eable the flavour filter and time filter by simply clicking if you need. Then, the result would be showed in the table below. " wrapText="true">
                            <font>
                               <Font size="12.0" />
                            </font>
@@ -137,9 +137,9 @@
                   </VBox>
                   <VBox minHeight="100.0">
                      <children>
-                        <Label styleClass="question-header" text="How do I work with recipes?" wrapText="true">
+                        <Label styleClass="question-header" text="How can I see the recipes in detail or even modify them ? " wrapText="true">
                            <font>
-                              <Font size="12.0" />
+                              <Font name="System Bold Italic" size="12.0" />
                            </font>
                         </Label>
                         <Label>
@@ -147,7 +147,7 @@
                               <Font size="4.0" />
                            </font>
                         </Label>
-                        <Label styleClass="question-answer" text="You can work with recipes by clicking the &quot;View a Recipe&quot; button. This opens a window to choose which created recipe you want to work with. Afterwards, you can use this widow the way you'd use any old recipe written down on a page. There are some buttons next to the steps and ingredients to help you keep track of what you've already done. " wrapText="true">
+                        <Label styleClass="question-answer" text="You can enter the detail view window by double clicking the recipe you want in the table. In the view window, you can change the serve amount to see how many ingredients you need.  But if you want to modify this recipe, you need to cilick the &quot;edit&quot; button to open the edit window where you can modify all the informations about this recipe.. " wrapText="true">
                            <font>
                               <Font size="12.0" />
                            </font>
@@ -162,9 +162,9 @@
                   </VBox>
                   <VBox minHeight="96.0">
                      <children>
-                        <Label styleClass="question-header" text="There's a problem with this app, what should I do?" wrapText="true">
+                        <Label styleClass="question-header" text="How can I write down recipes?" wrapText="true">
                            <font>
-                              <Font size="12.0" />
+                              <Font name="System Bold Italic" size="12.0" />
                            </font>
                         </Label>
                         <Label>
@@ -172,7 +172,7 @@
                               <Font size="4.0" />
                            </font>
                         </Label>
-                        <Label styleClass="question-answer" text="If you find any problems with recipe Chef's Only, please contact me at ercoulte@sfu.ca and I'd be happy to help fix them for you! Please use screenshots or describe in detail how you saw the error happen and I'll be sure to contact you when I've fixed the problem." wrapText="true">
+                        <Label styleClass="question-answer" text="You can click on the &quot;Add Recipe&quot; button to open the window to add recipes. Fill in the corresponding text field and select a picture of a recipe. For the ingredients and  preparation steps, you need to press the &quot;+&quot; buttons below for each ingredient or steps. Please make sure to press the &quot;save&quot; button." wrapText="true">
                            <font>
                               <Font size="12.0" />
                            </font>

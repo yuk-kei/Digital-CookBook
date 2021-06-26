@@ -7,7 +7,7 @@ import java.util.Objects;
 
 /**
  * Figure out the connection of the database
- * @author
+ *
  */
 public class ConnectionUtil {
 

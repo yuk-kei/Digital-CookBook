@@ -11,13 +11,9 @@ import java.util.List;
 
 /**
  * Methods related to Data base layer.
- * @author
+ *
  */
 public class RecipeDAO {
-
-    private Connection connection = null;
-    private Statement statement = null;
-
 
     /**
      * Insert the recipe into the database
@@ -28,16 +24,11 @@ public class RecipeDAO {
     public static void addRecipe(Recipe recipe) throws SQLException {
 
         String sql = "insert into recipe values(null,?,?,?,?,?,?)";
-        try (Connection c = ConnectionUtil.getConnection();) {
+        try (Connection c = ConnectionUtil.getConnection()) {
             assert c != null;
-            try (PreparedStatement ps = c.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);) {
+            try (PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-                ps.setString(1, recipe.getRecipeName());
-                ps.setInt(2, recipe.getServeNumber());
-                ps.setInt(3, recipe.getPrepTime());
-                ps.setInt(4, recipe.getCookTime());
-                ps.setString(5, recipe.getImagePath());
-                ps.setString(6, recipe.getFlavour());
+                setRecipePreparedStatement(recipe, ps);
                 ps.execute();
 
                 ResultSet rs = ps.getGeneratedKeys();
@@ -64,6 +55,18 @@ public class RecipeDAO {
     }
 
     /**
+     * Setting the preparedStatement for recipe.
+     */
+    private static void setRecipePreparedStatement(Recipe recipe, PreparedStatement ps) throws SQLException {
+        ps.setString(1, recipe.getRecipeName());
+        ps.setInt(2, recipe.getServeNumber());
+        ps.setInt(3, recipe.getPrepTime());
+        ps.setInt(4, recipe.getCookTime());
+        ps.setString(5, recipe.getImagePath());
+        ps.setString(6, recipe.getFlavour());
+    }
+
+    /**
      * Inset ingredients to the database
      *
      * @param recipe the recipe
@@ -71,10 +74,10 @@ public class RecipeDAO {
      */
     private static void addIngredient(Recipe recipe) throws SQLException {
         String sql = "insert into ingredient values(?,?,?,?,?)";
-        for (int i = 0 ;i < recipe.getIngredients().size();i++) {
-            try (Connection c = ConnectionUtil.getConnection();) {
+        for (int i = 0; i < recipe.getIngredients().size(); i++) {
+            try (Connection c = ConnectionUtil.getConnection()) {
                 assert c != null;
-                try (PreparedStatement ps = c.prepareStatement(sql);) {
+                try (PreparedStatement ps = c.prepareStatement(sql)) {
 
                     ps.setInt(1, recipe.getRecipeID());
                     ps.setString(2, recipe.getIngredients().get(i).getIngredientName());
@@ -85,7 +88,7 @@ public class RecipeDAO {
 
                 } catch (SQLException e) {
                     e.printStackTrace();
-                }finally {
+                } finally {
                     if (ConnectionUtil.getConnection() != null) {
                         try {
                             ConnectionUtil.disconnect();
@@ -106,9 +109,9 @@ public class RecipeDAO {
         String sql = "insert into preparationstep values(?,?,?)";
 
         for (int i = 0; i < recipe.getPreparationStep().size(); i++) {
-            try (Connection c = ConnectionUtil.getConnection();) {
+            try (Connection c = ConnectionUtil.getConnection()) {
                 assert c != null;
-                try (PreparedStatement ps = c.prepareStatement(sql);) {
+                try (PreparedStatement ps = c.prepareStatement(sql)) {
 
                     ps.setInt(1, recipe.getRecipeID());
                     ps.setInt(2, i);
@@ -136,9 +139,9 @@ public class RecipeDAO {
      * @param recipe_id the recipe id
      */
     public static void deleteRecipe(Integer recipe_id) {
-        try (Connection c = ConnectionUtil.getConnection();) {
+        try (Connection c = ConnectionUtil.getConnection()) {
             assert c != null;
-            try (Statement s = c.createStatement();) {
+            try (Statement s = c.createStatement()) {
 
                 String sql = "delete from recipe where recipe_id = " + recipe_id;
                 s.execute(sql);
@@ -166,24 +169,14 @@ public class RecipeDAO {
     public static void updateRecipe(Recipe recipe) throws SQLException {
 
         String sql = "update recipe set name = ?, serveamount = ? , preparationtime = ?, cookingTime = ?, imagpath = ?, flavour = ? where recipe_id = ?";
-        try (Connection c = ConnectionUtil.getConnection();) {
+        try (Connection c = ConnectionUtil.getConnection()) {
             assert c != null;
-            try (PreparedStatement ps = c.prepareStatement(sql);) {
+            try (PreparedStatement ps = c.prepareStatement(sql)) {
 
-                ps.setString(1, recipe.getRecipeName());
-                ps.setString(2, recipe.getFlavour());
-                ps.setInt(3, recipe.getServeNumber());
-                ps.setInt(4, recipe.getPrepTime());
-                ps.setInt(5, recipe.getCookTime());
-                ps.setString(6, recipe.getImagePath());
+                setRecipePreparedStatement(recipe, ps);
                 ps.setInt(7, recipe.getRecipeID());
                 ps.execute();
 
-                ResultSet rs = ps.getGeneratedKeys();
-                if (rs.next()) {
-                    int id = rs.getInt(1);
-                    recipe.setRecipeID(id);
-                }
             }
 
         } catch (SQLException e) {
@@ -202,17 +195,20 @@ public class RecipeDAO {
         updatePrepStep(recipe);
     }
 
+    /*
+     * Update preparation steps to the PREPARATION table
+     */
     private static void updatePrepStep(Recipe recipe) throws SQLException {
 
-        String sql = "update preparationstep set step = ?,  description = ? where recipe_id = ?";
+        String sql = "update preparationstep set  description = ? where  step = ? and recipe_id = ?";
 
         for (int i = 0; i < recipe.getPreparationStep().size(); i++) {
-            try (Connection c = ConnectionUtil.getConnection();) {
+            try (Connection c = ConnectionUtil.getConnection()) {
                 assert c != null;
-                try (PreparedStatement ps = c.prepareStatement(sql);) {
+                try (PreparedStatement ps = c.prepareStatement(sql)) {
 
-                    ps.setInt(1, i);
-                    ps.setString(2, recipe.getPreparationStep().get(i));
+                    ps.setString(1, recipe.getPreparationStep().get(i));
+                    ps.setInt(2, i);
                     ps.setInt(3, recipe.getRecipeID());
                     ps.execute();
 
@@ -231,17 +227,20 @@ public class RecipeDAO {
         }
     }
 
+    /*
+     * Update ingredients to the INGREDIENT table
+     */
     private static void updateIngredient(Recipe recipe) throws SQLException {
-        String sql = "update ingredient set name = ?,  quantity = ? , unit  = ? where recipe_id = ?";
-        for (int i = 0 ;i < recipe.getIngredients().size();i++) {
-            try (Connection c = ConnectionUtil.getConnection();) {
+        String sql = "update ingredient set  quantity = ? , unit  = ?, description = ? where name = ? and recipe_id = ?";
+        for (int i = 0; i < recipe.getIngredients().size(); i++) {
+            try (Connection c = ConnectionUtil.getConnection()) {
                 assert c != null;
-                try (PreparedStatement ps = c.prepareStatement(sql);) {
+                try (PreparedStatement ps = c.prepareStatement(sql)) {
 
-                    ps.setString(1, recipe.getIngredients().get(i).getIngredientName());
-                    ps.setDouble(2, recipe.getIngredients().get(i).getQuantity());
-                    ps.setString(3, recipe.getIngredients().get(i).getUnit());
-                    ps.setString(4, recipe.getIngredients().get(i).getDescription());
+                    ps.setDouble(1, recipe.getIngredients().get(i).getQuantity());
+                    ps.setString(2, recipe.getIngredients().get(i).getUnit());
+                    ps.setString(3, recipe.getIngredients().get(i).getDescription());
+                    ps.setString(4, recipe.getIngredients().get(i).getIngredientName());
                     ps.setInt(5, recipe.getRecipeID());
                     ps.execute();
 
@@ -261,43 +260,38 @@ public class RecipeDAO {
     }
 
     /**
-     * Get all recipes from the database
+     * Get all recipes from the database to a list
      *
      * @return the list of all recipes
      */
     public static List<Recipe> recipeList() {
-        return recipeList(0, Short.MAX_VALUE);
-    }
-
-
-    private static List<Recipe> recipeList(int start, int count) {
-        List<Recipe> recipes = new ArrayList<Recipe>();
+        List<Recipe> recipes = new ArrayList<>();
 
         String sql = "select * from recipe order by recipe_id desc limit ?,? ";
         String sql2 = "select * from ingredient where recipe_id = ?";
         String sql3 = "select * from preparationstep where recipe_id = ?";
 
-        try (Connection c = ConnectionUtil.getConnection();) {
+        try (Connection c = ConnectionUtil.getConnection()) {
             assert c != null;
-            try (PreparedStatement ps = c.prepareStatement(sql);) {
+            try (PreparedStatement ps = c.prepareStatement(sql)) {
 
-                ps.setInt(1, start);
-                ps.setInt(2, count);
+                ps.setInt(1, 0);
+                ps.setInt(2, Short.MAX_VALUE);
 
                 ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
-                    Recipe r  = new Recipe();
-                    r.setRecipeID(rs.getInt(1)) ;
-                    r.setRecipeName(rs.getString("name"))  ;
+                    Recipe r = new Recipe();
+                    r.setRecipeID(rs.getInt(1));
+                    r.setRecipeName(rs.getString("name"));
                     r.setServeNumber(rs.getInt(3));
                     r.setPrepTime(rs.getInt(4));
                     r.setCookTime(rs.getInt(5));
                     r.setImagePath(rs.getString(6));
                     r.setFlavour(rs.getString("flavour"));
 
-                    r.setIngredients(loadIngredient(sql2,r.getRecipeID(),c));
-                    r.setPreparationStep(loadPrepStep(sql3, r.getRecipeID(),c));
+                    r.setIngredients(loadIngredient(sql2, r.getRecipeID(), c));
+                    r.setPreparationStep(loadPrepStep(sql3, r.getRecipeID(), c));
 
                     recipes.add(r);
                 }
@@ -316,10 +310,13 @@ public class RecipeDAO {
         return recipes;
     }
 
+    /*
+     * Select the preparation steps corresponding to the recipe.
+     */
     private static ArrayList<String> loadPrepStep(String sql, int id, Connection c) {
         ArrayList<String> prep = new ArrayList<>();
 
-        try (PreparedStatement ps = c.prepareStatement(sql);) {
+        try (PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -328,82 +325,37 @@ public class RecipeDAO {
                 prep.add(rs.getString(3));
             }
 
-        } catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return prep;
     }
 
-    private static ArrayList<Ingredient> loadIngredient(String sql, int id,Connection c) {
+    /*
+     * Select the ingredients corresponding to the recipe.
+     */
+    private static ArrayList<Ingredient> loadIngredient(String sql, int id, Connection c) {
         ArrayList<Ingredient> ingres = new ArrayList<>();
 
-        try (PreparedStatement ps = c.prepareStatement(sql);) {
+        try (PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Ingredient ingre = new Ingredient(rs.getString(2),rs.getDouble(3),rs.getString(4),rs.getString(5));
+                Ingredient ingredient = new Ingredient(rs.getString(2), rs.getDouble(3), rs.getString(4), rs.getString(5));
 
-                ingres.add(ingre);
+                ingres.add(ingredient);
             }
 
-        } catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return ingres;
     }
 
     /**
-     * Gets recipe list.
-     *
-     * @return the recipe list
-     */
-    public static ObservableList<Recipe> getRecipeList() {
-        ObservableList<Recipe> recipes = FXCollections.observableArrayList();
-
-        String sql = "select * from recipe order by recipe_id desc ";
-        String sql2 = "select * from ingredient where recipe_id = ?";
-        String sql3 = "select * from preparationstep where recipe_id = ?";
-
-        try (Connection c = ConnectionUtil.getConnection();) {
-            assert c != null;
-            try (PreparedStatement ps = c.prepareStatement(sql);) {
-
-                ResultSet rs = ps.executeQuery();
-
-                while (rs.next()) {
-                    Recipe r  = new Recipe();
-                    r.setRecipeID(rs.getInt(1)) ;
-                    r.setRecipeName(rs.getString("name"))  ;
-                    r.setServeNumber(rs.getInt(3));
-                    r.setPrepTime(rs.getInt(4));
-                    r.setCookTime(rs.getInt("cookingTime"));
-                    r.setImagePath(rs.getString(6));
-                    r.setFlavour(rs.getString(7));
-
-                    r.setIngredients(loadIngredient(sql2,r.getRecipeID(),c));
-                    r.setPreparationStep(loadPrepStep(sql3, r.getRecipeID(),c));
-
-                    recipes.add(r);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (ConnectionUtil.getConnection() != null) {
-                try {
-                    ConnectionUtil.disconnect();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return recipes;
-    }
-
-    /**
-     * Find recipe observable list.
+     * Find recipe by name to a observable list.
      *
      * @param value the value
      * @return the observable list
@@ -414,24 +366,24 @@ public class RecipeDAO {
         String sql2 = "select * from ingredient where recipe_id = ?";
         String sql3 = "select * from preparationstep where recipe_id = ?";
 
-        try (Connection c = ConnectionUtil.getConnection();) {
+        try (Connection c = ConnectionUtil.getConnection()) {
             assert c != null;
-            try (PreparedStatement ps = c.prepareStatement(sql);) {
+            try (PreparedStatement ps = c.prepareStatement(sql)) {
                 ps.setString(1, value);
                 ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
-                    Recipe r  = new Recipe();
-                    r.setRecipeID(rs.getInt(1)) ;
-                    r.setRecipeName(rs.getString("name"))  ;
+                    Recipe r = new Recipe();
+                    r.setRecipeID(rs.getInt(1));
+                    r.setRecipeName(rs.getString("name"));
                     r.setServeNumber(rs.getInt(3));
                     r.setPrepTime(rs.getInt(4));
                     r.setCookTime(rs.getInt("cookingTime"));
                     r.setImagePath(rs.getString(6));
                     r.setFlavour(rs.getString(7));
 
-                    r.setIngredients(loadIngredient(sql2,r.getRecipeID(),c));
-                    r.setPreparationStep(loadPrepStep(sql3, r.getRecipeID(),c));
+                    r.setIngredients(loadIngredient(sql2, r.getRecipeID(), c));
+                    r.setPreparationStep(loadPrepStep(sql3, r.getRecipeID(), c));
 
                     recipes.add(r);
                 }
@@ -448,38 +400,5 @@ public class RecipeDAO {
             }
         }
         return recipes;
-    }
-
-    private static String searchSQL(String type){
-        switch (type) {
-            case "Name": {
-                return "select * from recipe where name like ?";
-            }
-            case "flavour": {
-                return "select * from recipe where name flavour like = ?";
-            }
-            default:
-                return "select * from recipe order by recipe_id desc";
-        }
-    }
-
-    /**
-     * Connect.
-     *
-     * @throws Exception the exception
-     */
-    public void connect() throws Exception {
-        connection = ConnectionUtil.getConnection();
-
-    }
-
-
-    /**
-     * Close.
-     *
-     * @throws Exception the exception
-     */
-    public void close() throws Exception {
-        ConnectionUtil.disconnect();
     }
 }

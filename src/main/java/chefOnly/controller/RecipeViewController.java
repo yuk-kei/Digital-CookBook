@@ -193,7 +193,9 @@ public class RecipeViewController implements Initializable {
 
         imageView.fitWidthProperty().bind(imagePane.widthProperty());
         imageView.fitHeightProperty().bind(imagePane.heightProperty());
+        System.out.println(recipe.getImagePath());
         imageView.setImage(new Image(recipe.getImagePath()));
+
     }
 
     @Override

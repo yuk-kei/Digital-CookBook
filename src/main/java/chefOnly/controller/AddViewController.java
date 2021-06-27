@@ -151,8 +151,9 @@ public class AddViewController implements Initializable {
     private Image image;
     private boolean edit;
 
-    private final String imagePath =  System.getProperty("user.dir") + "\\src\\main\\resources\\images\\";
-            //this.getClass().getClassLoader().getResource("images") + "/";
+    private final String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\images\\";
+    private String projectPath = System.getProperty("user.dir") +"\\target\\classes\\images\\";
+                    //            this.getClass().getClassLoader().getResource("images") + "/";
     private String path = "default";
 
     /**
@@ -212,7 +213,7 @@ public class AddViewController implements Initializable {
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Select Picture");
-            File chosenPicture = fileChooser.showOpenDialog(null);
+            File chosenPicture = fileChooser.showOpenDialog(null);;
             path = chosenPicture.getPath();
             file = new File(path);
 
@@ -223,11 +224,12 @@ public class AddViewController implements Initializable {
             image = new Image(fileIn = new FileInputStream(chosenPicture), imageView.getFitWidth(), imageView.getFitHeight(), true, true);
             imageView.setImage(image);
             imageView.setVisible(true);
-            path = imagePath + file.getName();
+            path = filePath + file.getName();
+
             fileIn.close();
 
         } catch (NullPointerException | IOException e) {
-            System.out.println("RMC: User doesn't choose a file");
+            System.out.println("User doesn't choose a file");
         }
     }
 
@@ -241,15 +243,16 @@ public class AddViewController implements Initializable {
     public boolean saveImage(Window owner) throws IOException {
         boolean saveState = true;
         if (!path.equals("default")) {
-            if (!checkImageName(path)) {
+            if (!checkImageName(path) && !checkImageName(projectPath + file.getName())) {
                 showAlert(Alert.AlertType.WARNING,owner,"Please change the name and try again!","The name of the image already exists!");
                 saveState = false;
             } else {
                 if (recipe.getImagePath().isEmpty()) {
-                    recipe.setImagePath(path);
+                    recipe.setImagePath("images/" + file.getName());
                 } else {
-                    deleteImage(recipe.getImagePath());
-                    recipe.setImagePath(path);
+                    deleteImage(filePath + recipe.getImagePath().substring(recipe.getImagePath().lastIndexOf("/") + 1));
+                    deleteImage(projectPath + recipe.getImagePath().substring(recipe.getImagePath().lastIndexOf("/") + 1));
+                    recipe.setImagePath("images/" + file.getName());
                     storeImage();
                 }
                 saveState = true;
@@ -268,12 +271,15 @@ public class AddViewController implements Initializable {
     private void storeImage() throws IOException {
         BufferedImage bufferImage;
         File outputImage;
+        File projectOutputImage;
 
         outputImage = new File(path);
+        projectOutputImage = new File(projectPath + file.getName());
         FileOutputStream imageOut = new FileOutputStream(outputImage);
+        FileOutputStream projectOut = new FileOutputStream(projectOutputImage);
         bufferImage = SwingFXUtils.fromFXImage(image, null);
-
         ImageIO.write(bufferImage, file.getName().substring(file.getName().lastIndexOf(".") + 1), imageOut);
+        ImageIO.write(bufferImage, file.getName().substring(file.getName().lastIndexOf(".") + 1), projectOut);
         imageOut.close();
     }
 
@@ -282,7 +288,7 @@ public class AddViewController implements Initializable {
      * @param path the path of image which need to be deleted
      */
     private void deleteImage(String path) {
-        file = new File(path);
+        File file = new File(path);
         Path deletePath = Paths.get(path);
         if (file.exists() && !file.getName().equals("chef.png")) {
             try {
@@ -292,7 +298,7 @@ public class AddViewController implements Initializable {
             }
             // when the user delete the picture, root should be change to a default path, otherwise program will have an exception after save the recipe
             if (!this.file.exists()) {
-                path = imagePath + "chef.jpg";
+                path = filePath + "chef.jpg";
                 file.renameTo(new File(path));
             }
         }
@@ -307,7 +313,8 @@ public class AddViewController implements Initializable {
     public boolean checkImageName(String path){
         //create a file linked to the file chosen by user, if user doesn't choose a file, parameter path will be default value.
         File chosenFile = new File(path);
-        File[] fileList = new File(imagePath).listFiles();
+        File[] fileList = new File(filePath).listFiles();
+
         assert fileList != null;
         for(File f:fileList) {
 
@@ -316,6 +323,7 @@ public class AddViewController implements Initializable {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -544,18 +552,17 @@ public class AddViewController implements Initializable {
                 if (edit) {
                     RecipeDAO.deleteRecipe(recipe.getRecipeID());
                     RecipeDAO.addRecipe(recipe);
-                    System.out.println(recipe);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("The recipe has been successful modified!!");
                     alert.show();
-                    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    System.out.println(recipe.getImagePath());
                     back(event);
                 } else {
                     RecipeDAO.addRecipe(recipe);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("The recipe has been successful added!!");
                     alert.show();
-
+                    back(event);
                 }
             }
         }

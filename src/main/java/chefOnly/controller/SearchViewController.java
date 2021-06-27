@@ -80,7 +80,7 @@ public class SearchViewController implements Initializable {
      */
     @FXML
     void showSearchResult() {
-        String recipeName = "%" + searchField.getText() + "%";
+        String recipeName = "%" + searchField.getText().substring(1) + "%";
         recipes = RecipeDAO.findRecipe(recipeName);
         if (byFlavour.isSelected()){
             flavourFilter();

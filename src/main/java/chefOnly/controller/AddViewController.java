@@ -213,7 +213,7 @@ public class AddViewController implements Initializable {
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Select Picture");
-            File chosenPicture = fileChooser.showOpenDialog(null);;
+            File chosenPicture = fileChooser.showOpenDialog(null);
             path = chosenPicture.getPath();
             file = new File(path);
 
@@ -243,7 +243,7 @@ public class AddViewController implements Initializable {
     public boolean saveImage(Window owner) throws IOException {
         boolean saveState = true;
         if (!path.equals("default")) {
-            if (!checkImageName(path) && !checkImageName(projectPath + file.getName())) {
+            if (checkImageName(path) && checkImageName(projectPath + file.getName())) {
                 showAlert(Alert.AlertType.WARNING,owner,"Please change the name and try again!","The name of the image already exists!");
                 saveState = false;
             } else {
@@ -259,6 +259,7 @@ public class AddViewController implements Initializable {
             }
         } else if (!edit){
             showAlert(Alert.AlertType.ERROR,owner,"Please select an image.","Form Error!");
+            saveState = false;
         }
         return saveState;
     }
@@ -320,11 +321,11 @@ public class AddViewController implements Initializable {
 
             if(f.getName().equals(chosenFile.getName())) {
                 warningText1.setText("Same image name in current directory");
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -522,7 +523,7 @@ public class AddViewController implements Initializable {
         backAlert.setHeaderText("All change would be lost, are you sure to quit?");
         Optional<ButtonType> result = backAlert.showAndWait();
         if (result.get() == ButtonType.OK){
-            back(event);
+            back(event,false);
         } else {
             event.consume();
         }
@@ -543,7 +544,8 @@ public class AddViewController implements Initializable {
             showAlert(Alert.AlertType.ERROR,owner,"Please fill up the recipe correctly.","Form Error!");
         } else {
             recipe.setRecipeName(recipeNameText.getText());
-            recipe.setFlavour(flavourText.getText());
+            recipe.setFlavour(flavourText.getText().toLowerCase());
+            recipe.setServeNumber(Integer.parseInt(serveNumber.getText()));
             recipe.setCookTime(Integer.parseInt(cookTime.getText()));
             recipe.setPrepTime(Integer.parseInt(preparationTime.getText()));
 
@@ -556,24 +558,25 @@ public class AddViewController implements Initializable {
                     alert.setContentText("The recipe has been successful modified!!");
                     alert.show();
                     System.out.println(recipe.getImagePath());
-                    back(event);
                 } else {
                     RecipeDAO.addRecipe(recipe);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("The recipe has been successful added!!");
                     alert.show();
-                    back(event);
                 }
+                back(event, true);
             }
         }
     }
 
-    private void back(ActionEvent event) throws IOException {
+    private void back(ActionEvent event, boolean saveStatus) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Parent root = loader.load();
         if (source.equals("view")){
             RecipeViewController controller = loader.getController();
-            controller.addRecipe(recipe);
+            if (saveStatus){
+                controller.addRecipe(recipe);
+            }
         }
 
         Scene scene = new Scene(root);

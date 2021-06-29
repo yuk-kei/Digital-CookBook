@@ -152,7 +152,7 @@ public class AddViewController implements Initializable {
     private boolean edit;
 
     private final String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\images\\";
-    private String projectPath = System.getProperty("user.dir") +"\\target\\classes\\images\\";
+    private final String projectPath = System.getProperty("user.dir") +"\\target\\classes\\images\\";
                     //            this.getClass().getClassLoader().getResource("images") + "/";
     private String path = "default";
 
@@ -485,10 +485,10 @@ public class AddViewController implements Initializable {
         String cookingTime = cookTime.getText();
         String index="[1-9][0-9]*";
         if(cookingTime.matches(index)){
-            warningText2.setText("");
+            warningText3.setText("");
         }
         else{
-            warningText2.setText("must be positive number !!");
+            warningText3.setText("must be positive number !!");
         }
     }
 
@@ -502,10 +502,10 @@ public class AddViewController implements Initializable {
         String prepTime = preparationTime.getText();
         String index="[1-9][0-9]*";
         if(prepTime.matches(index)){
-            warningText3.setText("");
+            warningText2.setText("");
         }
         else{
-            warningText3.setText("must be positive number!!");
+            warningText2.setText("must be positive number!!");
         }
     }
 

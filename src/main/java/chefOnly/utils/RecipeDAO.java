@@ -25,21 +25,20 @@ public class RecipeDAO {
 
         String sql = "insert into recipe values(null,?,?,?,?,?,?)";
         try (Connection c = ConnectionUtil.getConnection()) {
-            assert c != null;
-            try (PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            assert c != null; // Suggested to do this by IDEA but don't know why.
+            try (PreparedStatement preparedStatement = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-                setRecipePreparedStatement(recipe, ps);
-                ps.execute();
+                setRecipePreparedStatement(recipe, preparedStatement);
+                preparedStatement.execute();
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
 
-                ResultSet rs = ps.getGeneratedKeys();
-                if (rs.next()) {
-                    int id = rs.getInt(1);
+                if (resultSet.next()) {
+                    int id = resultSet.getInt(1);
                     recipe.setRecipeID(id);
                 }
             }
 
         } catch (SQLException e) {
-
             e.printStackTrace();
         } finally {
             if (ConnectionUtil.getConnection() != null) {
@@ -79,7 +78,7 @@ public class RecipeDAO {
         String sql = "insert into ingredient values(?,?,?,?,?)";
         for (int i = 0; i < recipe.getIngredients().size(); i++) {
             try (Connection c = ConnectionUtil.getConnection()) {
-                assert c != null;
+                assert c != null; // Suggested to do this by IDEA but don't know why.
                 try (PreparedStatement preparedStatement = c.prepareStatement(sql)) {
 
                     preparedStatement.setInt(1, recipe.getRecipeID());
@@ -317,7 +316,7 @@ public class RecipeDAO {
      * Select the preparation steps corresponding to the recipe.
      */
     private static ArrayList<String> loadPrepStep(String sql, int id, Connection c) {
-        ArrayList<String> prep = new ArrayList<>();
+        ArrayList<String> preparations = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = c.prepareStatement(sql)) {
 
@@ -325,13 +324,13 @@ public class RecipeDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                prep.add(resultSet.getString(3));
+                preparations.add(resultSet.getString(3));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return prep;
+        return preparations;
     }
 
     /*
@@ -360,10 +359,10 @@ public class RecipeDAO {
     /**
      * Find recipe by name to a observable list.
      *
-     * @param value the value
+     * @param name the recipe name
      * @return the observable list
      */
-    public static ObservableList<Recipe> findRecipe(String value) {
+    public static ObservableList<Recipe> findRecipe(String name) {
         ObservableList<Recipe> recipes = FXCollections.observableArrayList();
         String sql = "select * from recipe where name like ?";
         String sql2 = "select * from ingredient where recipe_id = ?";
@@ -372,7 +371,7 @@ public class RecipeDAO {
         try (Connection c = ConnectionUtil.getConnection()) {
             assert c != null;
             try (PreparedStatement preparedStatement = c.prepareStatement(sql)) {
-                preparedStatement.setString(1, value);
+                preparedStatement.setString(1, name);
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 while (resultSet.next()) {

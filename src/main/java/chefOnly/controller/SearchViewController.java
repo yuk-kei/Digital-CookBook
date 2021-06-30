@@ -1,8 +1,8 @@
 package chefOnly.controller;
 
+import chefOnly.Main;
 import chefOnly.model.Recipe;
 import chefOnly.utils.RecipeDAO;
-import chefOnly.view.CloseAlert;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The controller for the Search page.
@@ -32,12 +33,6 @@ public class SearchViewController implements Initializable {
 
     @FXML
     private TextField searchField;
-
-    @FXML
-    private Button searchButton;
-
-    @FXML
-    private Button backButton;
 
     @FXML
     private TableView<Recipe> recipeTable;
@@ -52,22 +47,19 @@ public class SearchViewController implements Initializable {
     private TableColumn<Recipe, Integer> cookTimeCol;
 
     @FXML
-    private HBox group;
-
-    @FXML
     private RadioButton byFlavour;
 
     @FXML
     private RadioButton byTime;
 
     @FXML
+    private Button detailButton;
+
+    @FXML
     private ChoiceBox<String> flavourCB;
 
     @FXML
     private TextField cookTimeText;
-
-    @FXML
-    private Button addButton;
 
     @FXML
     private Label warningText;
@@ -80,8 +72,9 @@ public class SearchViewController implements Initializable {
      */
     @FXML
     void showSearchResult() {
-        String recipeName = "%" + searchField.getText().substring(1) + "%";
+        String recipeName = "%" + searchField.getText() + "%";
         recipes = RecipeDAO.findRecipe(recipeName);
+        detailButton.setDisable(true);
         if (byFlavour.isSelected()){
             flavourFilter();
         }
@@ -107,7 +100,7 @@ public class SearchViewController implements Initializable {
                 recipes = newRecipes;
             }
         } catch (NullPointerException exception){
-            System.out.println("User didn't select any flavour!");
+            exception.printStackTrace();
         }
     }
 
@@ -116,16 +109,8 @@ public class SearchViewController implements Initializable {
      */
     private void timeFilter() {
         try {
-            String timeString = cookTimeText.getText();
-            int time;
-
-            try {
-                time = Integer.parseInt(timeString);
-            } catch (Exception e) {
-                time = 1;
-            }
-            String indexString = "[1-9][0-9]*";
-            if (timeString.matches(indexString)) {
+            if (isPureDigital(cookTimeText.getText())) {
+                int time = Integer.parseInt(cookTimeText.getText());
                 List<Recipe> newRecipes = new ArrayList<>();
                 for (Recipe recipe: recipes){
                     if (recipe.getCookTime() <= time){
@@ -136,9 +121,25 @@ public class SearchViewController implements Initializable {
             } else {
                 warningText.setText("the cook time must be positive integer !!");
             }
-        } catch (Exception ignored) {
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    /**
+     * check whether the cook time is positive integer.
+     */
+    private boolean isPureDigital(String string) {
+        if (string == null || "".equals(string)){
+            return false;
+        }
+        String regex = "^[1-9]\\d*$";
+        Pattern p;
+        Matcher m;
+        p = Pattern.compile(regex);
+        m = p.matcher(string);
+
+        return m.matches();
     }
 
     /**
@@ -151,17 +152,17 @@ public class SearchViewController implements Initializable {
     void backToMain(MouseEvent event) throws IOException {
         Parent layout = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/HomeView.fxml")));
         Scene scene = new Scene(layout);
-
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        CloseAlert closeAlert = new CloseAlert();
-        window.setOnCloseRequest(windowEvent -> closeAlert.popUp("Close Home Page", "Are you sure to quit the App? ", window, windowEvent));
+
+        window.setTitle("Search Window");
+        window.setOnCloseRequest(windowEvent -> Main.closeWindow(window,windowEvent,"Close the Search Window","This would also close the cookbook. Are you sure?"));
         window.setScene(scene);
     }
 
     /**
      * Open add Recipe Page.
      *
-     * @param event the event
+     * @param event the Mouse event
      * @throws IOException the io exception
      */
     @FXML
@@ -174,32 +175,41 @@ public class SearchViewController implements Initializable {
 
         Scene scene = new Scene(layout);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("Recipe Add Page");
-        CloseAlert closeAlert = new CloseAlert();
-        window.setOnCloseRequest(windowEvent -> closeAlert.popUp("Close the Search Page", "All changes would be lost, are you sure to continue?", window, windowEvent));
-        window.setScene(scene);
 
+        window.setTitle("Recipe Add Window");
+        window.setOnCloseRequest(windowEvent -> Main.closeWindow(window,windowEvent,"Close the Add Window","All changes would be lost, are you sure to continue?"));
+        window.setScene(scene);
     }
 
     /**
-     * Open the View recipe page by double click the selected recipe.
+     * Enable the View recipe Window by selecting recipe.
      *
-     * @param event the event
      */
     @FXML
-    void viewRecipeDetails(MouseEvent event) {
-        if (recipeTable.getSelectionModel().selectedItemProperty() != null){
-            if (event.getClickCount() == 2) {
-                Recipe clickedRecipe = recipeTable.getSelectionModel().getSelectedItem();
-                try {
-                    openViewPage(clickedRecipe,event);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
+    void viewRecipeDetails() {
+        detailButton.setDisable(false);
     }
+
+    /**
+     * Open the detail view of the corresponding recipe
+     *
+     * @param event the Mouse event
+     */
+    @FXML
+    void showDetails(MouseEvent event){
+        try {
+            Recipe clickedRecipe = recipeTable.getSelectionModel().getSelectedItem();
+            openViewPage(clickedRecipe,event);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+//    private void addListenerForTable(){
+//        recipeTable.getSelectionModel().selectedItemProperty().addListener((observableValue,) ->{
+//            detailButton.setDisable(Selection != null);
+//        } );
+//    }
 
     /**
      * Open the recipe view page.
@@ -215,9 +225,10 @@ public class SearchViewController implements Initializable {
 
         Scene scene = new Scene(root);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
         window.setTitle("Recipe View Page");
-        CloseAlert closeAlert = new CloseAlert();
-        window.setOnCloseRequest(windowEvent -> closeAlert.popUp("Close View Page", "This would also close the cookbook. Are you sure?", window, windowEvent));
+        window.setOnCloseRequest(windowEvent -> Main.closeWindow(window,windowEvent,"Close the View Page","This would also close the cookbook. Are you sure?"));
+
         window.setScene(scene);
     }
 
@@ -230,6 +241,7 @@ public class SearchViewController implements Initializable {
         recipes = RecipeDAO.recipeList();
         showTable(recipes);
         setFlavour();
+        detailButton.setDisable(true);
     }
 
     /**

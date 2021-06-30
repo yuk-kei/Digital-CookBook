@@ -1,6 +1,5 @@
 package chefOnly.utils;
 
-import chefOnly.InitRecipes;
 import chefOnly.model.Recipe;
 import javafx.collections.ObservableList;
 import org.junit.jupiter.api.Test;
@@ -21,7 +20,7 @@ class RecipeDAOTest {
 
     @Test
     void testAddRecipe() throws SQLException {
-        RecipeDAO.addRecipe(InitRecipes.insertRecipe_01());
+        RecipeDAO.addRecipe(recipe);
     }
 
     @Test

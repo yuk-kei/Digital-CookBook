@@ -1,9 +1,9 @@
 package chefOnly.controller;
 
+import chefOnly.Main;
 import chefOnly.model.Ingredient;
 import chefOnly.model.Recipe;
 import chefOnly.utils.RecipeDAO;
-import chefOnly.view.CloseAlert;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -18,10 +18,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -37,6 +34,8 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The controller of the Add View Page.
@@ -52,31 +51,22 @@ public class AddViewController implements Initializable {
     private ImageView imageView;
 
     @FXML
-    private Button changeImage;
-
-    @FXML
-    private Label warningText1;
+    private Label warningTextTop;
 
     @FXML
     private TextField serveNumber;
 
     @FXML
-    private Label warningText2;
+    private Label warningTextMiddle;
 
     @FXML
     private TextField preparationTime;
 
     @FXML
-    private Label warningText3;
+    private Label warningTextButtom;
 
     @FXML
     private TextField cookTime;
-
-    @FXML
-    private Button cancelButton;
-
-    @FXML
-    private Button saveButton;
 
     @FXML
     private TextField recipeNameText;
@@ -94,9 +84,6 @@ public class AddViewController implements Initializable {
     private TextField descriptionArea;
 
     @FXML
-    private Button addIngredientButton;
-
-    @FXML
     private Button deleteIngredientButton;
 
     @FXML
@@ -106,9 +93,6 @@ public class AddViewController implements Initializable {
     private TextArea prepTextArea;
 
     @FXML
-    private Button addPrepButton;
-
-    @FXML
     private Button deletePrepButton;
 
     @FXML
@@ -116,12 +100,6 @@ public class AddViewController implements Initializable {
 
     @FXML
     private TextField flavourText;
-
-    @FXML
-    private VBox prepSteps;
-
-    @FXML
-    private VBox ingredients;
 
     @FXML
     private ListView<String> preparationList;
@@ -151,10 +129,21 @@ public class AddViewController implements Initializable {
     private Image image;
     private boolean edit;
 
-    private final String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\images\\";
-    private final String projectPath = System.getProperty("user.dir") +"\\target\\classes\\images\\";
-                    //            this.getClass().getClassLoader().getResource("images") + "/";
-    private String path = "default";
+    private final String resourcePath = System.getProperty("user.dir") + "\\src\\main\\resources\\images\\";
+    private final String compliedPath = System.getProperty("user.dir") +"\\target\\classes\\images\\";
+                                      // URL complied archive path:  this.getClass().getClassLoader().getResource("images") + "/";
+    private String path = "images/chef.png";
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (!edit){
+            recipe = new Recipe();
+            deleteIngredientButton.setDisable(true);
+            modifyIngredientButton.setDisable(true);
+            deletePrepButton.setDisable(true);
+            modifyPrepStepsButton.setDisable(true);
+        }
+    }
 
     /**
      * Sets recipe.
@@ -167,6 +156,46 @@ public class AddViewController implements Initializable {
         showIngredients();
         showPreparations();
         showRecipeBasic();
+
+        deleteIngredientButton.setDisable(false);
+        modifyIngredientButton.setDisable(false);
+        deletePrepButton.setDisable(false);
+        modifyPrepStepsButton.setDisable(false);
+    }
+
+    /**
+     * Set the action source.
+     *
+     * @param source the source
+     */
+    public void setActionSource(String source){
+        this.source = source;
+        switch (source){
+            case "home" : {
+                this.resource = "/views/HomeView.fxml";
+                this.message = "Are you sure to quit the App? ";
+                this.title = "Close Home Page";
+                this.sourceTitle = "Chef's Only";
+                this.edit = false;
+                break;
+            }
+            case "view":{
+                this.resource = "/views/RecipeView.fxml";
+                this.message = "This would also close the cookbook. Are you sure?";
+                this.title = "Close View Page";
+                this.sourceTitle = "Recipe View Page";
+                this.edit = true;
+                break;
+            }
+            case "search": {
+                this.resource = "/views/SearchView.fxml";
+                this.message = "This would also close the cookbook. Are you sure?";
+                this.title = "Close Search Page";
+                this.sourceTitle = "Chef's Only";
+                this.edit = false;
+                break;
+            }
+        }
     }
 
     /**
@@ -212,7 +241,7 @@ public class AddViewController implements Initializable {
     void changePicture() {
         try {
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Select Picture");
+            fileChooser.setTitle("Please select the image of recipe");
             File chosenPicture = fileChooser.showOpenDialog(null);
             path = chosenPicture.getPath();
             file = new File(path);
@@ -224,118 +253,24 @@ public class AddViewController implements Initializable {
             image = new Image(fileIn = new FileInputStream(chosenPicture), imageView.getFitWidth(), imageView.getFitHeight(), true, true);
             imageView.setImage(image);
             imageView.setVisible(true);
-            path = filePath + file.getName();
+            path = resourcePath + file.getName();
 
             fileIn.close();
 
         } catch (NullPointerException | IOException e) {
-            System.out.println("User doesn't choose a file");
+            e.printStackTrace();
         }
-    }
-
-    /**
-     * Check and save the picture selected by the user
-     *
-     * @return the statues of the saving process
-     * @throws IOException the io exception
-     * @param owner the current window
-     */
-    public boolean saveImage(Window owner) throws IOException {
-        boolean saveState = true;
-        if (!path.equals("default")) {
-            if (checkImageName(path) && checkImageName(projectPath + file.getName())) {
-                showAlert(Alert.AlertType.WARNING,owner,"Please change the name and try again!","The name of the image already exists!");
-                saveState = false;
-            } else {
-                if (recipe.getImagePath().isEmpty()) {
-                    recipe.setImagePath("images/" + file.getName());
-                } else {
-                    deleteImage(filePath + recipe.getImagePath().substring(recipe.getImagePath().lastIndexOf("/") + 1));
-                    deleteImage(projectPath + recipe.getImagePath().substring(recipe.getImagePath().lastIndexOf("/") + 1));
-                    recipe.setImagePath("images/" + file.getName());
-                    storeImage();
-                }
-                saveState = true;
-            }
-        } else if (!edit){
-            showAlert(Alert.AlertType.ERROR,owner,"Please select an image.","Form Error!");
-            saveState = false;
-        }
-        return saveState;
-    }
-
-    /**
-     * write the image file to the project image archive.
-     *
-     * @throws IOException the IO exception
-     */
-    private void storeImage() throws IOException {
-        BufferedImage bufferImage;
-        File outputImage;
-        File projectOutputImage;
-
-        outputImage = new File(path);
-        projectOutputImage = new File(projectPath + file.getName());
-        FileOutputStream imageOut = new FileOutputStream(outputImage);
-        FileOutputStream projectOut = new FileOutputStream(projectOutputImage);
-        bufferImage = SwingFXUtils.fromFXImage(image, null);
-        ImageIO.write(bufferImage, file.getName().substring(file.getName().lastIndexOf(".") + 1), imageOut);
-        ImageIO.write(bufferImage, file.getName().substring(file.getName().lastIndexOf(".") + 1), projectOut);
-        imageOut.close();
-    }
-
-    /**
-     * Delete the duplicate image from the archive
-     * @param path the path of image which need to be deleted
-     */
-    private void deleteImage(String path) {
-        File file = new File(path);
-        Path deletePath = Paths.get(path);
-        if (file.exists() && !file.getName().equals("chef.png")) {
-            try {
-                Files.delete(deletePath);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            // when the user delete the picture, root should be change to a default path, otherwise program will have an exception after save the recipe
-            if (!this.file.exists()) {
-                path = filePath + "chef.jpg";
-                file.renameTo(new File(path));
-            }
-        }
-    }
-
-    /**
-     * Check if there is file with the same name in the file system
-     *
-     * @param path the path
-     * @return true : no file with the same name; false: file with the same name already exists
-     */
-    public boolean checkImageName(String path){
-        //create a file linked to the file chosen by user, if user doesn't choose a file, parameter path will be default value.
-        File chosenFile = new File(path);
-        File[] fileList = new File(filePath).listFiles();
-
-        assert fileList != null;
-        for(File f:fileList) {
-
-            if(f.getName().equals(chosenFile.getName())) {
-                warningText1.setText("Same image name in current directory");
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
      * Add ingredient.
      *
-     * @param event the event
      */
     @FXML
-    void addIngredient(ActionEvent event) {
+    void addIngredient() {
         Ingredient add = new Ingredient(ingredientNameArea.getText(),Double.parseDouble(quantityArea.getText()),unitArea.getText(),descriptionArea.getText());
+        deleteIngredientButton.setDisable(false);
+        modifyIngredientButton.setDisable(false);
 
         recipe.getIngredients().add(add);
         showIngredients();
@@ -345,10 +280,9 @@ public class AddViewController implements Initializable {
     /**
      * Delete ingredient.
      *
-     * @param event the event
      */
     @FXML
-    void deleteIngredient(ActionEvent event) {
+    void deleteIngredient() {
         Ingredient delete = ingredientTable.getSelectionModel().getSelectedItem();
 
         for (int i = 0; i < recipe.getIngredients().size(); i++) {
@@ -363,12 +297,12 @@ public class AddViewController implements Initializable {
     /**
      * Modify ingredient.
      *
-     * @param event the event
      */
     @FXML
-    void modifyIngredient(ActionEvent event) {
+    void modifyIngredient() {
         Ingredient modify = new Ingredient(ingredientNameArea.getText(),Double.parseDouble(quantityArea.getText()),unitArea.getText(),descriptionArea.getText());
         Ingredient before = ingredientTable.getSelectionModel().getSelectedItem();
+
         for (int i = 0; i < recipe.getIngredients().size(); i++){
             if(before == recipe.getIngredients().get(i)){
                 recipe.getIngredients().set(i,modify);
@@ -381,10 +315,9 @@ public class AddViewController implements Initializable {
     /**
      * Display ingredient.
      *
-     * @param event the event
      */
     @FXML
-    void displayIngredient(MouseEvent event) {
+    void displayIngredient() {
         Ingredient ingredient = ingredientTable.getSelectionModel().getSelectedItem();
         quantityArea.setText(String.valueOf(ingredient.getQuantity()));
         unitArea.setText(ingredient.getUnit());
@@ -402,11 +335,12 @@ public class AddViewController implements Initializable {
     /**
      * Add preparation.
      *
-     * @param event the event
      */
     @FXML
-    void addPreparation(ActionEvent event) {
+    void addPreparation() {
         String add = prepTextArea.getText();
+        deletePrepButton.setDisable(false);
+        modifyPrepStepsButton.setDisable(false);
 
         recipe.getPreparationStep().add(add);
         showPreparations();
@@ -416,10 +350,9 @@ public class AddViewController implements Initializable {
     /**
      * Delete preparation.
      *
-     * @param event the event
      */
     @FXML
-    void deletePreparation(ActionEvent event) {
+    void deletePreparation() {
         String delete = preparationList.getSelectionModel().getSelectedItem();
 
         for (int i = 0; i < recipe.getPreparationStep().size(); i++){
@@ -434,10 +367,9 @@ public class AddViewController implements Initializable {
     /**
      * Modify preparation steps.
      *
-     * @param event the event
      */
     @FXML
-    void modifyPrepSteps(ActionEvent event) {
+    void modifyPrepSteps() {
         String modify = preparationList.getSelectionModel().getSelectedItem();
 
         for (int i = 0; i < recipe.getPreparationStep().size() ;i++){
@@ -461,52 +393,61 @@ public class AddViewController implements Initializable {
     /**
      * check the format of serving amount
      *
-     * @param event the event
      */
     @FXML
-    void changeServeAmount(KeyEvent event) {
-        String textContent = serveNumber.getText();
-        String indexString = "[1-9][0-9]*";
-        if (textContent.matches(indexString)){
-            warningText1.setText("");
+    void checkServeAmount() {
+
+        if (isPureDigital(serveNumber.getText())){
+            warningTextTop.setText("");
         }
         else {
-            warningText1.setText("must be positive integer !!");
-        }
-    }
-
-    /**
-     * check the format of cooking time
-     *
-     * @param event the event
-     */
-    @FXML
-    void checkCookTimeFormat(KeyEvent event) {
-        String cookingTime = cookTime.getText();
-        String index="[1-9][0-9]*";
-        if(cookingTime.matches(index)){
-            warningText3.setText("");
-        }
-        else{
-            warningText3.setText("must be positive number !!");
+            warningTextTop.setText("must be positive integer !!");
         }
     }
 
     /**
      * check the format of preparation time
      *
-     * @param event the event
      */
     @FXML
-    void checkPrepareTimeFormat(KeyEvent event) {
-        String prepTime = preparationTime.getText();
-        String index="[1-9][0-9]*";
-        if(prepTime.matches(index)){
-            warningText2.setText("");
+    void checkPrepareTimeFormat() {
+
+        if(isPureDigital(preparationTime.getText())){
+            warningTextButtom.setText("");
         }
         else{
-            warningText2.setText("must be positive number!!");
+            warningTextButtom.setText("must be positive number !!");
         }
+    }
+
+    /**
+     * check the format of cooking time
+     *
+     */
+    @FXML
+    void checkCookTimeFormat() {
+
+        if(isPureDigital(cookTime.getText())){
+            warningTextButtom.setText("");
+        }
+        else{
+            warningTextButtom.setText("must be positive number !!");
+        }
+    }
+
+    /**
+     * check whether the serve amount is positive integer.
+     */
+    private boolean isPureDigital(String string) {
+        if (string == null || "".equals(string)){
+            return false;
+        }
+        String regex = "^[1-9]\\d*$";
+        Pattern p;
+        Matcher m;
+        p = Pattern.compile(regex);
+        m = p.matcher(string);
+        return m.matches();
     }
 
     /**
@@ -516,7 +457,7 @@ public class AddViewController implements Initializable {
      * @throws IOException the io exception
      */
     @FXML
-    void pressCancel(ActionEvent event) throws IOException {
+    void cancelButtonClicked(ActionEvent event) throws IOException {
         Alert backAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
         backAlert.setTitle("Exit");
@@ -537,7 +478,7 @@ public class AddViewController implements Initializable {
      * @throws SQLException the sql exception
      */
     @FXML
-    void pressSave(ActionEvent event) throws IOException, SQLException {
+    void saveButtonClicked(ActionEvent event) throws IOException, SQLException {
         Window owner = ((Node) event.getSource()).getScene().getWindow();
 
         if (checkRecipeBasic()){
@@ -550,7 +491,7 @@ public class AddViewController implements Initializable {
             recipe.setPrepTime(Integer.parseInt(preparationTime.getText()));
 
             // Check if user selected a image
-            if(saveImage(owner)) {
+            if(checkAndSaveImage(owner)) {
                 if (edit) {
                     RecipeDAO.deleteRecipe(recipe.getRecipeID());
                     RecipeDAO.addRecipe(recipe);
@@ -572,6 +513,7 @@ public class AddViewController implements Initializable {
     private void back(ActionEvent event, boolean saveStatus) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Parent root = loader.load();
+
         if (source.equals("view")){
             RecipeViewController controller = loader.getController();
             if (saveStatus){
@@ -582,8 +524,7 @@ public class AddViewController implements Initializable {
         Scene scene = new Scene(root);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setTitle(sourceTitle);
-        CloseAlert closeAlert = new CloseAlert();
-        window.setOnCloseRequest(windowEvent -> closeAlert.popUp(title, message, window, windowEvent));
+        window.setOnCloseRequest(windowEvent -> Main.closeWindow(window,windowEvent,title,message));
         window.setScene(scene);
     }
 
@@ -593,42 +534,101 @@ public class AddViewController implements Initializable {
      */
     private boolean checkRecipeBasic() {
         return (recipeNameText.getText().isEmpty() || flavourText.getText().isEmpty()||cookTime.getText().isEmpty()
-                || preparationTime.getText().isEmpty() || path.isEmpty());
+                || preparationTime.getText().isEmpty() || path.isEmpty() || Integer.parseInt(serveNumber.getText()) <= 0 || Integer.parseInt(preparationTime.getText()) <= 0 || Integer.parseInt(cookTime.getText()) <= 0);
     }
 
     /**
-     * Set the action source.
+     * Check and save the picture selected by the user
      *
-     * @param source the source
+     * @return the statues of the saving process
+     * @throws IOException the io exception
+     * @param owner the current window
      */
-    public void setActionSource(String source){
-        this.source = source;
-        switch (source){
-            case "home" : {
-                this.resource = "/views/HomeView.fxml";
-                this.message = "Are you sure to quit the App? ";
-                this.title = "Close Home Page";
-                this.sourceTitle = "Chef's Only";
-                this.edit = false;
-                break;
+    public boolean checkAndSaveImage(Window owner) throws IOException {
+        boolean savable = true;
+        if (!path.equals("images/chef.png")) {
+            if (checkImageName(path) && checkImageName(compliedPath + file.getName())) {
+                showAlert(Alert.AlertType.WARNING,owner,"Please change the name and try again!","The name of the image already exists!");
+                savable = false;
+            } else {
+                if (recipe.getImagePath().isEmpty()) {
+                    recipe.setImagePath("images/" + file.getName());
+                } else {
+                    deleteImage(resourcePath + recipe.getImagePath().substring(recipe.getImagePath().lastIndexOf("/") + 1));
+                    deleteImage(compliedPath + recipe.getImagePath().substring(recipe.getImagePath().lastIndexOf("/") + 1));
+                    recipe.setImagePath("images/" + file.getName());
+                    storeImage();
+                }
+                savable = true;
             }
-            case "view":{
-                this.resource = "/views/RecipeView.fxml";
-                this.message = "This would also close the cookbook. Are you sure?";
-                this.title = "Close View Page";
-                this.sourceTitle = "Recipe View Page";
-                this.edit = true;
-                break;
-            }
-            case "search": {
-                this.resource = "/views/SearchView.fxml";
-                this.message = "This would also close the cookbook. Are you sure?";
-                this.title = "Close Search Page";
-                this.sourceTitle = "Chef's Only";
-                this.edit = false;
-                break;
+        } else if (!edit){
+            showAlert(Alert.AlertType.ERROR,owner,"Please select an image.","Form Error!");
+            savable = false;
+        }
+        return savable;
+    }
+
+    /**
+     * write the image file to the project image archive.
+     *
+     * @throws IOException the IO exception
+     */
+    private void storeImage() throws IOException {
+        BufferedImage bufferImage;
+        File outputImage;
+        File outputToCompliedPathImage;
+
+        outputImage = new File(path);
+        outputToCompliedPathImage = new File(compliedPath + file.getName());
+
+        FileOutputStream imageOut = new FileOutputStream(outputImage);
+        FileOutputStream projectOut = new FileOutputStream(outputToCompliedPathImage);
+
+        bufferImage = SwingFXUtils.fromFXImage(image, null);
+        ImageIO.write(bufferImage, file.getName().substring(file.getName().lastIndexOf(".") + 1), imageOut);
+        ImageIO.write(bufferImage, file.getName().substring(file.getName().lastIndexOf(".") + 1), projectOut);
+        imageOut.close();
+    }
+
+    /**
+     * Delete the duplicate image from the archive
+     * @param path the path of image which need to be deleted
+     */
+    private void deleteImage(String path){
+
+        File file = new File(path);
+        Path deletePath = Paths.get(path);
+        if (file.exists() && !file.getName().equals("chef.png")) {
+            try {
+                Files.delete(deletePath);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+
+    }
+
+    /**
+     * Check if there is file with the same name in the file system
+     *
+     * @param path the path
+     * @return true : no file with the same name; false: file with the same name already exists
+     */
+    public boolean checkImageName(String path){
+
+        File chosenFile = new File(path);
+        File[] fileList = new File(resourcePath).listFiles();
+
+        assert fileList != null;
+        for(File f:fileList) {
+
+            if(f.getName().equals(chosenFile.getName())) {
+                warningTextTop.setText("Save failed, duplicate name in the archive!");
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -649,13 +649,6 @@ public class AddViewController implements Initializable {
         alert.showAndWait();
     }
 
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        if (!edit){
-            recipe = new Recipe();
-        }
-    }
 
 }
 

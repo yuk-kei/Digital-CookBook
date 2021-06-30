@@ -1,11 +1,16 @@
 package chefOnly;
 
-import chefOnly.view.CloseAlert;
+
 import javafx.application.Application;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+
+import java.util.Optional;
 
 /**
  * The entrance of the application.
@@ -19,20 +24,19 @@ public class Main extends Application {
     private static Scene helpScreenScene;
 
     @Override
-    public void start(Stage currentStage) throws Exception {
-        stage = currentStage;
+    public void start(Stage window) throws Exception {
+        stage = window;
 
-        Parent MainScreen = FXMLLoader.load(getClass().getResource("/views/HomeView.fxml"));
-        mainScreenScene = new Scene(MainScreen);
+        Parent homeScreen = FXMLLoader.load(getClass().getResource("/views/HomeView.fxml"));
+        mainScreenScene = new Scene(homeScreen);
 
         Parent HelpScreen = FXMLLoader.load(getClass().getResource("/views/Help.fxml"));
-
         helpScreenScene = new Scene(HelpScreen);
-        CloseAlert closeAlert = new CloseAlert();
-        currentStage.setOnCloseRequest(windowEvent -> closeAlert.popUp("Close Home Page", "Are you sure to quit the App? ", currentStage, windowEvent));
-        currentStage.setTitle("Chef's Only");
-        currentStage.setScene(mainScreenScene);
-        currentStage.show();
+
+        window.setOnCloseRequest(windowEvent -> closeWindow(window,windowEvent,"Close the Application","Are you sure to exit"));
+        window.setTitle("Chef's Only");
+        window.setScene(mainScreenScene);
+        window.show();
     }
 
     /**
@@ -42,7 +46,7 @@ public class Main extends Application {
      */
     public static void changeScreen(String Screen) {
         switch (Screen) {
-            case "MainScreen": {
+            case "home": {
                 stage.setScene(mainScreenScene);
                 break;
             }
@@ -50,6 +54,25 @@ public class Main extends Application {
                 stage.setScene(helpScreenScene);
                 break;
             }
+        }
+    }
+
+    /**
+     * Exit the page.
+     *
+     * @param event the event
+     */
+
+    public static void closeWindow (Stage window, Event event, String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(message);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            window.close();
+        } else {
+            event.consume();
         }
     }
 

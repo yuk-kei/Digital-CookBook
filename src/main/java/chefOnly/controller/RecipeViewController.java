@@ -1,9 +1,8 @@
 package chefOnly.controller;
 
+import chefOnly.Main;
 import chefOnly.model.Recipe;
 import chefOnly.utils.RecipeDAO;
-import chefOnly.view.CloseAlert;
-import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +20,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The controller of the Recipe view page
@@ -47,30 +48,18 @@ public class RecipeViewController implements Initializable {
     private Label cookTimeText;
 
     @FXML
-    private Button modify;
-
-    @FXML
-    private Button delete;
-
-    @FXML
-    private Button back;
-
-    @FXML
     private Label nameLabel;
 
     @FXML
     private Label flavourText;
 
     @FXML
-    private Label preparationStepText;
+    private TextArea preparationStepTextArea;
 
     @FXML
-    private Label ingredientText;
+    private TextArea ingredientTextArea;
 
     private Recipe recipe;
-    private Image image;
-    private StringProperty name;
-
     /**
      * Back to the search page.
      *
@@ -97,26 +86,32 @@ public class RecipeViewController implements Initializable {
     @FXML
     void changeServeNumber() {
         try {
-            String numberContent = serveAmountText.getText();
-            int changeNumber;
-
-            try {
-                changeNumber = Integer.parseInt(numberContent);
-            } catch (Exception e) {
-                changeNumber = 1;
-            }
-            String indexString = "[1-9][0-9]*";
-            if (numberContent.matches(indexString)) {
-                recipe.changeQuantity(changeNumber);
-                ingredientText.setText(recipe.getFormattedIngredients());
+            String serveNumber = serveAmountText.getText();
+            if(isPureDigital(serveNumber)){
+                int newServeNumber = Integer.parseInt(serveNumber);
+                recipe.calculateQuantity(newServeNumber);
+                ingredientTextArea.setText(recipe.getFormattedIngredients());
                 warningText.setText("");
-
             } else {
                 warningText.setText("Serving amount must be positive integer!!");
             }
-        } catch (Exception ignored) {
-
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
+    }
+    /**
+     * check whether the serve amount is positive integer.
+     */
+    private boolean isPureDigital(String string) {
+        if (string == null || "".equals(string)){
+            return false;
+        }
+        String regex = "^[1-9]\\d*$";
+        Pattern p;
+        Matcher m;
+        p = Pattern.compile(regex);
+        m = p.matcher(string);
+        return m.matches();
     }
 
     /**
@@ -127,11 +122,11 @@ public class RecipeViewController implements Initializable {
      */
     @FXML
     void delete(ActionEvent event) throws IOException {
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Alert backAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
+        Alert backAlert = new Alert(Alert.AlertType.CONFIRMATION);
         backAlert.setTitle("Delete");
         backAlert.setHeaderText("Are you sure to delete?");
+
         Optional<ButtonType> result = backAlert.showAndWait();
         if (result.get() == ButtonType.OK){
             RecipeDAO.deleteRecipe(recipe.getRecipeID());
@@ -157,9 +152,9 @@ public class RecipeViewController implements Initializable {
 
         Scene scene = new Scene(layout);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("Recipe Modify Page");
-        CloseAlert closeAlert = new CloseAlert();
-        window.setOnCloseRequest(windowEvent -> closeAlert.popUp("Close View Page", "This would also close the cookbook. Are you sure?", window, windowEvent));
+
+        window.setTitle("Recipe Modify Window");
+        window.setOnCloseRequest(windowEvent -> Main.closeWindow(window,windowEvent,"Close the Modify Window","This would also close the cookbook, all changes would be lost. Are you sure?"));
         window.setScene(scene);
     }
 
@@ -168,8 +163,8 @@ public class RecipeViewController implements Initializable {
         Scene scene = new Scene(layout);
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        CloseAlert closeAlert = new CloseAlert();
-        window.setOnCloseRequest(windowEvent -> closeAlert.popUp("Close the Search Page", "This would also close the cookbook. Are you sure?", window, windowEvent));
+        window.setTitle("Search Window");
+        window.setOnCloseRequest(windowEvent -> Main.closeWindow(window,windowEvent,"Close the Search Window", "This would also close the cookbook. Are you sure?"));
         window.setScene(scene);
     }
 
@@ -184,8 +179,8 @@ public class RecipeViewController implements Initializable {
 
         nameLabel.setText(recipe.getRecipeName());
         flavourText.setText(recipe.getFlavour());
-        ingredientText.setText(recipe.getFormattedIngredients());
-        preparationStepText.setText(recipe.getFormattedPreparationStep());
+        ingredientTextArea.setText(recipe.getFormattedIngredients());
+        preparationStepTextArea.setText(recipe.getFormattedPreparationStep());
 
         serveAmountText.setText(String.valueOf(recipe.getServeNumber()));
         prepTimeText.setText(String.valueOf(recipe.getPrepTime()));
@@ -193,7 +188,6 @@ public class RecipeViewController implements Initializable {
 
         imageView.fitWidthProperty().bind(imagePane.widthProperty());
         imageView.fitHeightProperty().bind(imagePane.heightProperty());
-        System.out.println(recipe.getImagePath());
         imageView.setImage(new Image(recipe.getImagePath()));
 
     }

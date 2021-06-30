@@ -16,7 +16,7 @@ public class Recipe {
     private int serveNumber;
     private int prepTime;
     private int cookTime;
-    private String imagePath = "images/Slow cooked Beef.png";
+    private String imagePath = "images/chef.png";
 
     private ArrayList<Ingredient> ingredients = new ArrayList<>();
 
@@ -111,14 +111,6 @@ public class Recipe {
         return cookTime;
     }
 
-    public void addIngredient(Ingredient ingredient) {
-        this.ingredients.add(ingredient);
-    }
-
-    public void addPreparationStep(String preparation) {
-        this.preparationStep.add(preparation);
-    }
-
     public void setPrepTime(int prepTime) {
         this.prepTime = prepTime;
     }
@@ -129,73 +121,54 @@ public class Recipe {
 
     /**
      * calculate the quantities of the ingredients according to the serving amount
-     * @param serveNum the serving amount
+     * @param serveNumber the serving amount
      */
-    public void changeQuantity(int serveNum) {
-        int currentNum = getServeNumber();
-        for (Ingredient i : ingredients) {
-            i.setQuantity(i.getQuantity() / currentNum * serveNum);
+    public void calculateQuantity(int serveNumber) {
+        int people = getServeNumber();
+        for (Ingredient ingredient : ingredients) {
+            ingredient.setQuantity(ingredient.getQuantity() / people * serveNumber);
         }
-        this.setServeNumber(serveNum);
+        this.setServeNumber(serveNumber);
     }
 
     /**
-     *  Get the formatted ingredients' names
+     *  Get the formatted ingredients information
      * @return formatted string of names of ingredients
      */
     public String getFormattedIngredients() {
-        StringBuilder toStringIngredients = new StringBuilder();
-        for (Ingredient item : ingredients) {
-            String itemReal = item.getIngredientName() +
-                    "   " + item.getQuantity() +
-                    " " + item.getUnit() +
-                    "      " + item.getDescription();
-            toStringIngredients.append(itemReal);
-            toStringIngredients.append("\r\n");
+        StringBuilder formattedIngredients = new StringBuilder();
+        for (Ingredient ingredient : ingredients) {
+            formattedIngredients.append(ingredient.getIngredientName()).append("   ").append(ingredient.getQuantity()).append(" ").append(ingredient.getUnit()).append("      ").append(ingredient.getDescription()).append("\n");
         }
-        return toStringIngredients.toString();
+        return formattedIngredients.toString();
     }
 
     /**
-     * Get the formatted preparation step.
+     * Get the formatted preparation steps.
      * @return formatted string of the preparation steps
      */
     public String getFormattedPreparationStep() {
-        StringBuilder toStringPreparationStep = new StringBuilder();
+        StringBuilder formattedPreparationStep = new StringBuilder();
         for (int i = 0; i < preparationStep.size(); i++) {
-            String item = preparationStep.get(i);
-            int m = i + 1;
-            toStringPreparationStep.append(m).append(": ").append(item);
-            toStringPreparationStep.append("\r\n");
+            formattedPreparationStep.append("Step ").append(i + 1).append(": ").append(preparationStep.get(i)).append("\n");
         }
-        return toStringPreparationStep.toString();
+        return formattedPreparationStep.toString();
     }
 
     /**
-     * Override the toString method to format the Recipe information
+     * Override the toString method to format the Recipe information( for print to test )
      */
     @Override
     public String toString() {
 
         String formattedNameAndFlavour = "Name: " + this.getRecipeName() + "\n" + "Flavour: " + this.getFlavour() + "\n";
         String formattedRecipeID = "Recipe ID: " + this.recipeID + "\n";
-
-        StringBuilder formattedPreparationStep = new StringBuilder("Preparation Steps: \n");
-        for (int i = 0; i < preparationStep.size(); i++) {
-            String str = preparationStep.get(i);
-            formattedPreparationStep.append("Step ").append(i + 1).append(": ").append(str).append("\n");
-        }
-
-        StringBuilder formattedIngredients = new StringBuilder("Ingredients: \n");
-        for (Ingredient ingredient : ingredients) {
-            formattedIngredients.append(ingredient);
-        }
-
         String formattedPreparationTime = "Preparation Time: " + this.prepTime + " min" + "\n";
         String formattedCookingTime = "Cooking Time: " + this.prepTime + "\n";
         String formattedServingPeople = "Serving People:" + this.serveNumber + "\n";
+        String formattedIngredients = "Ingredients: \n" + this.getIngredients() + "\n";
+        String formattedPreparationStep = "Preparation Steps: \n" + this.getFormattedPreparationStep() + "\n";
 
-        return formattedNameAndFlavour + formattedRecipeID + formattedIngredients + formattedPreparationStep + formattedPreparationTime
-                + formattedCookingTime + formattedServingPeople ;
+        return formattedNameAndFlavour + formattedRecipeID + formattedServingPeople + formattedPreparationTime + formattedCookingTime  + formattedIngredients + formattedPreparationStep;
     }
 }

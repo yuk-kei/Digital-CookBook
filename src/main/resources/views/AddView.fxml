@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -26,7 +25,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.282064128256513" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.AddViewController">
+<SplitPane dividerPositions="0.2870741482965931" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.AddViewController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="498.0" prefWidth="239.0" style="-fx-background-color: #FF6347;">
          <children>
@@ -34,7 +33,7 @@
                <children>
                   <Pane fx:id="imagePane" prefHeight="280.0" prefWidth="246.0">
                      <children>
-                        <ImageView fx:id="imageView" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imageView" fitHeight="231.0" fitWidth="238.0" pickOnBounds="true" preserveRatio="true">
                            <viewport>
                               <Rectangle2D />
                            </viewport>
@@ -44,6 +43,9 @@
                            <effect>
                               <InnerShadow />
                            </effect>
+                           <image>
+                              <Image url="@../images/chef.png" />
+                           </image>
                         </ImageView>
                      </children>
                      <VBox.margin>
@@ -61,7 +63,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <Label fx:id="warningText1" alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="216.0" textFill="ALICEBLUE">
+                  <Label fx:id="warningTextTop" alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="216.0" textFill="ALICEBLUE">
                      <VBox.margin>
                         <Insets left="8.0" top="-5.0" />
                      </VBox.margin>
@@ -82,8 +84,12 @@
                               <Font name="Comic Sans MS Bold Italic" size="15.0" />
                            </font>
                         </Label>
-                        <Region prefHeight="41.0" prefWidth="24.0" />
-                        <TextField fx:id="serveNumber" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeServeAmount" onInputMethodTextChanged="#changeServeAmount" onKeyPressed="#changeServeAmount" onKeyReleased="#changeServeAmount" onKeyTyped="#changeServeAmount" prefHeight="17.0" prefWidth="36.0">
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/serve%20amount.png" />
+                           </image>
+                        </ImageView>
+                        <TextField fx:id="serveNumber" minHeight="-Infinity" minWidth="-Infinity" onAction="#checkServeAmount" onInputMethodTextChanged="#checkServeAmount" onKeyPressed="#checkServeAmount" onKeyReleased="#checkServeAmount" onKeyTyped="#checkServeAmount" prefHeight="17.0" prefWidth="36.0">
                            <HBox.margin>
                               <Insets left="55.0" right="20.0" />
                            </HBox.margin>
@@ -93,7 +99,7 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <Label fx:id="warningText2" prefHeight="17.0" prefWidth="225.0" textFill="ALICEBLUE">
+                  <Label fx:id="warningTextMiddle" prefHeight="17.0" prefWidth="225.0" textFill="ALICEBLUE">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -121,7 +127,7 @@
                         </TextField>
                      </children>
                   </HBox>
-                  <Label fx:id="warningText3" prefHeight="17.0" prefWidth="226.0" textFill="ALICEBLUE">
+                  <Label fx:id="warningTextButtom" prefHeight="17.0" prefWidth="226.0" textFill="ALICEBLUE">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -131,7 +137,7 @@
                   </Label>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="123.0" text="Cook Time(min)">
+                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="122.0" text="Cook Time(min)">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
@@ -142,7 +148,7 @@
                               <Font name="Comic Sans MS Bold Italic" size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="cookTime" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" onInputMethodTextChanged="#checkCookTimeFormat" onKeyPressed="#checkCookTimeFormat" onKeyReleased="#checkCookTimeFormat" onKeyTyped="#checkCookTimeFormat" prefHeight="18.0" prefWidth="36.0">
+                        <TextField fx:id="cookTime" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" onInputMethodTextChanged="#checkCookTimeFormat" onKeyPressed="#checkCookTimeFormat" onKeyReleased="#checkCookTimeFormat" onKeyTyped="#checkCookTimeFormat" prefHeight="20.0" prefWidth="34.0">
                            <HBox.margin>
                               <Insets left="50.0" right="20.0" />
                            </HBox.margin>
@@ -152,12 +158,12 @@
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Region prefHeight="41.0" prefWidth="34.0" />
-                        <Button fx:id="cancelButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pressCancel" prefHeight="25.0" prefWidth="55.0" text="Cancel">
+                        <Button fx:id="cancelButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancelButtonClicked" prefHeight="25.0" prefWidth="55.0" text="Cancel">
                            <HBox.margin>
                               <Insets left="20.0" right="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="saveButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pressSave" prefHeight="25.0" prefWidth="55.0" text="Save">
+                        <Button fx:id="saveButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#saveButtonClicked" prefHeight="25.0" prefWidth="55.0" text="Save">
                            <HBox.margin>
                               <Insets right="20.0" />
                            </HBox.margin>
@@ -170,19 +176,30 @@
          </children></AnchorPane>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <top>
-            <HBox alignment="CENTER" prefHeight="75.0" prefWidth="403.0" style="-fx-background-color: #FF6347;" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="75.0" prefWidth="403.0" spacing="10.0" style="-fx-background-color: #FF6347;" BorderPane.alignment="CENTER">
                <children>
-                  <Region prefHeight="75.0" prefWidth="91.0" />
-                  <TextField fx:id="recipeNameText" prefHeight="23.0" prefWidth="282.0" promptText="Recipe's Name" />
-                  <Region layoutX="10.0" layoutY="10.0" prefHeight="75.0" prefWidth="104.0" />
-                  <TextField fx:id="flavourText" prefHeight="23.0" prefWidth="145.0" promptText="flavour" />
+                  <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/recipe%20name.png" />
+                     </image>
+                  </ImageView>
+                  <TextField fx:id="recipeNameText" prefHeight="23.0" prefWidth="279.0" promptText="Recipe's Name" />
+                  <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="29.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/flavour.png" />
+                     </image>
+                  </ImageView>
+                  <TextField fx:id="flavourText" prefHeight="23.0" prefWidth="222.0" promptText="flavour" />
                   <Region prefHeight="75.0" prefWidth="82.0" />
                   <ImageView fitHeight="73.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/images.png" />
+                        <Image url="@../icons/images.png" />
                      </image>
                   </ImageView>
                </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </HBox>
          </top>
          <bottom>
@@ -204,26 +221,68 @@
                         </HBox>
                         <HBox prefHeight="26.0" prefWidth="240.0">
                            <children>
-                              <TextField fx:id="descriptionArea" prefHeight="23.0" prefWidth="241.0" promptText="Description" />
+                              <TextField fx:id="descriptionArea" prefHeight="31.0" prefWidth="240.0" promptText="Description" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="240.0" spacing="50.0">
+                        <HBox alignment="CENTER" prefHeight="18.0" prefWidth="240.0" spacing="50.0">
                            <children>
-                              <Button fx:id="addIngredientButton" focusTraversable="false" mnemonicParsing="false" onAction="#addIngredient" styleClass="add-button" text="+" />
-                              <Button fx:id="deleteIngredientButton" alignment="CENTER" mnemonicParsing="false" onAction="#deleteIngredient" prefHeight="23.0" prefWidth="26.0" text="-" />
-                              <Button fx:id="modifyIngredientButton" mnemonicParsing="false" onAction="#modifyIngredient" text="~" />
+                              <Button fx:id="addIngredientButton" focusTraversable="false" mnemonicParsing="false" onAction="#addIngredient" prefHeight="20.0" prefWidth="25.0" styleClass="add-button">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/Ingredient%20Add.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="deleteIngredientButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#deleteIngredient" prefHeight="20.0" prefWidth="25.0">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/delete%20ingredient.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="modifyIngredientButton" mnemonicParsing="false" onAction="#modifyIngredient" prefHeight="20.0" prefWidth="25.0">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/update.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
                            </children>
                         </HBox>
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="130.0" prefWidth="242.0" spacing="5.0">
                      <children>
-                        <TextArea fx:id="prepTextArea" prefHeight="68.0" prefWidth="242.0" promptText="Fill in a step for preperation and then hit the button below to add a step" styleClass="add-content" wrapText="true" VBox.vgrow="ALWAYS" />
+                        <TextArea fx:id="prepTextArea" prefHeight="68.0" prefWidth="242.0" promptText="Fill in a step for preperation and then hit the button below to add. Please make sure to select a step before you decide to delete or modify a step." styleClass="add-content" wrapText="true" VBox.vgrow="ALWAYS" />
                         <HBox alignment="CENTER" prefHeight="34.0" prefWidth="242.0" spacing="50.0">
                            <children>
-                              <Button fx:id="addPrepButton" focusTraversable="false" mnemonicParsing="false" onAction="#addPreparation" styleClass="add-button" text="+" />
-                              <Button fx:id="deletePrepButton" alignment="CENTER" mnemonicParsing="false" onAction="#deletePreparation" prefHeight="23.0" prefWidth="26.0" text="-" />
-                              <Button fx:id="modifyPrepStepsButton" mnemonicParsing="false" onAction="#modifyPrepSteps" text="~" />
+                              <Button fx:id="addPrepButton" focusTraversable="false" mnemonicParsing="false" onAction="#addPreparation" prefHeight="20.0" prefWidth="25.0" styleClass="add-button">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/Step%20Add.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="deletePrepButton" alignment="CENTER" mnemonicParsing="false" onAction="#deletePreparation" prefHeight="20.0" prefWidth="25.0">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/delete.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="modifyPrepStepsButton" mnemonicParsing="false" onAction="#modifyPrepSteps" prefHeight="20.0" prefWidth="25.0">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/update.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
                            </children>
                         </HBox>
                      </children>
@@ -240,7 +299,7 @@
          <center>
             <VBox prefHeight="322.0" prefWidth="278.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="310.0" style="-fx-background-color: #FF8C00;" text="Preparation Steps">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="120.0" prefWidth="280.0" style="-fx-background-color: #FF8C00;" text="Preparation Steps">
                      <font>
                         <Font name="Comic Sans MS Bold Italic" size="18.0" />
                      </font>
@@ -261,14 +320,7 @@
                         </RadialGradient>
                      </textFill>
                   </Label>
-                  <ScrollPane prefHeight="228.0" prefWidth="308.0">
-                     <content>
-                        <VBox fx:id="prepSteps" prefHeight="600.0" prefWidth="1000.0">
-                           <children>
-                              <ListView fx:id="preparationList" onMouseClicked="#displayPrepSteps" prefHeight="300.0" prefWidth="600.0" />
-                           </children></VBox>
-                     </content>
-                  </ScrollPane>
+                  <ListView fx:id="preparationList" onMouseClicked="#displayPrepSteps" prefHeight="300.0" prefWidth="280.0" />
                </children>
             </VBox>
          </center>
@@ -296,21 +348,14 @@
                         </RadialGradient>
                      </textFill>
                   </Label>
-                  <ScrollPane prefHeight="228.0" prefWidth="254.0">
-                     <content>
-                        <VBox fx:id="ingredients" prefHeight="800.0" prefWidth="1000.0">
-                           <children>
-                              <TableView fx:id="ingredientTable" onMouseClicked="#displayIngredient" prefHeight="800.0" prefWidth="1000.0">
-                                <columns>
-                                    <TableColumn fx:id="ingredientNameCol" prefWidth="128.0" text="Name" />
-                                  <TableColumn fx:id="ingredientQuantityCol" prefWidth="44.79998779296875" text="Qutity" />
-                                  <TableColumn fx:id="ingredientUnitCol" prefWidth="45.5999755859375" text="Unit" />
-                                    <TableColumn fx:id="ingredientDesCol" prefWidth="320.0" text="Description" />
-                                </columns>
-                              </TableView>
-                           </children></VBox>
-                     </content>
-                  </ScrollPane>
+                  <TableView fx:id="ingredientTable" onMouseClicked="#displayIngredient" prefHeight="226.0" prefWidth="290.0">
+                    <columns>
+                        <TableColumn fx:id="ingredientNameCol" prefWidth="128.0" text="Name" />
+                      <TableColumn fx:id="ingredientQuantityCol" prefWidth="44.79998779296875" text="Qutity" />
+                      <TableColumn fx:id="ingredientUnitCol" prefWidth="45.5999755859375" text="Unit" />
+                        <TableColumn fx:id="ingredientDesCol" prefWidth="320.0" text="Description" />
+                    </columns>
+                  </TableView>
                </children>
             </VBox>
          </left>

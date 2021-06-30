@@ -14,9 +14,9 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.HomeViewController">
+<BorderPane prefHeight="450.0" prefWidth="650.0" stylesheets="" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.HomeViewController">
    <left>
-      <AnchorPane prefHeight="400.0" prefWidth="214.0" style="-fx-background-color: #FF6347;" styleClass="side-section">
+      <AnchorPane prefHeight="450.0" prefWidth="218.0" style="-fx-background-color: #FF6347;" styleClass="side-section">
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
@@ -57,7 +57,7 @@
                   </RadialGradient>
                </textFill>
             </Label>
-            <Label fx:id="sub" layoutX="42.0" layoutY="226.0" prefHeight="43.0" prefWidth="129.0" text="KEEP TRACK OF ALL YOUR RECIPES" textAlignment="CENTER" wrapText="true">
+            <Label fx:id="sub" layoutX="42.0" layoutY="226.0" prefHeight="43.0" prefWidth="129.0" text="ONLY FOR CHEF'S PRIVATE RECIPES" textAlignment="CENTER" wrapText="true">
                <textFill>
                   <RadialGradient centerX="0.5088888804117838" centerY="0.5038167720532599" radius="0.5">
                      <stops>
@@ -120,12 +120,12 @@
    <center>
       <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="400.0" fitWidth="387.0" layoutX="1.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="458.0" fitWidth="466.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/diet-brain.jpg" />
                </image>
             </ImageView>
-            <Button layoutX="90.0" layoutY="254.0" mnemonicParsing="false" onAction="#searchButtonClicked" prefHeight="30.0" prefWidth="180.0" styleClass="content-button" text="Search Recipe">
+            <Button layoutX="110.0" layoutY="291.0" mnemonicParsing="false" onAction="#searchButtonClicked" prefHeight="36.0" prefWidth="200.0" styleClass="content-button" text="Search Recipe">
                <font>
                   <Font name="Times New Roman Bold Italic" size="18.0" />
                </font>
@@ -154,7 +154,7 @@
                   </RadialGradient>
                </textFill>
             </Button>
-            <Button layoutX="90.0" layoutY="299.0" mnemonicParsing="false" onAction="#addButtonClicked" prefHeight="30.0" prefWidth="180.0" styleClass="content-button" text="Add Recipe">
+            <Button layoutX="110.0" layoutY="341.0" mnemonicParsing="false" onAction="#addButtonClicked" prefHeight="36.0" prefWidth="200.0" styleClass="content-button" text="Add Recipe">
                <font>
                   <Font name="Times New Roman Bold Italic" size="18.0" />
                </font>
@@ -175,7 +175,7 @@
                   </RadialGradient>
                </textFill>
             </Button>
-            <Button layoutX="90.0" layoutY="345.0" mnemonicParsing="false" onAction="#exitButtonClicked" prefHeight="30.0" prefWidth="180.0" styleClass="content-button" text="Exit">
+            <Button layoutX="110.0" layoutY="392.0" mnemonicParsing="false" onAction="#exitButtonClicked" prefHeight="36.0" prefWidth="200.0" styleClass="content-button" text="Exit">
                <font>
                   <Font name="Times New Roman Bold Italic" size="18.0" />
                </font>

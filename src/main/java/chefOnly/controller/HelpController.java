@@ -9,7 +9,7 @@ import java.io.IOException;
 
 
 /**
- * The controller of help page.
+ * The controller of help window.
  *
  */
 public class HelpController {
@@ -25,7 +25,7 @@ public class HelpController {
      */
     @FXML
     void backToMain(ActionEvent event) throws IOException {
-        Main.changeScreen("MainScreen");
+        Main.changeScreen("home");
     }
 
 }

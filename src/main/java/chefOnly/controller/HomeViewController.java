@@ -1,23 +1,17 @@
 package chefOnly.controller;
 
-
-
 import chefOnly.Main;
-import chefOnly.view.CloseAlert;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -36,15 +30,14 @@ public class HomeViewController implements Initializable {
      * @throws IOException the io exception
      */
     public void searchButtonClicked(ActionEvent event) throws IOException {
-
         Parent layout = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/SearchView.fxml")));
         Scene scene = new Scene(layout);
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        CloseAlert closeAlert = new CloseAlert();
-        window.setOnCloseRequest(windowEvent -> closeAlert.popUp("Close the Search Page", "This would also close the cookbook. Are you sure?", window, windowEvent));
-        window.setScene(scene);
 
+        window.setTitle("Search Window");
+        window.setOnCloseRequest(windowEvent -> Main.closeWindow(window,windowEvent,"Close the Search Window","This would also close the cookbook. Are you sure?"));
+        window.setScene(scene);
     }
 
 
@@ -55,7 +48,6 @@ public class HomeViewController implements Initializable {
      * @throws IOException the io exception
      */
     public void addButtonClicked(ActionEvent event) throws IOException {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AddView.fxml"));
         Parent layout = loader.load();
         AddViewController controller = loader.getController();
@@ -63,9 +55,9 @@ public class HomeViewController implements Initializable {
 
         Scene scene = new Scene(layout);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("Recipe Add Page");
-        CloseAlert closeAlert = new CloseAlert();
-        window.setOnCloseRequest(windowEvent -> closeAlert.popUp("Close the Add Page", "All changes would be lost, are you sure to continue?", window, windowEvent));
+
+        window.setTitle("Recipe Add Window");
+        window.setOnCloseRequest(windowEvent -> Main.closeWindow(window,windowEvent,"Close the Add Window","All changes would be lost, are you sure to continue?"));
         window.setScene(scene);
 
     }
@@ -76,21 +68,8 @@ public class HomeViewController implements Initializable {
      * @param event the event
      */
     public void exitButtonClicked(ActionEvent event) {
-
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
-
-        alert2.setTitle("Exit");
-        alert2.setHeaderText("Are you sure to exit");
-
-        Optional<ButtonType> result = alert2.showAndWait();
-
-        if (result.get() == ButtonType.OK){
-            window.close();
-        } else {
-            event.consume();
-        }
-
+        Main.closeWindow(window,event,"Exit","Are you sure to exit");
     }
 
     /**

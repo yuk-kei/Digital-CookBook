@@ -3,8 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -35,12 +35,19 @@
                      </children>
                   </Pane>
                   <Region VBox.vgrow="ALWAYS" />
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Region prefHeight="41.0" prefWidth="42.0" />
-                        <Label fx:id="flavourText" alignment="BOTTOM_CENTER" prefHeight="31.0" prefWidth="143.0" text="Flavour">
+                        <ImageView fitHeight="29.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../icons/flavour.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="flavourText" alignment="BOTTOM_CENTER" contentDisplay="TOP" prefHeight="26.0" prefWidth="143.0" text="Flavour" textAlignment="CENTER" underline="true">
                            <font>
-                              <Font name="Comic Sans MS Bold Italic" size="18.0" />
+                              <Font name="Comic Sans MS Bold Italic" size="20.0" />
                            </font>
                            <textFill>
                               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
@@ -60,6 +67,9 @@
                            </textFill>
                         </Label>
                      </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                   </HBox>
                   <Label fx:id="warningText" prefHeight="14.0" prefWidth="238.0" textFill="ALICEBLUE">
                      <VBox.margin>
@@ -69,7 +79,7 @@
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="145.0" text="  Serve Amount：">
                            <padding>
@@ -79,7 +89,7 @@
                               <Font name="Comic Sans MS Bold Italic" size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="serveAmountText" alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeServeNumber" onInputMethodTextChanged="#changeServeNumber" onKeyPressed="#changeServeNumber" onKeyReleased="#changeServeNumber" onKeyTyped="#changeServeNumber" prefHeight="26.0" prefWidth="39.0">
+                        <TextField fx:id="serveAmountText" alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeServeNumber" onInputMethodTextChanged="#changeServeNumber" onKeyPressed="#changeServeNumber" onKeyReleased="#changeServeNumber" onKeyTyped="#changeServeNumber" prefHeight="26.0" prefWidth="26.0">
                            <HBox.margin>
                               <Insets left="55.0" right="20.0" />
                            </HBox.margin>
@@ -89,7 +99,7 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="106.0" text="Prep Time:  ">
                            <HBox.margin>
@@ -114,7 +124,7 @@
                         </Text>
                      </children>
                   </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="119.0" text="Cook Time:    ">
                            <HBox.margin>
@@ -155,9 +165,14 @@
          </children></AnchorPane>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <top>
-            <HBox fx:id="recipteNameArea" alignment="CENTER" prefHeight="75.0" prefWidth="403.0" style="-fx-background-color: #FF6347;" BorderPane.alignment="CENTER">
+            <HBox fx:id="recipteNameArea" alignment="CENTER" prefHeight="75.0" prefWidth="403.0" spacing="20.0" style="-fx-background-color: #FF6347;" BorderPane.alignment="CENTER">
                <children>
                   <Region prefHeight="75.0" prefWidth="352.0" />
+                  <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/recipe%20name.png" />
+                     </image>
+                  </ImageView>
                   <Label fx:id="nameLabel" prefHeight="75.0" prefWidth="762.0" text="Recipe's Name">
                      <textFill>
                         <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
@@ -181,7 +196,7 @@
                   </Label>
                   <ImageView fitHeight="73.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/images.png" />
+                        <Image url="@../icons/images.png" />
                      </image>
                   </ImageView>
                </children>
@@ -211,18 +226,11 @@
                         </RadialGradient>
                      </textFill>
                   </Label>
-                  <ScrollPane prefHeight="228.0" prefWidth="308.0">
-                     <content>
-                        <VBox prefHeight="600.0" prefWidth="1200.0">
-                           <children>
-                              <Label fx:id="preparationStepText" alignment="TOP_LEFT" prefHeight="600.0" prefWidth="1200.0" text="Label">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                           </children></VBox>
-                     </content>
-                  </ScrollPane>
+                  <TextArea fx:id="preparationStepTextArea" editable="false" prefHeight="230.0" prefWidth="292.0">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </TextArea>
                </children>
             </VBox>
          </center>
@@ -250,18 +258,10 @@
                         </RadialGradient>
                      </textFill>
                   </Label>
-                  <ScrollPane prefHeight="228.0" prefWidth="267.0">
-                     <content>
-                        <VBox prefHeight="600.0" prefWidth="1000.0">
-                           <children>
-                              <Label fx:id="ingredientText" alignment="TOP_LEFT" prefHeight="600.0" prefWidth="800.0" text="Label">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                           </children></VBox>
-                     </content>
-                  </ScrollPane>
+                  <TextArea fx:id="ingredientTextArea" editable="false" prefHeight="230.0" prefWidth="268.0">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font></TextArea>
                </children>
             </VBox>
          </left>

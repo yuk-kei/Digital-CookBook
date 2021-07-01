@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 /**
  * The model of the MVC structure
  * Storing the data of one single ingredient.
- * @author Yuqi Ho
+ *
  */
 public class Ingredient {
 
@@ -49,10 +49,10 @@ public class Ingredient {
     public String toString() {
 
         String formattedString;
-        formattedString = " " + this.ingredientName + ": " + this.quantity + " " + this.unit;
+        formattedString = this.ingredientName + ":  " + this.quantity + " " + this.unit;
 
-        if(!this.description.equals("None")){
-            formattedString = formattedString + "     Description: " + this.description + "\n";
+        if(!this.description.isEmpty()){
+            formattedString = formattedString + "     Description:  " + this.description + "\n";
         }else{
             formattedString = formattedString + "\n";
         }

@@ -235,7 +235,7 @@
                   </Label>
                   <TextArea fx:id="preparationStepTextArea" editable="false" prefHeight="230.0" prefWidth="292.0">
                      <font>
-                        <Font name="System Bold" size="15.0" />
+                        <Font name="System Bold" size="14.0" />
                      </font>
                   </TextArea>
                </children>
@@ -265,9 +265,9 @@
                         </RadialGradient>
                      </textFill>
                   </Label>
-                  <TextArea fx:id="ingredientTextArea" editable="false" prefHeight="230.0" prefWidth="268.0">
+                  <TextArea fx:id="ingredientTextArea" editable="false" prefHeight="230.0" prefWidth="259.0">
                      <font>
-                        <Font name="System Bold" size="15.0" />
+                        <Font name="System Bold" size="14.0" />
                      </font></TextArea>
                </children>
             </VBox>

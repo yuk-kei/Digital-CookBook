@@ -377,7 +377,7 @@
                         </RadialGradient>
                      </textFill>
                   </Label>
-                  <TableView fx:id="ingredientTable" onMouseClicked="#displayIngredient" prefHeight="226.0" prefWidth="290.0">
+                  <TableView fx:id="ingredientTable" onMouseClicked="#displayIngredient" prefHeight="230.0" prefWidth="290.0">
                     <columns>
                         <TableColumn fx:id="ingredientNameCol" prefWidth="128.0" text="Name" />
                       <TableColumn fx:id="ingredientQuantityCol" prefWidth="44.79998779296875" text="Qutity" />

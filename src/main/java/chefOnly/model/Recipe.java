@@ -132,25 +132,25 @@ public class Recipe {
     }
 
     /**
-     *  Get the formatted ingredients information
+     *  Get the formatted ingredients information. (Easily to be shown in the view Window)
      * @return formatted string of names of ingredients
      */
     public String getFormattedIngredients() {
         StringBuilder formattedIngredients = new StringBuilder();
         for (Ingredient ingredient : ingredients) {
-            formattedIngredients.append(ingredient.getIngredientName()).append("   ").append(ingredient.getQuantity()).append(" ").append(ingredient.getUnit()).append("      ").append(ingredient.getDescription()).append("\n");
+            formattedIngredients.append(ingredient).append("\n");
         }
         return formattedIngredients.toString();
     }
 
     /**
-     * Get the formatted preparation steps.
+     * Get the formatted preparation steps. (Easily to be shown in the view Window)
      * @return formatted string of the preparation steps
      */
     public String getFormattedPreparationStep() {
         StringBuilder formattedPreparationStep = new StringBuilder();
         for (int i = 0; i < preparationStep.size(); i++) {
-            formattedPreparationStep.append("Step ").append(i + 1).append(": ").append(preparationStep.get(i)).append("\n");
+            formattedPreparationStep.append("Step ").append(i + 1).append(":  ").append(preparationStep.get(i)).append("\n").append("\n");
         }
         return formattedPreparationStep.toString();
     }

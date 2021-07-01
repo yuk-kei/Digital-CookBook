@@ -63,7 +63,7 @@ public class AddViewController implements Initializable {
     private TextField preparationTime;
 
     @FXML
-    private Label warningTextButtom;
+    private Label warningTextBottom;
 
     @FXML
     private TextField cookTime;
@@ -102,6 +102,9 @@ public class AddViewController implements Initializable {
     private TextField flavourText;
 
     @FXML
+    private ChoiceBox<String> flavourCB;
+
+    @FXML
     private ListView<String> preparationList;
 
     @FXML
@@ -121,7 +124,8 @@ public class AddViewController implements Initializable {
 
     private String resource;
     private String message;
-    private Recipe recipe;
+    private Recipe newRecipe;
+    private Recipe originalRecipe;
     private String source;
     private String title;
     private String sourceTitle;
@@ -137,12 +141,13 @@ public class AddViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if (!edit){
-            recipe = new Recipe();
+            newRecipe = new Recipe();
             deleteIngredientButton.setDisable(true);
             modifyIngredientButton.setDisable(true);
             deletePrepButton.setDisable(true);
             modifyPrepStepsButton.setDisable(true);
         }
+        setFlavour();
     }
 
     /**
@@ -151,7 +156,8 @@ public class AddViewController implements Initializable {
      * @param recipe the recipe
      */
     public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
+        this.newRecipe = recipe;
+        this.originalRecipe = recipe;
 
         showIngredients();
         showPreparations();
@@ -161,6 +167,23 @@ public class AddViewController implements Initializable {
         modifyIngredientButton.setDisable(false);
         deletePrepButton.setDisable(false);
         modifyPrepStepsButton.setDisable(false);
+    }
+
+    /**
+     * Initiate teh flavour choice box.
+     */
+    private void setFlavour() {
+        String [] flavours = new String[]{"sweet","spicy","salty","sour","bitter"};
+        ObservableList<String> flavourLists = FXCollections.observableArrayList();
+        flavourLists.add("sweet");
+        flavourLists.add("spicy");
+        flavourLists.add("salty");
+        flavourLists.add("sour");
+        flavourLists.add("bitter");
+        for (String str: flavourLists){
+            flavourCB.getItems().add(str);
+        }
+        flavourCB.getSelectionModel().selectedIndexProperty().addListener((observableValue, oldNumber, newNumber) -> flavourText.setText(flavours[newNumber.intValue()]));
     }
 
     /**
@@ -202,7 +225,7 @@ public class AddViewController implements Initializable {
      * Show ingredients.
      */
     public void showIngredients(){
-        ObservableList<Ingredient> ingredientLists = FXCollections.observableArrayList(recipe.getIngredients());
+        ObservableList<Ingredient> ingredientLists = FXCollections.observableArrayList(newRecipe.getIngredients());
         ingredientQuantityCol.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
         ingredientNameCol.setCellValueFactory(new PropertyValueFactory<>("IngredientName"));
         ingredientUnitCol.setCellValueFactory(new PropertyValueFactory<>("Unit"));
@@ -214,7 +237,7 @@ public class AddViewController implements Initializable {
      * Show preparations.
      */
     public void showPreparations(){
-        ObservableList<String> preparations = FXCollections.observableArrayList(recipe.getPreparationStep());
+        ObservableList<String> preparations = FXCollections.observableArrayList(newRecipe.getPreparationStep());
         preparationList.setItems(preparations);
     }
 
@@ -222,16 +245,16 @@ public class AddViewController implements Initializable {
      * Show the basic information of recipe .
      */
     public void showRecipeBasic(){
-        recipeNameText.setText(recipe.getRecipeName());
-        flavourText.setText(recipe.getFlavour());
+        recipeNameText.setText(newRecipe.getRecipeName());
+        flavourText.setText(newRecipe.getFlavour());
 
-        serveNumber.setText(String.valueOf(recipe.getServeNumber()));
-        preparationTime.setText(String.valueOf(recipe.getPrepTime()));
-        cookTime.setText(String.valueOf(recipe.getCookTime()));
+        serveNumber.setText(String.valueOf(newRecipe.getServeNumber()));
+        preparationTime.setText(String.valueOf(newRecipe.getPrepTime()));
+        cookTime.setText(String.valueOf(newRecipe.getCookTime()));
 
         imageView.fitWidthProperty().bind(imagePane.widthProperty());
         imageView.fitHeightProperty().bind(imagePane.heightProperty());
-        imageView.setImage(new Image(recipe.getImagePath()));
+        imageView.setImage(new Image(newRecipe.getImagePath()));
     }
 
     /**
@@ -272,7 +295,7 @@ public class AddViewController implements Initializable {
         deleteIngredientButton.setDisable(false);
         modifyIngredientButton.setDisable(false);
 
-        recipe.getIngredients().add(add);
+        newRecipe.getIngredients().add(add);
         showIngredients();
         ingredientTextClear();
     }
@@ -285,9 +308,9 @@ public class AddViewController implements Initializable {
     void deleteIngredient() {
         Ingredient delete = ingredientTable.getSelectionModel().getSelectedItem();
 
-        for (int i = 0; i < recipe.getIngredients().size(); i++) {
-            if (delete == recipe.getIngredients().get(i)) {
-                recipe.getIngredients().remove(i);
+        for (int i = 0; i < newRecipe.getIngredients().size(); i++) {
+            if (delete == newRecipe.getIngredients().get(i)) {
+                newRecipe.getIngredients().remove(i);
             }
         }
         showIngredients();
@@ -303,9 +326,9 @@ public class AddViewController implements Initializable {
         Ingredient modify = new Ingredient(ingredientNameArea.getText(),Double.parseDouble(quantityArea.getText()),unitArea.getText(),descriptionArea.getText());
         Ingredient before = ingredientTable.getSelectionModel().getSelectedItem();
 
-        for (int i = 0; i < recipe.getIngredients().size(); i++){
-            if(before == recipe.getIngredients().get(i)){
-                recipe.getIngredients().set(i,modify);
+        for (int i = 0; i < newRecipe.getIngredients().size(); i++){
+            if(before == newRecipe.getIngredients().get(i)){
+                newRecipe.getIngredients().set(i,modify);
             }
         }
         showIngredients();
@@ -342,7 +365,7 @@ public class AddViewController implements Initializable {
         deletePrepButton.setDisable(false);
         modifyPrepStepsButton.setDisable(false);
 
-        recipe.getPreparationStep().add(add);
+        newRecipe.getPreparationStep().add(add);
         showPreparations();
         prepTextArea.clear();
     }
@@ -355,9 +378,9 @@ public class AddViewController implements Initializable {
     void deletePreparation() {
         String delete = preparationList.getSelectionModel().getSelectedItem();
 
-        for (int i = 0; i < recipe.getPreparationStep().size(); i++){
-            if (delete.equals(recipe.getPreparationStep().get(i))){
-                recipe.getPreparationStep().remove(i);
+        for (int i = 0; i < newRecipe.getPreparationStep().size(); i++){
+            if (delete.equals(newRecipe.getPreparationStep().get(i))){
+                newRecipe.getPreparationStep().remove(i);
             }
         }
         showPreparations();
@@ -372,9 +395,9 @@ public class AddViewController implements Initializable {
     void modifyPrepSteps() {
         String modify = preparationList.getSelectionModel().getSelectedItem();
 
-        for (int i = 0; i < recipe.getPreparationStep().size() ;i++){
-            if (modify.equals(recipe.getPreparationStep().get((i)))){
-                recipe.getPreparationStep().set(i,prepTextArea.getText()) ;
+        for (int i = 0; i < newRecipe.getPreparationStep().size() ; i++){
+            if (modify.equals(newRecipe.getPreparationStep().get((i)))){
+                newRecipe.getPreparationStep().set(i,prepTextArea.getText()) ;
             }
         }
         showPreparations();
@@ -413,10 +436,10 @@ public class AddViewController implements Initializable {
     void checkPrepareTimeFormat() {
 
         if(isPureDigital(preparationTime.getText())){
-            warningTextButtom.setText("");
+            warningTextMiddle.setText("");
         }
         else{
-            warningTextButtom.setText("must be positive number !!");
+            warningTextMiddle.setText("must be positive number !!");
         }
     }
 
@@ -428,10 +451,10 @@ public class AddViewController implements Initializable {
     void checkCookTimeFormat() {
 
         if(isPureDigital(cookTime.getText())){
-            warningTextButtom.setText("");
+            warningTextBottom.setText("");
         }
         else{
-            warningTextButtom.setText("must be positive number !!");
+            warningTextBottom.setText("must be positive number !!");
         }
     }
 
@@ -484,23 +507,23 @@ public class AddViewController implements Initializable {
         if (checkRecipeBasic()){
             showAlert(Alert.AlertType.ERROR,owner,"Please fill up the recipe correctly.","Form Error!");
         } else {
-            recipe.setRecipeName(recipeNameText.getText());
-            recipe.setFlavour(flavourText.getText().toLowerCase());
-            recipe.setServeNumber(Integer.parseInt(serveNumber.getText()));
-            recipe.setCookTime(Integer.parseInt(cookTime.getText()));
-            recipe.setPrepTime(Integer.parseInt(preparationTime.getText()));
+            newRecipe.setRecipeName(recipeNameText.getText());
+            newRecipe.setFlavour(flavourText.getText().toLowerCase());
+            newRecipe.setServeNumber(Integer.parseInt(serveNumber.getText()));
+            newRecipe.setCookTime(Integer.parseInt(cookTime.getText()));
+            newRecipe.setPrepTime(Integer.parseInt(preparationTime.getText()));
 
             // Check if user selected a image
             if(checkAndSaveImage(owner)) {
                 if (edit) {
-                    RecipeDAO.deleteRecipe(recipe.getRecipeID());
-                    RecipeDAO.addRecipe(recipe);
+                    RecipeDAO.deleteRecipe(newRecipe.getRecipeID());
+                    RecipeDAO.addRecipe(newRecipe);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("The recipe has been successful modified!!");
                     alert.show();
-                    System.out.println(recipe.getImagePath());
+                    System.out.println(newRecipe.getImagePath());
                 } else {
-                    RecipeDAO.addRecipe(recipe);
+                    RecipeDAO.addRecipe(newRecipe);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("The recipe has been successful added!!");
                     alert.show();
@@ -517,7 +540,9 @@ public class AddViewController implements Initializable {
         if (source.equals("view")){
             RecipeViewController controller = loader.getController();
             if (saveStatus){
-                controller.addRecipe(recipe);
+                controller.addRecipe(originalRecipe);
+            }else {
+                controller.addRecipe(newRecipe);
             }
         }
 
@@ -551,12 +576,12 @@ public class AddViewController implements Initializable {
                 showAlert(Alert.AlertType.WARNING,owner,"Please change the name and try again!","The name of the image already exists!");
                 savable = false;
             } else {
-                if (recipe.getImagePath().isEmpty()) {
-                    recipe.setImagePath("images/" + file.getName());
+                if (newRecipe.getImagePath().isEmpty()) {
+                    newRecipe.setImagePath("images/" + file.getName());
                 } else {
-                    deleteImage(resourcePath + recipe.getImagePath().substring(recipe.getImagePath().lastIndexOf("/") + 1));
-                    deleteImage(compliedPath + recipe.getImagePath().substring(recipe.getImagePath().lastIndexOf("/") + 1));
-                    recipe.setImagePath("images/" + file.getName());
+                    deleteImage(resourcePath + newRecipe.getImagePath().substring(newRecipe.getImagePath().lastIndexOf("/") + 1));
+                    deleteImage(compliedPath + newRecipe.getImagePath().substring(newRecipe.getImagePath().lastIndexOf("/") + 1));
+                    newRecipe.setImagePath("images/" + file.getName());
                     storeImage();
                 }
                 savable = true;

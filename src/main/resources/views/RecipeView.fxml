@@ -20,21 +20,20 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<SplitPane dividerPositions="0.31212424849699394" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.RecipeViewController">
+<SplitPane dividerPositions="0.314629258517034" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.RecipeViewController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="498.0" prefWidth="239.0" style="-fx-background-color: #FF6347;">
          <children>
             <VBox prefHeight="498.0" prefWidth="231.0">
                <children>
-                  <Pane fx:id="imagePane" prefHeight="280.0" prefWidth="230.0">
+                  <Pane fx:id="imagePane" prefHeight="280.0" prefWidth="250.0">
                      <VBox.margin>
                         <Insets bottom="5.0" />
                      </VBox.margin>
                      <children>
-                        <ImageView fx:id="imageView" fitHeight="221.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imageView" fitHeight="240.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </Pane>
-                  <Region VBox.vgrow="ALWAYS" />
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <ImageView fitHeight="29.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
@@ -149,28 +148,36 @@
                         </Text>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
                      <children>
-                        <Button fx:id="modify" mnemonicParsing="false" onAction="#modify" prefHeight="23.0" prefWidth="61.0" text="Edit" />
-                        <Region prefHeight="41.0" prefWidth="26.0" />
-                        <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" prefHeight="23.0" prefWidth="61.0" text="Delete" />
+                        <Button fx:id="modify" mnemonicParsing="false" onAction="#modify" prefHeight="23.0" prefWidth="61.0" text="Edit">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font></Button>
+                        <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" prefHeight="23.0" prefWidth="61.0" text="Delete">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="back" mnemonicParsing="false" onAction="#back" prefHeight="23.0" prefWidth="68.0" text="Back" />
+                        <Button fx:id="back" mnemonicParsing="false" onAction="#back" prefHeight="23.0" prefWidth="68.0" text="Back">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font></Button>
                      </children></HBox>
                </children>
             </VBox>
          </children></AnchorPane>
-      <BorderPane prefHeight="200.0" prefWidth="200.0">
+      <BorderPane prefHeight="498.0" prefWidth="532.0">
          <top>
             <HBox fx:id="recipteNameArea" alignment="CENTER" prefHeight="75.0" prefWidth="403.0" spacing="20.0" style="-fx-background-color: #FF6347;" BorderPane.alignment="CENTER">
                <children>
                   <Region prefHeight="75.0" prefWidth="352.0" />
                   <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/recipe%20name.png" />
+                        <Image url="@../icons/recipeName.png" />
                      </image>
                   </ImageView>
                   <Label fx:id="nameLabel" prefHeight="75.0" prefWidth="762.0" text="Recipe's Name">
@@ -266,7 +273,7 @@
             </VBox>
          </left>
          <bottom>
-            <ImageView fitHeight="154.0" fitWidth="533.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <ImageView fitHeight="145.0" fitWidth="569.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                <image>
                   <Image url="@../images/tableView.jpg" />
                </image>

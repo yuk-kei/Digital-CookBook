@@ -14,21 +14,21 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="450.0" prefWidth="650.0" stylesheets="" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.HomeViewController">
+<BorderPane prefHeight="450.0" prefWidth="650.0" stylesheets="" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.HomeViewController">
    <left>
       <AnchorPane prefHeight="450.0" prefWidth="218.0" style="-fx-background-color: #FF6347;" styleClass="side-section">
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
          <children>
-            <ImageView fitHeight="125.0" fitWidth="125.0" layoutX="44.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="125.0" fitWidth="125.0" layoutX="45.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/chef.png" />
                </image>
             </ImageView>
-            <Label fx:id="header" layoutX="27.0" layoutY="176.0" text="Chef's  Only" textAlignment="CENTER" wrapText="true">
+            <Label fx:id="header" layoutX="21.0" layoutY="186.0" text="Chef's  Only" textAlignment="CENTER" wrapText="true">
                <font>
-                  <Font name="MV Boli" size="28.0" />
+                  <Font name="MV Boli" size="30.0" />
                </font>
                <textFill>
                   <RadialGradient centerX="0.5044444190131293" centerY="0.484732766187828" radius="0.5">
@@ -57,7 +57,7 @@
                   </RadialGradient>
                </textFill>
             </Label>
-            <Label fx:id="sub" layoutX="42.0" layoutY="226.0" prefHeight="43.0" prefWidth="129.0" text="ONLY FOR CHEF'S PRIVATE RECIPES" textAlignment="CENTER" wrapText="true">
+            <Label fx:id="sub" layoutX="42.0" layoutY="238.0" prefHeight="43.0" prefWidth="129.0" text="ONLY FOR CHEF'S PRIVATE RECIPES" textAlignment="CENTER" wrapText="true">
                <textFill>
                   <RadialGradient centerX="0.5088888804117838" centerY="0.5038167720532599" radius="0.5">
                      <stops>
@@ -88,9 +88,9 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Button layoutX="57.0" layoutY="305.0" mnemonicParsing="false" onAction="#helpButtonClicked" prefHeight="35.0" prefWidth="99.0" styleClass="help-button" text="Get Help" textAlignment="CENTER">
+            <Button layoutX="57.0" layoutY="350.0" mnemonicParsing="false" onAction="#helpButtonClicked" prefHeight="42.0" prefWidth="100.0" styleClass="help-button" text="Help" textAlignment="CENTER">
                <font>
-                  <Font name="Times New Roman Bold Italic" size="18.0" />
+                  <Font name="Times New Roman Bold Italic" size="21.0" />
                </font>
                <textFill>
                   <RadialGradient centerX="0.5" centerY="0.5076335441065198" radius="0.5">
@@ -125,9 +125,9 @@
                   <Image url="@../images/diet-brain.jpg" />
                </image>
             </ImageView>
-            <Button layoutX="110.0" layoutY="291.0" mnemonicParsing="false" onAction="#searchButtonClicked" prefHeight="36.0" prefWidth="200.0" styleClass="content-button" text="Search Recipe">
+            <Button layoutX="109.0" layoutY="293.0" mnemonicParsing="false" onAction="#searchButtonClicked" prefHeight="40.0" prefWidth="220.0" styleClass="content-button" text="Search Recipe">
                <font>
-                  <Font name="Times New Roman Bold Italic" size="18.0" />
+                  <Font name="Times New Roman Bold Italic" size="20.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
@@ -154,9 +154,9 @@
                   </RadialGradient>
                </textFill>
             </Button>
-            <Button layoutX="110.0" layoutY="341.0" mnemonicParsing="false" onAction="#addButtonClicked" prefHeight="36.0" prefWidth="200.0" styleClass="content-button" text="Add Recipe">
+            <Button layoutX="109.0" layoutY="344.0" mnemonicParsing="false" onAction="#addButtonClicked" prefHeight="40.0" prefWidth="220.0" styleClass="content-button" text="Add Recipe">
                <font>
-                  <Font name="Times New Roman Bold Italic" size="18.0" />
+                  <Font name="Times New Roman Bold Italic" size="20.0" />
                </font>
                <textFill>
                   <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
@@ -175,9 +175,9 @@
                   </RadialGradient>
                </textFill>
             </Button>
-            <Button layoutX="110.0" layoutY="392.0" mnemonicParsing="false" onAction="#exitButtonClicked" prefHeight="36.0" prefWidth="200.0" styleClass="content-button" text="Exit">
+            <Button layoutX="109.0" layoutY="396.0" mnemonicParsing="false" onAction="#exitButtonClicked" prefHeight="40.0" prefWidth="220.0" styleClass="content-button" text="Exit">
                <font>
-                  <Font name="Times New Roman Bold Italic" size="18.0" />
+                  <Font name="Times New Roman Bold Italic" size="20.0" />
                </font>
                <textFill>
                   <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">

@@ -4,6 +4,7 @@
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
@@ -25,7 +26,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.2870741482965931" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.AddViewController">
+<SplitPane dividerPositions="0.2870741482965931" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.AddViewController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="498.0" prefWidth="239.0" style="-fx-background-color: #FF6347;">
          <children>
@@ -52,7 +53,6 @@
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </Pane>
-                  <Region VBox.vgrow="ALWAYS" />
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Region prefHeight="41.0" prefWidth="42.0" />
@@ -60,6 +60,25 @@
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                           <textFill>
+                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                                 <stops>
+                                    <Stop>
+                                       <color>
+                                          <Color red="0.9473684430122375" green="0.017543859779834747" blue="0.017543859779834747" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="1.0">
+                                       <color>
+                                          <Color red="0.021052632480859756" green="1.5594542492181063E-4" blue="1.5594542492181063E-4" />
+                                       </color>
+                                    </Stop>
+                                 </stops>
+                              </RadialGradient>
+                           </textFill>
                         </Button>
                      </children>
                   </HBox>
@@ -71,7 +90,7 @@
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="100.0" text="  Servings">
                            <HBox.margin>
@@ -86,7 +105,7 @@
                         </Label>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/serve%20amount.png" />
+                              <Image url="@../icons/serveAmount.png" />
                            </image>
                         </ImageView>
                         <TextField fx:id="serveNumber" minHeight="-Infinity" minWidth="-Infinity" onAction="#checkServeAmount" onInputMethodTextChanged="#checkServeAmount" onKeyPressed="#checkServeAmount" onKeyReleased="#checkServeAmount" onKeyTyped="#checkServeAmount" prefHeight="17.0" prefWidth="36.0">
@@ -107,7 +126,7 @@
                         <Insets left="8.0" top="-5.0" />
                      </VBox.margin>
                   </Label>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="120.0" text="Prep Time(min)">
                            <HBox.margin>
@@ -127,7 +146,7 @@
                         </TextField>
                      </children>
                   </HBox>
-                  <Label fx:id="warningTextButtom" prefHeight="17.0" prefWidth="226.0" textFill="ALICEBLUE">
+                  <Label fx:id="warningTextBottom" prefHeight="17.0" prefWidth="226.0" textFill="ALICEBLUE">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -135,7 +154,7 @@
                         <Insets left="8.0" top="-5.0" />
                      </VBox.margin>
                   </Label>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="122.0" text="Cook Time(min)">
                            <HBox.margin>
@@ -155,23 +174,30 @@
                         </TextField>
                      </children>
                   </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                      <children>
-                        <Region prefHeight="41.0" prefWidth="34.0" />
-                        <Button fx:id="cancelButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancelButtonClicked" prefHeight="25.0" prefWidth="55.0" text="Cancel">
+                        <Button fx:id="cancelButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancelButtonClicked" prefHeight="25.0" prefWidth="60.0" text="Cancel">
                            <HBox.margin>
                               <Insets left="20.0" right="10.0" />
                            </HBox.margin>
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
                         </Button>
-                        <Button fx:id="saveButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#saveButtonClicked" prefHeight="25.0" prefWidth="55.0" text="Save">
+                        <Button fx:id="saveButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#saveButtonClicked" prefHeight="25.0" prefWidth="60.0" text="Save">
                            <HBox.margin>
                               <Insets right="20.0" />
                            </HBox.margin>
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
                         </Button>
                      </children>
                   </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0" />
                </children>
+               <padding>
+                  <Insets bottom="23.0" />
+               </padding>
             </VBox>
          </children></AnchorPane>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
@@ -180,17 +206,17 @@
                <children>
                   <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/recipe%20name.png" />
+                        <Image url="@../icons/recipeName.png" />
                      </image>
                   </ImageView>
-                  <TextField fx:id="recipeNameText" prefHeight="23.0" prefWidth="279.0" promptText="Recipe's Name" />
+                  <TextField fx:id="recipeNameText" prefHeight="23.0" prefWidth="284.0" promptText="Recipe's Name" />
                   <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="29.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icons/flavour.png" />
                      </image>
                   </ImageView>
-                  <TextField fx:id="flavourText" prefHeight="23.0" prefWidth="222.0" promptText="flavour" />
-                  <Region prefHeight="75.0" prefWidth="82.0" />
+                  <TextField fx:id="flavourText" editable="false" prefHeight="23.0" prefWidth="150.0" promptText="flavour" />
+                  <ChoiceBox fx:id="flavourCB" prefWidth="150.0" />
                   <ImageView fitHeight="73.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icons/images.png" />
@@ -219,7 +245,7 @@
                               <TextField fx:id="unitArea" promptText="Unit" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="26.0" prefWidth="240.0">
+                        <HBox prefHeight="28.0" prefWidth="240.0">
                            <children>
                               <TextField fx:id="descriptionArea" prefHeight="31.0" prefWidth="240.0" promptText="Description" />
                            </children>
@@ -230,7 +256,7 @@
                                  <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../icons/Ingredient%20Add.png" />
+                                          <Image url="@../icons/IngredientAdd.png" />
                                        </image>
                                     </ImageView>
                                  </graphic></Button>
@@ -238,7 +264,7 @@
                                  <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../icons/delete%20ingredient.png" />
+                                          <Image url="@../icons/deleteIngredient.png" />
                                        </image>
                                     </ImageView>
                                  </graphic></Button>
@@ -256,14 +282,17 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="130.0" prefWidth="242.0" spacing="5.0">
                      <children>
-                        <TextArea fx:id="prepTextArea" prefHeight="68.0" prefWidth="242.0" promptText="Fill in a step for preperation and then hit the button below to add. Please make sure to select a step before you decide to delete or modify a step." styleClass="add-content" wrapText="true" VBox.vgrow="ALWAYS" />
+                        <TextArea fx:id="prepTextArea" prefHeight="89.0" prefWidth="262.0" promptText="For adding, deleting and editing a preparation step, simply fill in the text area and click the corresponding button. Please make sure to select a step before you decide to delete or modify." styleClass="add-content" wrapText="true" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font size="11.5" />
+                           </font></TextArea>
                         <HBox alignment="CENTER" prefHeight="34.0" prefWidth="242.0" spacing="50.0">
                            <children>
                               <Button fx:id="addPrepButton" focusTraversable="false" mnemonicParsing="false" onAction="#addPreparation" prefHeight="20.0" prefWidth="25.0" styleClass="add-button">
                                  <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../icons/Step%20Add.png" />
+                                          <Image url="@../icons/StepAdd.png" />
                                        </image>
                                     </ImageView>
                                  </graphic></Button>

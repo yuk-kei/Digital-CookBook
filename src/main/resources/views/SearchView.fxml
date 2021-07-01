@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="500.0" minWidth="600.0" prefHeight="501.0" prefWidth="713.0" style="-fx-background-color: #FA8072;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.SearchViewController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="500.0" minWidth="600.0" prefHeight="501.0" prefWidth="713.0" style="-fx-background-color: #FA8072;" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.SearchViewController">
    <children>
       <TextField fx:id="searchField" layoutX="197.0" layoutY="39.0" prefHeight="38.0" prefWidth="340.0" promptText="What's in your master mind now?" AnchorPane.leftAnchor="197.0" AnchorPane.rightAnchor="182.0" AnchorPane.topAnchor="39.0">
          <font>
@@ -260,12 +260,12 @@
       </ImageView>
       <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="134.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/preparation%20time.png" />
+            <Image url="@../icons/preparationTime.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="134.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="42.0" fitWidth="42.0" layoutX="134.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/cookTime.png" />
+            <Image url="@../icons/SearchFlavour.png" />
          </image>
       </ImageView>
    </children>

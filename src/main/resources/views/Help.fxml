@@ -14,7 +14,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" stylesheets="" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.HelpController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" stylesheets="" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.HelpController">
    <left>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="120.0" spacing="16.0" style="-fx-background-color: #FF6347;" styleClass="side-bar">
          <children>
@@ -60,7 +60,7 @@
             <Insets left="120.0" />
          </BorderPane.margin>
          <children>
-            <Label styleClass="question-header" text="General Help">
+            <Label prefHeight="51.0" prefWidth="446.0" styleClass="question-header" text="Help">
                <font>
                   <Font name="Comic Sans MS Bold Italic" size="36.0" />
                </font>

@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -28,9 +27,6 @@ import java.util.regex.Pattern;
  *
  */
 public class RecipeViewController implements Initializable {
-
-    @FXML
-    private Pane imagePane;
 
     @FXML
     private ImageView imageView;
@@ -60,6 +56,7 @@ public class RecipeViewController implements Initializable {
     private TextArea ingredientTextArea;
 
     private Recipe recipe;
+
     /**
      * Back to the search page.
      *
@@ -87,7 +84,7 @@ public class RecipeViewController implements Initializable {
     void changeServeNumber() {
         try {
             String serveNumber = serveAmountText.getText();
-            if(isPureDigital(serveNumber)){
+            if(isPositiveNumber(serveNumber)){
                 int newServeNumber = Integer.parseInt(serveNumber);
                 recipe.calculateQuantity(newServeNumber);
                 ingredientTextArea.setText(recipe.getFormattedIngredients());
@@ -100,9 +97,9 @@ public class RecipeViewController implements Initializable {
         }
     }
     /**
-     * check whether the serve amount is positive integer.
+     * Check whether the serve amount is positive number.
      */
-    private boolean isPureDigital(String string) {
+    private boolean isPositiveNumber(String string) {
         if (string == null || "".equals(string)){
             return false;
         }
@@ -158,6 +155,12 @@ public class RecipeViewController implements Initializable {
         window.setScene(scene);
     }
 
+    /**
+     * Back the search window.
+     *
+     * @param event the action event
+     * @throws IOException the io exception
+     */
     private void backToSearch(ActionEvent event) throws IOException {
         Parent layout = FXMLLoader.load(getClass().getResource("/views/SearchView.fxml"));
         Scene scene = new Scene(layout);
@@ -168,9 +171,8 @@ public class RecipeViewController implements Initializable {
         window.setScene(scene);
     }
 
-
     /**
-     *  Open Add recipe page.
+     *  Open Add recipe window.
      *
      * @param recipe the recipe
      */
@@ -186,8 +188,6 @@ public class RecipeViewController implements Initializable {
         prepTimeText.setText(String.valueOf(recipe.getPrepTime()));
         cookTimeText.setText(String.valueOf(recipe.getCookTime()));
 
-        imageView.fitWidthProperty().bind(imagePane.widthProperty());
-        imageView.fitHeightProperty().bind(imagePane.heightProperty());
         imageView.setImage(new Image(recipe.getImagePath()));
 
     }

@@ -18,7 +18,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -43,9 +42,6 @@ import java.util.regex.Pattern;
  *
  */
 public class AddViewController implements Initializable {
-
-    @FXML
-    private Pane imagePane;
 
     @FXML
     private ImageView imageView;
@@ -151,7 +147,7 @@ public class AddViewController implements Initializable {
     }
 
     /**
-     * Sets recipe.
+     * Sets recipe which only be called from the view window.
      *
      * @param recipe the recipe
      */
@@ -170,7 +166,7 @@ public class AddViewController implements Initializable {
     }
 
     /**
-     * Initiate teh flavour choice box.
+     * Initiate the flavour choice box.
      */
     private void setFlavour() {
         String [] flavours = new String[]{"sweet","spicy","salty","sour","bitter"};
@@ -252,8 +248,6 @@ public class AddViewController implements Initializable {
         preparationTime.setText(String.valueOf(newRecipe.getPrepTime()));
         cookTime.setText(String.valueOf(newRecipe.getCookTime()));
 
-        imageView.fitWidthProperty().bind(imagePane.widthProperty());
-        imageView.fitHeightProperty().bind(imagePane.heightProperty());
         imageView.setImage(new Image(newRecipe.getImagePath()));
     }
 
@@ -261,19 +255,17 @@ public class AddViewController implements Initializable {
      * Open a file chooser to display the picture chosen by the user
      */
     @FXML
-    void changePicture() {
+    void changeImage() {
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Please select the image of recipe");
-            File chosenPicture = fileChooser.showOpenDialog(null);
-            path = chosenPicture.getPath();
+            File chosenImage = fileChooser.showOpenDialog(null);
+            path = chosenImage.getPath();
             file = new File(path);
 
             FileInputStream fileIn;
 
-            imageView.fitWidthProperty().bind(imagePane.widthProperty());
-            imageView.fitHeightProperty().bind(imagePane.heightProperty());
-            image = new Image(fileIn = new FileInputStream(chosenPicture), imageView.getFitWidth(), imageView.getFitHeight(), true, true);
+            image = new Image(fileIn = new FileInputStream(chosenImage), imageView.getFitWidth(), imageView.getFitHeight(), true, true);
             imageView.setImage(image);
             imageView.setVisible(true);
             path = resourcePath + file.getName();
@@ -286,7 +278,7 @@ public class AddViewController implements Initializable {
     }
 
     /**
-     * Add ingredient.
+     * Add ingredient to the recipe.
      *
      */
     @FXML
@@ -301,7 +293,7 @@ public class AddViewController implements Initializable {
     }
 
     /**
-     * Delete ingredient.
+     * Delete the selected ingredient.
      *
      */
     @FXML
@@ -318,7 +310,7 @@ public class AddViewController implements Initializable {
     }
 
     /**
-     * Modify ingredient.
+     * Modify the selected ingredient.
      *
      */
     @FXML
@@ -336,7 +328,7 @@ public class AddViewController implements Initializable {
     }
 
     /**
-     * Display ingredient.
+     * Display ingredient when user selected corresponding ingredient.
      *
      */
     @FXML
@@ -371,7 +363,7 @@ public class AddViewController implements Initializable {
     }
 
     /**
-     * Delete preparation.
+     * Delete the selected preparation.
      *
      */
     @FXML
@@ -388,7 +380,7 @@ public class AddViewController implements Initializable {
     }
 
     /**
-     * Modify preparation steps.
+     * Modify the selected preparation steps.
      *
      */
     @FXML
@@ -420,7 +412,7 @@ public class AddViewController implements Initializable {
     @FXML
     void checkServeAmount() {
 
-        if (isPureDigital(serveNumber.getText())){
+        if (isPositiveNumber(serveNumber.getText())){
             warningTextTop.setText("");
         }
         else {
@@ -429,13 +421,13 @@ public class AddViewController implements Initializable {
     }
 
     /**
-     * check the format of preparation time
+     * Check the format of preparation time.
      *
      */
     @FXML
     void checkPrepareTimeFormat() {
 
-        if(isPureDigital(preparationTime.getText())){
+        if(isPositiveNumber(preparationTime.getText())){
             warningTextMiddle.setText("");
         }
         else{
@@ -444,13 +436,13 @@ public class AddViewController implements Initializable {
     }
 
     /**
-     * check the format of cooking time
+     * Check the format of cooking time.
      *
      */
     @FXML
     void checkCookTimeFormat() {
 
-        if(isPureDigital(cookTime.getText())){
+        if(isPositiveNumber(cookTime.getText())){
             warningTextBottom.setText("");
         }
         else{
@@ -459,9 +451,9 @@ public class AddViewController implements Initializable {
     }
 
     /**
-     * check whether the serve amount is positive integer.
+     * Check whether the serve amount is positive digit.
      */
-    private boolean isPureDigital(String string) {
+    private boolean isPositiveNumber(String string) {
         if (string == null || "".equals(string)){
             return false;
         }
@@ -513,7 +505,7 @@ public class AddViewController implements Initializable {
             newRecipe.setCookTime(Integer.parseInt(cookTime.getText()));
             newRecipe.setPrepTime(Integer.parseInt(preparationTime.getText()));
 
-            // Check if user selected a image
+            // Check whether user selected a image
             if(checkAndSaveImage(owner)) {
                 if (edit) {
                     RecipeDAO.deleteRecipe(newRecipe.getRecipeID());
@@ -594,7 +586,7 @@ public class AddViewController implements Initializable {
     }
 
     /**
-     * write the image file to the project image archive.
+     * Write the image file to the project image archive.
      *
      * @throws IOException the IO exception
      */
@@ -617,6 +609,7 @@ public class AddViewController implements Initializable {
 
     /**
      * Delete the duplicate image from the archive
+     *
      * @param path the path of image which need to be deleted
      */
     private void deleteImage(String path){
@@ -673,7 +666,6 @@ public class AddViewController implements Initializable {
         alert.initOwner(owner);
         alert.showAndWait();
     }
-
 
 }
 

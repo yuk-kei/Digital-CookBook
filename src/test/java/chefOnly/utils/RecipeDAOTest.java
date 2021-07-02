@@ -1,51 +1,50 @@
 package chefOnly.utils;
 
 import chefOnly.model.Recipe;
-import javafx.collections.ObservableList;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class RecipeDAOTest {
-    List<Recipe>  recipeList;
+    List<Recipe>  recipes;
     Recipe recipe;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
-        recipeList = RecipeDAO.findRecipe("%Slow%");
-        recipe = recipeList.get(0);
-        System.out.println(recipe);
+        recipe = new Recipe("Baby Yoda","sweet",100,20,200);
+    }
+
+    @Test
+    void testFindRecipe() {
+        recipes = RecipeDAO.findRecipe("pumpkin porridge");
+        for (Recipe recipe : recipes){
+            System.out.println(recipe);
+        }
+        assertEquals("sweet", recipes.get(0).getFlavour());
     }
 
     @Test
     void testAddRecipe() throws SQLException {
         RecipeDAO.addRecipe(recipe);
-    }
-
-    @Test
-    void testDeleteRecipe() {
-        RecipeDAO.deleteRecipe(9);
-    }
-
-    @Test
-    void recipeList() {
-        List<Recipe> recipes = RecipeDAO.recipeList();
-        for (Recipe recipe : recipes){
-            System.out.println(recipe);
-        }
-    }
-
-    @Test
-    void testFindRecipe() {
-        ObservableList<Recipe> recipes = RecipeDAO.findRecipe("Spi%");
-        for (Recipe recipe : recipes){
-            System.out.println(recipe);
-        }
+        recipe = RecipeDAO.findRecipe(recipe.getRecipeName()).get(0);
+        assertEquals("Baby Yoda", recipe.getRecipeName());
     }
 
     @Test
     void testUpdateRecipe() throws SQLException {
+        recipe = RecipeDAO.findRecipe(recipe.getRecipeName()).get(0);
+        recipe.setRecipeName("Master Yoda");
         RecipeDAO.updateRecipe(recipe);
+        assertEquals("Master Yoda", RecipeDAO.findRecipe(recipe.getRecipeName()).get(0).getRecipeName());
+    }
+
+    @Test
+    void testDeleteRecipe() {
+        RecipeDAO.deleteRecipe(recipe.getRecipeID());
+        assertTrue(RecipeDAO.findRecipe(recipe.getRecipeName()).isEmpty());
     }
 }

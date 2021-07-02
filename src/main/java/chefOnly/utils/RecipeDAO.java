@@ -2,8 +2,6 @@ package chefOnly.utils;
 
 import chefOnly.model.Ingredient;
 import chefOnly.model.Recipe;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -54,7 +52,7 @@ public class RecipeDAO {
     }
 
     /**
-     * Setting the preparedStatement for recipe.
+     * Setting the preparedStatement for recipe. (Auto suggested to be extracted by idea)
      * @param recipe the recipe
      * @param preparedStatement the preparation steps
      * @throws SQLException the sql exception
@@ -262,23 +260,24 @@ public class RecipeDAO {
     }
 
     /**
-     * Get all recipes from the database to a list
+     * Find recipe by name from the database and return a list
      *
-     * @return the list of all recipes
+     * @return the result list of recipes
      */
-    public static List<Recipe> recipeList() {
+    public static List<Recipe> findRecipe(String name) {
         List<Recipe> recipes = new ArrayList<>();
 
-        String sql = "select * from recipe order by recipe_id desc limit ?,? ";
-        String sql2 = "select * from ingredient where recipe_id = ?";
-        String sql3 = "select * from preparationstep where recipe_id = ?";
+        String recipeSQL = "select * from recipe where name like ? order by recipe_id desc limit ?,? ";
+        String ingredientSQL = "select * from ingredient where recipe_id = ?";
+        String instructionSQL = "select * from preparationStep where recipe_id = ?";
 
         try (Connection c = ConnectionUtil.getConnection()) {
             assert c != null;
-            try (PreparedStatement preparedStatement = c.prepareStatement(sql)) {
+            try (PreparedStatement preparedStatement = c.prepareStatement(recipeSQL)) {
 
-                preparedStatement.setInt(1, 0);
-                preparedStatement.setInt(2, Short.MAX_VALUE);
+                preparedStatement.setString(1, "%" + name + "%");
+                preparedStatement.setInt(2, 0);
+                preparedStatement.setInt(3, Short.MAX_VALUE);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -292,8 +291,8 @@ public class RecipeDAO {
                     recipe.setImagePath(resultSet.getString(6));
                     recipe.setFlavour(resultSet.getString("flavour"));
 
-                    recipe.setIngredients(loadIngredient(sql2, recipe.getRecipeID(), c));
-                    recipe.setPreparationStep(loadPrepStep(sql3, recipe.getRecipeID(), c));
+                    recipe.setIngredients(loadIngredient(ingredientSQL, recipe.getRecipeID(), c));
+                    recipe.setPreparationStep(loadPrepStep(instructionSQL, recipe.getRecipeID(), c));
 
                     recipes.add(recipe);
                 }
@@ -337,7 +336,7 @@ public class RecipeDAO {
      * Select the ingredients corresponding to the recipe.
      */
     private static ArrayList<Ingredient> loadIngredient(String sql, int id, Connection c) {
-        ArrayList<Ingredient> ingres = new ArrayList<>();
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = c.prepareStatement(sql)) {
 
@@ -347,60 +346,13 @@ public class RecipeDAO {
             while (resultSet.next()) {
                 Ingredient ingredient = new Ingredient(resultSet.getString(2), resultSet.getDouble(3), resultSet.getString(4), resultSet.getString(5));
 
-                ingres.add(ingredient);
+                ingredients.add(ingredient);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return ingres;
+        return ingredients;
     }
 
-    /**
-     * Find recipe by name to a observable list.
-     *
-     * @param name the recipe name
-     * @return the observable list
-     */
-    public static ObservableList<Recipe> findRecipe(String name) {
-        ObservableList<Recipe> recipes = FXCollections.observableArrayList();
-        String sql = "select * from recipe where name like ?";
-        String sql2 = "select * from ingredient where recipe_id = ?";
-        String sql3 = "select * from preparationstep where recipe_id = ?";
-
-        try (Connection c = ConnectionUtil.getConnection()) {
-            assert c != null;
-            try (PreparedStatement preparedStatement = c.prepareStatement(sql)) {
-                preparedStatement.setString(1, name);
-                ResultSet resultSet = preparedStatement.executeQuery();
-
-                while (resultSet.next()) {
-                    Recipe recipe = new Recipe();
-                    recipe.setRecipeID(resultSet.getInt(1));
-                    recipe.setRecipeName(resultSet.getString("name"));
-                    recipe.setServeNumber(resultSet.getInt(3));
-                    recipe.setPrepTime(resultSet.getInt(4));
-                    recipe.setCookTime(resultSet.getInt("cookingTime"));
-                    recipe.setImagePath(resultSet.getString(6));
-                    recipe.setFlavour(resultSet.getString(7));
-
-                    recipe.setIngredients(loadIngredient(sql2, recipe.getRecipeID(), c));
-                    recipe.setPreparationStep(loadPrepStep(sql3, recipe.getRecipeID(), c));
-
-                    recipes.add(recipe);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (ConnectionUtil.getConnection() != null) {
-                try {
-                    ConnectionUtil.disconnect();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return recipes;
-    }
 }

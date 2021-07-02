@@ -20,9 +20,6 @@ import java.util.ResourceBundle;
  */
 public class HomeViewController implements Initializable {
 
-    public static final int WIDTH = 600;
-    public static final int HEIGHT = 400;
-
     /**
      * Open the Search page.
      *
@@ -74,10 +71,8 @@ public class HomeViewController implements Initializable {
 
     /**
      * This is just a pure static window, no need to mess around with controllers.
-     *
-     * @throws Exception the exception
      */
-    public void helpButtonClicked() throws Exception{
+    public void helpButtonClicked(){
         Main.changeScreen("help");
     }
 

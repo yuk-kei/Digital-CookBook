@@ -1,5 +1,7 @@
 package chefOnly.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 /**
@@ -120,19 +122,22 @@ public class Recipe {
     }
 
     /**
-     * calculate the quantities of the ingredients according to the serving amount
+     * Calculate the quantities of the ingredients according to the serving amount
      * @param serveNumber the serving amount
      */
     public void calculateQuantity(int serveNumber) {
         int people = getServeNumber();
-        for (Ingredient ingredient : ingredients) {
-            ingredient.setQuantity(ingredient.getQuantity() / people * serveNumber);
+        BigDecimal bigDecimal;
+
+        for (Ingredient ingredient : ingredients){
+            bigDecimal = new BigDecimal(ingredient.getQuantity() / people * serveNumber);
+            ingredient.setQuantity(bigDecimal.setScale(2, RoundingMode.HALF_UP).doubleValue());
         }
         this.setServeNumber(serveNumber);
     }
 
     /**
-     *  Get the formatted ingredients information. (Easily to be shown in the view Window)
+     * Get the formatted ingredients information. (Easily to be shown in the view Window)
      * @return formatted string of names of ingredients
      */
     public String getFormattedIngredients() {

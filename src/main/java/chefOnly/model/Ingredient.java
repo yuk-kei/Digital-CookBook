@@ -1,6 +1,6 @@
 package chefOnly.model;
 
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * The model of the MVC structure
@@ -37,10 +37,7 @@ public class Ingredient {
         this.quantity = quantity;
     }
 
-    public double getQuantity() {
-        DecimalFormat decimalFormat = new DecimalFormat( "0.00");
-        return Double.parseDouble(decimalFormat.format(quantity));
-    }
+    public double getQuantity() { return  quantity; }
 
     /**
      * Override the toString method to format the Ingredient information
@@ -49,10 +46,12 @@ public class Ingredient {
     public String toString() {
 
         String formattedString;
-        formattedString = this.ingredientName + ":  " + this.quantity + " " + this.unit;
+        NumberFormat numberFormat =NumberFormat.getNumberInstance();
+
+        formattedString = "⚪ " + this.ingredientName + ":  " + numberFormat.format(this.quantity) + " " + this.unit;
 
         if(!this.description.isEmpty()){
-            formattedString = formattedString + "     Description:  " + this.description + "\n";
+            formattedString = formattedString + "    \" " + this.description + " \" " + "\n";
         }else{
             formattedString = formattedString + "\n";
         }

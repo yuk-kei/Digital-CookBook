@@ -4,16 +4,27 @@ Digital Cookbook implemented in Java FX, MySQL, used Maven to manage. If you had
 
 ## Brief Introduction
 
-- 
+- **What is Chef Only?**
 
-- **Used Designed Patterns:**
-  - MVC
+  Have you ever wonder what to cook each day? Then you should try our Chef's Only! It is a digital cook book which helps you to manage the recipe easily . 
 
 - **GUI：**
+  
   - Home Window
+  
+    <img src="guide/GUI/HomeView.png" alt="Home Window" style="zoom:50%;" />
+  
   - Search Window
+  
+    <img src="guide/GUI/SearchView.png" alt="Search Window" style="zoom:50%;" />
+  
   - View Recipe Window
+  
+    <img src="guide/GUI/RecipeView.png" alt="View Recipe Window" style="zoom:50%;" />
+  
   - Add / Edit Recipe Window
+  
+    <img src="guide/GUI/Add(Edit)View.png" alt="Add/Edit Window" style="zoom:50%;" />
 
 
 

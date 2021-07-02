@@ -11,7 +11,11 @@ import java.util.Objects;
  */
 public class ConnectionUtil {
 
-
+    /**
+     * Gets the connection of database.
+     *
+     * @return the connection
+     */
     public static Connection getConnection() {
         Connection connection;
         try {

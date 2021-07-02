@@ -72,7 +72,7 @@ public class SearchViewController implements Initializable {
      */
     @FXML
     void showSearchResult() {
-        String recipeName = "%" + searchField.getText() + "%";
+        String recipeName = searchField.getText();
         recipes = RecipeDAO.findRecipe(recipeName);
         detailButton.setDisable(true);
         if (byFlavour.isSelected()){
@@ -238,7 +238,7 @@ public class SearchViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        recipes = RecipeDAO.recipeList();
+        recipes = RecipeDAO.findRecipe("");
         showTable(recipes);
         setFlavour();
         detailButton.setDisable(true);

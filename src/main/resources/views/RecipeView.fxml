@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
@@ -20,21 +19,47 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<SplitPane dividerPositions="0.314629258517034" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.RecipeViewController">
+<SplitPane dividerPositions="0.30836673346693383" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.RecipeViewController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="498.0" prefWidth="239.0" style="-fx-background-color: #FF6347;">
          <children>
-            <VBox prefHeight="498.0" prefWidth="231.0">
+            <ImageView fx:id="imageView" fitHeight="220.0" fitWidth="234.0" pickOnBounds="true" preserveRatio="true" />
+            <VBox layoutY="215.0" prefHeight="283.0" prefWidth="246.0">
                <children>
-                  <Pane fx:id="imagePane" prefHeight="280.0" prefWidth="250.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <ImageView fx:id="imageView" fitHeight="240.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="102.0" text=" Serve No.">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="Comic Sans MS Bold Italic" size="16.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/serveAmount.png" />
+                           </image>
+                        </ImageView>
+                        <TextField fx:id="serveAmountText" alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeServeNumber" onInputMethodTextChanged="#changeServeNumber" onKeyPressed="#changeServeNumber" onKeyReleased="#changeServeNumber" onKeyTyped="#changeServeNumber" prefHeight="26.0" prefWidth="26.0">
+                           <HBox.margin>
+                              <Insets left="55.0" right="20.0" />
+                           </HBox.margin>
+                        </TextField>
                      </children>
-                  </Pane>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <Label fx:id="warningText" prefHeight="14.0" prefWidth="238.0" textFill="ALICEBLUE">
+                     <VBox.margin>
+                        <Insets left="8.0" top="-5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="246.0">
                      <children>
                         <ImageView fitHeight="29.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
                            <HBox.margin>
@@ -44,9 +69,9 @@
                               <Image url="@../icons/flavour.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="flavourText" alignment="BOTTOM_CENTER" contentDisplay="TOP" prefHeight="26.0" prefWidth="143.0" text="Flavour" textAlignment="CENTER" underline="true">
+                        <Label fx:id="flavourText" alignment="BOTTOM_CENTER" contentDisplay="TOP" prefHeight="26.0" prefWidth="143.0" text="Flavour" textAlignment="CENTER">
                            <font>
-                              <Font name="Comic Sans MS Bold Italic" size="20.0" />
+                              <Font name="Comic Sans MS Bold Italic" size="22.0" />
                            </font>
                            <textFill>
                               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
@@ -70,37 +95,9 @@
                         <Insets />
                      </opaqueInsets>
                   </HBox>
-                  <Label fx:id="warningText" prefHeight="14.0" prefWidth="238.0" textFill="ALICEBLUE">
-                     <VBox.margin>
-                        <Insets left="8.0" top="-5.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="11.0" />
-                     </font>
-                  </Label>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Label layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="145.0" text="  Serve Amount：">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                           <font>
-                              <Font name="Comic Sans MS Bold Italic" size="15.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="serveAmountText" alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeServeNumber" onInputMethodTextChanged="#changeServeNumber" onKeyPressed="#changeServeNumber" onKeyReleased="#changeServeNumber" onKeyTyped="#changeServeNumber" prefHeight="26.0" prefWidth="26.0">
-                           <HBox.margin>
-                              <Insets left="55.0" right="20.0" />
-                           </HBox.margin>
-                        </TextField>
-                     </children>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="106.0" text="Prep Time:  ">
+                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="82.0" text="PrepTime">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
@@ -111,12 +108,17 @@
                               <Font name="Comic Sans MS Bold Italic" size="15.0" />
                            </font>
                         </Label>
-                        <Label fx:id="prepTimeText" alignment="CENTER" prefHeight="29.0" prefWidth="64.0" text="label">
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/preparationTime.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="prepTimeText" alignment="CENTER" prefHeight="30.0" prefWidth="64.0" text="label">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="min" textAlignment="RIGHT" wrappingWidth="45.84021186828613">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="min" textAlignment="CENTER" wrappingWidth="45.84021186828613">
                            <font>
                               <Font name="Comic Sans MS Bold Italic" size="18.0" />
                            </font>
@@ -125,7 +127,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="119.0" text="Cook Time:    ">
+                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="84.0" text="CookTime">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
@@ -136,12 +138,17 @@
                               <Font name="Comic Sans MS Bold Italic" size="15.0" />
                            </font>
                         </Label>
-                        <Label fx:id="cookTimeText" prefHeight="26.0" prefWidth="50.0" text="label">
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/cookTime.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="cookTimeText" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="61.0" text="label">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="min" textAlignment="RIGHT" wrappingWidth="45.84021186828613">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="min" textAlignment="CENTER" wrappingWidth="45.84021186828613">
                            <font>
                               <Font name="Comic Sans MS Bold Italic" size="18.0" />
                            </font>
@@ -170,7 +177,7 @@
                </children>
             </VBox>
          </children></AnchorPane>
-      <BorderPane prefHeight="498.0" prefWidth="532.0">
+      <BorderPane prefHeight="500.0" prefWidth="550.0">
          <top>
             <HBox fx:id="recipteNameArea" alignment="CENTER" prefHeight="75.0" prefWidth="403.0" spacing="20.0" style="-fx-background-color: #FF6347;" BorderPane.alignment="CENTER">
                <children>
@@ -268,14 +275,15 @@
                   <TextArea fx:id="ingredientTextArea" editable="false" prefHeight="230.0" prefWidth="259.0">
                      <font>
                         <Font name="System Bold" size="14.0" />
-                     </font></TextArea>
+                     </font>
+                  </TextArea>
                </children>
             </VBox>
          </left>
          <bottom>
             <ImageView fitHeight="145.0" fitWidth="569.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                <image>
-                  <Image url="@../images/tableView.jpg" />
+                  <Image url="@../images/recipeView.jpg" />
                </image>
             </ImageView>
          </bottom>

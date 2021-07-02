@@ -12,19 +12,19 @@ Digital Cookbook implemented in Java FX, MySQL, used Maven to manage. If you had
   
   - Home Window
   
-    <img src="guide/GUI/HomeView.png" alt="Home Window" style="zoom:50%;" />
+    <img src="guide/GUI/HomeView.png" alt="Home Window" style="zoom: 25%;" />
   
   - Search Window
   
-    <img src="guide/GUI/SearchView.png" alt="Search Window" style="zoom:50%;" />
+    <img src="guide/GUI/SearchView.png" alt="Search Window" style="zoom: 25%;" />
   
   - View Recipe Window
   
-    <img src="guide/GUI/RecipeView.png" alt="View Recipe Window" style="zoom:50%;" />
+    <img src="guide/GUI/RecipeView.png" alt="View Recipe Window" style="zoom: 25%;" />
   
   - Add / Edit Recipe Window
   
-    <img src="guide/GUI/Add(Edit)View.png" alt="Add/Edit Window" style="zoom:50%;" />
+    <img src="guide/GUI/Add(Edit)View.png" alt="Add/Edit Window" style="zoom: 25%;" />
 
 
 

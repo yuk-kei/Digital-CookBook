@@ -1,6 +1,5 @@
 package chefOnly;
 
-
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -58,7 +57,7 @@ public class Main extends Application {
     }
 
     /**
-     * Exit the page.
+     * Exit the window.
      *
      * @param event the event
      */

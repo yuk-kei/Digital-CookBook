@@ -262,6 +262,7 @@ public class SearchViewController implements Initializable {
      */
     private void setFlavour() {
         ObservableList<String> flavourLists = FXCollections.observableArrayList();
+        flavourLists.add("");
         flavourLists.add("sweet");
         flavourLists.add("spicy");
         flavourLists.add("salty");

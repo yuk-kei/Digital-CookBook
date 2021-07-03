@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -14,182 +15,251 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" stylesheets="" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.HelpController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" stylesheets="" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chefOnly.controller.HelpController">
    <left>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="120.0" spacing="16.0" style="-fx-background-color: #FF6347;" styleClass="side-bar">
+      <VBox alignment="CENTER" prefHeight="450.0" prefWidth="165.0" spacing="16.0" style="-fx-background-color: #FF6347;">
          <children>
-            <ImageView fitWidth="80.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+            <ImageView fitHeight="124.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                <image>
                   <Image url="@../images/chef.png" />
                </image></ImageView>
-            <Label styleClass="header-text" text="Chef's Only" textAlignment="CENTER" wrapText="true">
+            <Label fx:id="header" prefHeight="59.0" prefWidth="174.0" text="Chef's  Only" textAlignment="CENTER" wrapText="true">
                <font>
-                  <Font name="Comic Sans MS Bold Italic" size="18.0" />
+                  <Font name="MV Boli" size="28.0" />
                </font>
                <textFill>
-                  <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                  <RadialGradient centerX="0.5044444190131293" centerY="0.484732766187828" radius="0.5">
                      <stops>
                         <Stop>
                            <color>
-                              <Color red="0.8105263113975525" />
+                              <Color red="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.007518796992481203">
+                           <color>
+                              <Color red="0.7789473533630371" />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.999999954108905">
+                           <color>
+                              <Color red="0.24210526049137115" green="0.005380116868764162" blue="0.005380116868764162" />
                            </color>
                         </Stop>
                         <Stop offset="1.0">
                            <color>
-                              <Color />
+                              <Color red="0.24210526049137115" green="0.005380116868764162" blue="0.005380116868764162" />
                            </color>
                         </Stop>
                      </stops>
                   </RadialGradient>
                </textFill>
             </Label>
-            <Button fx:id="backButton" mnemonicParsing="false" onAction="#backToMain" prefHeight="26.0" prefWidth="60.0" text="Back">
+            <Label fx:id="sub" prefHeight="51.0" prefWidth="140.0" text="ONLY FOR CHEF'S PRIVATE RECIPES" textAlignment="CENTER" wrapText="true">
+               <textFill>
+                  <RadialGradient centerX="0.5088888804117838" centerY="0.5038167720532599" radius="0.5">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="1.0" opacity="0.8299999833106995" />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.007518796992481203">
+                           <color>
+                              <Color red="0.75789475440979" green="8.414322065883773E-17" blue="8.414322065883773E-17" opacity="0.8299999833106995" />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.999999954108905">
+                           <color>
+                              <Color red="0.11578947305679321" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.11578947305679321" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </RadialGradient>
+               </textFill>
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
-            </Button>
-         </children>
-         <BorderPane.margin>
-            <Insets top="-72.0" />
-         </BorderPane.margin>
-      </VBox>
-   </left>
-   <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="200.0" spacing="20.0" style="-fx-background-color: #ff902f;" styleClass="header" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets left="120.0" />
-         </BorderPane.margin>
-         <children>
-            <Label prefHeight="51.0" prefWidth="446.0" styleClass="question-header" text="Help">
+            </Label>
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#backToMain" prefHeight="32.0" prefWidth="90.0" text="Back">
                <font>
-                  <Font name="Comic Sans MS Bold Italic" size="36.0" />
+                  <Font name="System Bold" size="15.0" />
                </font>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
                <textFill>
                   <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                      <stops>
                         <Stop>
                            <color>
-                              <Color red="0.8105263113975525" />
+                              <Color red="0.9578947424888611" green="0.007095516659319401" blue="0.007095516659319401" />
                            </color>
                         </Stop>
                         <Stop offset="1.0">
                            <color>
-                              <Color />
+                              <Color red="0.04210526496171951" green="6.237816996872425E-4" blue="6.237816996872425E-4" />
                            </color>
                         </Stop>
                      </stops>
                   </RadialGradient>
                </textFill>
-            </Label>
-            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../icons/help.png" />
-               </image>
-            </ImageView>
-         </children></HBox>
-   </top>
+            </Button>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </VBox>
+   </left>
    <center>
-      <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FF6347;" BorderPane.alignment="TOP_CENTER">
-         <content>
-            <VBox prefHeight="396.0" prefWidth="530.0">
+      <VBox prefHeight="396.0" prefWidth="530.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="472.0" spacing="10.0" style="-fx-background-color: #ff902f;" styleClass="header">
                <children>
-                  <VBox minHeight="56.0" prefHeight="69.0" prefWidth="464.0">
-                     <children>
-                        <Label styleClass="question-header" text="What is Chef's Only ?" wrapText="true">
-                           <font>
-                              <Font name="System Bold Italic" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label>
-                           <font>
-                              <Font size="4.0" />
-                           </font>
-                        </Label>
-                        <Label prefHeight="47.0" prefWidth="508.0" styleClass="question-answer" text="Have you ever wonder what  to cook each day? Then you should try our Chef's Only! It is a digital cook book which helps you to manage the recipe easily. " wrapText="true">
-                           <font>
-                              <Font size="12.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                     </VBox.margin>
-                  </VBox>
-                  <VBox minHeight="88.0">
-                     <VBox.margin>
-                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                     </VBox.margin>
-                     <children>
-                        <Label styleClass="question-header" text="How can I search the recipes?" wrapText="true">
-                           <font>
-                              <Font name="System Bold Italic" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label>
-                           <font>
-                              <Font size="4.0" />
-                           </font>
-                        </Label>
-                        <Label prefHeight="67.0" prefWidth="508.0" styleClass="question-answer" text="You can click on the &quot;Search Recipe&quot; button at the home window to open the search window. Fill in the key words in searh bar and press the search button. You can eable the flavour filter and time filter by simply clicking if you need. Then, the result would be showed in the table below. " wrapText="true">
-                           <font>
-                              <Font size="12.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox minHeight="100.0">
-                     <children>
-                        <Label styleClass="question-header" text="How can I see the recipes in detail or even modify them ? " wrapText="true">
-                           <font>
-                              <Font name="System Bold Italic" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label>
-                           <font>
-                              <Font size="4.0" />
-                           </font>
-                        </Label>
-                        <Label styleClass="question-answer" text="You can enter the view the details by first select the recipe you want in table and then click the detial button to open the deteil window. In the detail window, you can change the serve amount to see how many ingredients you need.  For modifing this recipe, you need to click the &quot;edit&quot; button to open the edit window where you can modify all the content of this recipe. " wrapText="true">
-                           <font>
-                              <Font size="12.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </Label>
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                     </VBox.margin>
-                  </VBox>
-                  <VBox minHeight="96.0">
-                     <children>
-                        <Label styleClass="question-header" text="How can I add recipes?" wrapText="true">
-                           <font>
-                              <Font name="System Bold Italic" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label>
-                           <font>
-                              <Font size="4.0" />
-                           </font>
-                        </Label>
-                        <Label styleClass="question-answer" text="You can click on the &quot;Add Recipe&quot; button to open the window to add recipes. Fill in the corresponding text field and select a picture of a recipe. For the ingredients and  preparation steps, you need to press the add buttons below for each ingredient or steps. You can also elect a corresponding ingredient or step to delete or update it. Please make sure to press the &quot;save&quot; button after you writing down all the content of your recipe." wrapText="true">
-                           <font>
-                              <Font size="12.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="8.0" left="8.0" right="8.0" />
-                     </VBox.margin>
-                  </VBox>
+                  <Label prefHeight="62.0" prefWidth="470.0" styleClass="question-header" text="Help">
+                     <font>
+                        <Font name="Comic Sans MS Bold Italic" size="45.0" />
+                     </font>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <textFill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.8105263113975525" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </RadialGradient>
+                     </textFill>
+                     <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/help.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                </children>
-            </VBox>
-         </content>
-      </ScrollPane>
+            </HBox>
+            <ScrollPane prefHeight="378.0" prefWidth="472.0">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="480.0" prefWidth="600.0">
+                     <children>
+                        <VBox prefHeight="450.0" prefWidth="550.0">
+                           <children>
+                              <VBox minHeight="56.0" prefHeight="56.0" prefWidth="400.0">
+                                 <children>
+                                    <Label styleClass="question-header" text="What is Chef's Only ?">
+                                       <font>
+                                          <Font name="System Bold Italic" size="12.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="9.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label>
+                                       <font>
+                                          <Font size="4.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="30.0" prefWidth="560.0" styleClass="question-answer" text="Have you ever wonder what  to cook each day? Then you should try our Chef's Only! It is a digital cook book which helps you to manage the recipe easily. " wrapText="true">
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="9.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets top="5.0" />
+                                 </padding>
+                              </VBox>
+                              <VBox minHeight="88.0">
+                                 <VBox.margin>
+                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label styleClass="question-header" text="How can I search the recipes?" wrapText="true">
+                                       <font>
+                                          <Font name="System Bold Italic" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label>
+                                       <font>
+                                          <Font size="4.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="67.0" prefWidth="538.0" styleClass="question-answer" text="You can click on the &quot;Search Recipe&quot; button at the home window to open the search window. Fill in the key words in searh bar and press the search button. You can eable the flavour filter and time filter by simply clicking if you need. Then, the result would be showed in the table below. " wrapText="true">
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox minHeight="96.0" prefHeight="96.0" prefWidth="480.0">
+                                 <children>
+                                    <Label styleClass="question-header" text="How can I add recipes?" wrapText="true">
+                                       <font>
+                                          <Font name="System Bold Italic" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label>
+                                       <font>
+                                          <Font size="4.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="75.0" prefWidth="540.0" styleClass="question-answer" text="You can click on the &quot;Add Recipe&quot; button to open the window to add recipes. Fill in the corresponding text field and select a picture of a recipe. For the ingredients and  preparation steps, you need to press the add buttons below for each ingredient or steps. You can also elect a corresponding ingredient or step to delete or update it. Please make sure to press the &quot;save&quot; button after you writing down all the content of your recipe." wrapText="true">
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="8.0" left="8.0" right="8.0" />
+                                 </VBox.margin>
+                              </VBox>
+                              <VBox minHeight="100.0">
+                                 <children>
+                                    <Label styleClass="question-header" text="How can I see the recipes in detail or even modify them ? " wrapText="true">
+                                       <font>
+                                          <Font name="System Bold Italic" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label>
+                                       <font>
+                                          <Font size="4.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="75.0" prefWidth="542.0" styleClass="question-answer" text="You can enter the view the details by first select the recipe you want in table and then click the detial button to open the deteil window. In the detail window, you can change the serve amount to see how many ingredients you need.  For modifing this recipe, you need to click the &quot;edit&quot; button to open the edit window where you can modify all the content of this recipe. " wrapText="true">
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                 </VBox.margin>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
+         </children>
+      </VBox>
    </center>
 </BorderPane>

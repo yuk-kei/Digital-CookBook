@@ -98,16 +98,18 @@ public class RecipeViewController implements Initializable {
     }
     /**
      * Check whether the serve amount is positive number.
+     * @param userInput the input of user in the text field
+     * @return whether the user input is positive number
      */
-    private boolean isPositiveNumber(String string) {
-        if (string == null || "".equals(string)){
+    private boolean isPositiveNumber(String userInput) {
+        if (userInput == null || "".equals(userInput)){
             return false;
         }
         String regex = "^[1-9]\\d*$";
         Pattern p;
         Matcher m;
         p = Pattern.compile(regex);
-        m = p.matcher(string);
+        m = p.matcher(userInput);
         return m.matches();
     }
 

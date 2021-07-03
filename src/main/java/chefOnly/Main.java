@@ -29,7 +29,7 @@ public class Main extends Application {
         Parent homeScreen = FXMLLoader.load(getClass().getResource("/views/HomeView.fxml"));
         mainScreenScene = new Scene(homeScreen);
 
-        Parent HelpScreen = FXMLLoader.load(getClass().getResource("/views/Help.fxml"));
+        Parent HelpScreen = FXMLLoader.load(getClass().getResource("/views/HelpView.fxml"));
         helpScreenScene = new Scene(HelpScreen);
 
         window.setOnCloseRequest(windowEvent -> closeWindow(window,windowEvent,"Close the Application","Are you sure to exit"));
@@ -59,7 +59,10 @@ public class Main extends Application {
     /**
      * Exit the window.
      *
+     * @param window the current stage
      * @param event the event
+     * @param title the title of the close alert
+     * @param message the message needs to be displayed
      */
 
     public static void closeWindow (Stage window, Event event, String title, String message) {

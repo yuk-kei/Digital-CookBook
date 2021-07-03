@@ -44,7 +44,7 @@ class RecipeDAOTest {
 
     @Test
     void testDeleteRecipe() {
-        RecipeDAO.deleteRecipe(recipe.getRecipeID());
+        RecipeDAO.deleteRecipe(66);
         assertTrue(RecipeDAO.findRecipe(recipe.getRecipeName()).isEmpty());
     }
 }

@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
  * The controller of help window.
  *
  */
-public class HelpController {
+public class HelpViewController {
 
     /**
      * Back to the home page.

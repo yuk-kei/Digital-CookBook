@@ -130,6 +130,7 @@ public class AddViewController implements Initializable {
     private boolean edit;
 
     private final String resourcePath = System.getProperty("user.dir") + "\\src\\main\\resources\\images\\";
+                                      // Idea would automatically search from the complied output path during the app running,
     private final String compliedPath = System.getProperty("user.dir") +"\\target\\classes\\images\\";
                                       // URL complied archive path:  this.getClass().getClassLoader().getResource("images") + "/";
     private String path = "images/chef.png";
@@ -253,19 +254,23 @@ public class AddViewController implements Initializable {
 
     /**
      * Open a file chooser to display the picture chosen by the user
+     *
+     * @param event the action event
      */
     @FXML
-    void changeImage() {
+    void changeImage(ActionEvent event) {
         try {
+            Window owner = ((Node) event.getSource()).getScene().getWindow();
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Please select the image of recipe");
-            File chosenImage = fileChooser.showOpenDialog(null);
-            path = chosenImage.getPath();
+
+            File selectedImage = fileChooser.showOpenDialog(owner);
+            path = selectedImage.getPath();
             file = new File(path);
 
-            FileInputStream fileIn;
+            FileInputStream fileIn = new FileInputStream(selectedImage);
+            image = new Image(fileIn, imageView.getFitWidth(), imageView.getFitHeight(), true, true);
 
-            image = new Image(fileIn = new FileInputStream(chosenImage), imageView.getFitWidth(), imageView.getFitHeight(), true, true);
             imageView.setImage(image);
             imageView.setVisible(true);
             path = resourcePath + file.getName();
@@ -280,14 +285,21 @@ public class AddViewController implements Initializable {
     /**
      * Add ingredient to the recipe.
      *
+     * @param event the action event
      */
     @FXML
-    void addIngredient() {
+    void addIngredient(ActionEvent event) {
+        Window owner = ((Node) event.getSource()).getScene().getWindow();
         Ingredient add = new Ingredient(ingredientNameArea.getText(),Double.parseDouble(quantityArea.getText()),unitArea.getText(),descriptionArea.getText());
-        deleteIngredientButton.setDisable(false);
-        modifyIngredientButton.setDisable(false);
 
-        newRecipe.getIngredients().add(add);
+        if(add.getIngredientName().equals("")){
+            showAlert(Alert.AlertType.ERROR,owner,"Please Set the ingredient name before add one.","Form Error!");
+        } else {
+            newRecipe.getIngredients().add(add);
+            deleteIngredientButton.setDisable(false);
+            modifyIngredientButton.setDisable(false);
+        }
+
         showIngredients();
         ingredientTextClear();
     }
@@ -350,14 +362,21 @@ public class AddViewController implements Initializable {
     /**
      * Add preparation.
      *
+     * @param event the action event
      */
     @FXML
-    void addPreparation() {
+    void addPreparation(ActionEvent event) {
+        Window owner = ((Node) event.getSource()).getScene().getWindow();
         String add = prepTextArea.getText();
-        deletePrepButton.setDisable(false);
-        modifyPrepStepsButton.setDisable(false);
 
-        newRecipe.getPreparationStep().add(add);
+        if(add.equals("")){
+            showAlert(Alert.AlertType.ERROR,owner,"Please write down the instructions before adding one.","Form Error!");
+        } else {
+            newRecipe.getPreparationStep().add(add);
+            deletePrepButton.setDisable(false);
+            modifyPrepStepsButton.setDisable(false);
+        }
+
         showPreparations();
         prepTextArea.clear();
     }
@@ -416,7 +435,7 @@ public class AddViewController implements Initializable {
             warningTextTop.setText("");
         }
         else {
-            warningTextTop.setText("must be positive integer !!");
+            warningTextTop.setText("must be positive number !!");
         }
     }
 
@@ -452,16 +471,16 @@ public class AddViewController implements Initializable {
 
     /**
      * Check whether the serve amount is positive digit.
+     * @param userInput the input of user in the text field
+     * @return whether the user input is positive number
      */
-    private boolean isPositiveNumber(String string) {
-        if (string == null || "".equals(string)){
+    private boolean isPositiveNumber(String userInput) {
+        if (userInput == null || "".equals(userInput)){
             return false;
         }
         String regex = "^[1-9]\\d*$";
-        Pattern p;
-        Matcher m;
-        p = Pattern.compile(regex);
-        m = p.matcher(string);
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(userInput);
         return m.matches();
     }
 
@@ -488,7 +507,7 @@ public class AddViewController implements Initializable {
     /**
      * Save the information of the recipe and return it to the database for editing and adding
      *
-     * @param event the event
+     * @param event the action event
      * @throws IOException  the io exception
      * @throws SQLException the sql exception
      */
@@ -525,6 +544,13 @@ public class AddViewController implements Initializable {
         }
     }
 
+    /**
+     * Save the information of the recipe and return it to the database for editing and adding
+     *
+     * @param event the action event
+     * @param saveStatus whether the user has saved this recipe
+     * @throws IOException  the io exception
+     */
     private void back(ActionEvent event, boolean saveStatus) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Parent root = loader.load();
@@ -581,6 +607,8 @@ public class AddViewController implements Initializable {
         } else if (!edit){
             showAlert(Alert.AlertType.ERROR,owner,"Please select an image.","Form Error!");
             savable = false;
+        } else {
+            newRecipe.setImagePath(path);
         }
         return savable;
     }
@@ -602,8 +630,8 @@ public class AddViewController implements Initializable {
         FileOutputStream projectOut = new FileOutputStream(outputToCompliedPathImage);
 
         bufferImage = SwingFXUtils.fromFXImage(image, null);
-        ImageIO.write(bufferImage, file.getName().substring(file.getName().lastIndexOf(".") + 1), imageOut);
-        ImageIO.write(bufferImage, file.getName().substring(file.getName().lastIndexOf(".") + 1), projectOut);
+        ImageIO.write(bufferImage, "png", imageOut);
+        ImageIO.write(bufferImage, "png", projectOut);
         imageOut.close();
     }
 

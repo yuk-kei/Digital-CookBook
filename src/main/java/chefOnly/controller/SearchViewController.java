@@ -128,17 +128,16 @@ public class SearchViewController implements Initializable {
 
     /**
      * check whether the cook time is positive integer.
+     * @param userInput the input of user in the text field
+     * @return whether the user input is positive number
      */
-    private boolean isPureDigital(String string) {
-        if (string == null || "".equals(string)){
+    private boolean isPureDigital(String userInput) {
+        if (userInput == null || "".equals(userInput)){
             return false;
         }
         String regex = "^[1-9]\\d*$";
-        Pattern p;
-        Matcher m;
-        p = Pattern.compile(regex);
-        m = p.matcher(string);
-
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(userInput);;
         return m.matches();
     }
 

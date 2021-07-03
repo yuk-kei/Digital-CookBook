@@ -43,7 +43,7 @@ Digital Cookbook implemented in Java FX, MySQL, used Maven to manage. If you had
 
 - Open this project in IntelliJ and wait until maven has downloaded all the needed dependencies.
 
-- Execute the SQL file **guide/cookbook.sql** in your database.
+- Create a database/schema in mySQL named "cookbook" and then execute the SQL file **guide/DataBase/cookbook.sql** in this database.
 
 - Find the following code in **"src/main/java/chefOnly/utils/ConnectionUtil.java"** 
 

@@ -262,6 +262,7 @@ public class RecipeDAO {
     /**
      * Find recipe by name from the database and return a list
      *
+     * @param name the name needs to be search
      * @return the result list of recipes
      */
     public static List<Recipe> findRecipe(String name) {

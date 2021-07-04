@@ -84,13 +84,17 @@ Digital Cookbook implemented in Java FX, MySQL, used Maven to manage. If you had
 **example for eclipse:**
 
 - import the project as existing Maven project ( File --> Import --> Maven:  Existing Maven Project )
+
 - For the database configuration, same as the example for IntelliJ Idea.
+
 - In the main menu, find **Run->Coverage configurations** , find Arguments on the right side and add your path to the lib directory of the downloaded JavaFX SDK distribution in the test field of **VM arguments** as following:
 
-``` shell
---module-path /path/to/javafx/sdk --add-modules javafx.controls,javafx.fxml
-exp: --module-path C:\Enviroment\javafx-sdk-11.0.2\lib --add-modules javafx.controls,javafx.fxml
-```
+  ``` shell
+  --module-path /path/to/javafx/sdk --add-modules javafx.controls,javafx.fxml
+  exp: --module-path C:\Enviroment\javafx-sdk-11.0.2\lib --add-modules javafx.controls,javafx.fxml
+  ```
+
+  
 
 - The Entrance of our Digital Cook book is at **"src/main/java/chefOnly/.Main.java"**,
   find and run it as Java Application. 

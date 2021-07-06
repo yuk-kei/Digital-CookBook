@@ -605,9 +605,12 @@ public class AddViewController implements Initializable {
                 savable = true;
             }
         } else if (!edit){
-            showAlert(Alert.AlertType.ERROR,owner,"Please select an image.","Form Error!");
-            savable = false;
-        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("You have not chosen a picture for the recipe");
+            alert.setHeaderText("The picture of image would be set to default. Are you sure?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            savable = result.get() == ButtonType.OK;
             newRecipe.setImagePath(path);
         }
         return savable;

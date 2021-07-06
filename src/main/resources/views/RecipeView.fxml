@@ -50,12 +50,12 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <Label fx:id="warningText" prefHeight="14.0" prefWidth="238.0" textFill="ALICEBLUE">
+                  <Label fx:id="warningText" prefHeight="15.0" prefWidth="274.0" textFill="ALICEBLUE">
                      <VBox.margin>
                         <Insets left="8.0" top="-5.0" />
                      </VBox.margin>
                      <font>
-                        <Font name="System Bold" size="11.0" />
+                        <Font name="System Bold" size="10.0" />
                      </font>
                   </Label>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="246.0">
